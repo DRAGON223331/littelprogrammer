@@ -1,0 +1,2726 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta property="og:title" content="المبرمج الصغير 👨‍💻" />
+<meta property="og:description" content="منصة تعلّم البرمجة للناشئين — دروس في Python وJavaScript وHTML والمزيد 🚀" />
+<meta property="og:image" content="https://i.postimg.cc/SN5g6LdD/AOI-d-86r2c-MVdy-IHkg-Qrhz4r-THJh-Tb-Mrh-Fy-Ysm-T9Uc-T98vs1AYp8XY0TMhq6u-VTik1up-Ny-PAsj8D3GOa-F9d6U.png" />
+<meta property="og:url" content="https://littelprogrammer.netlify.app/" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="ar_EG" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="المبرمج الصغير 👨‍💻" />
+<meta name="twitter:description" content="منصة تعلّم البرمجة للناشئين 🚀" />
+<meta name="twitter:image" content="https://i.postimg.cc/SN5g6LdD/AOI-d-86r2c-MVdy-IHkg-Qrhz4r-THJh-Tb-Mrh-Fy-Ysm-T9Uc-T98vs1AYp8XY0TMhq6u-VTik1up-Ny-PAsj8D3GOa-F9d6U.png" />
+<title>المبرمج الصغير</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet"/>
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#7c6dfa"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="المبرمج الصغير"/>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
+<script type="module">
+  import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import{getDatabase,ref,set,get,update,remove,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  const app=initializeApp({
+    apiKey:"AIzaSyAwmXIlpdKXE_GTQMoQCFZJXIIVRTEcMhk",
+    authDomain:"codeacademy-fdea6.firebaseapp.com",
+    databaseURL:"https://codeacademy-fdea6-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId:"codeacademy-fdea6",
+    storageBucket:"codeacademy-fdea6.firebasestorage.app",
+    messagingSenderId:"499595636893",
+    appId:"1:499595636893:web:4bb3e5da21a4c73679a474"
+  });
+  const db=getDatabase(app);
+  window._fb={db,ref,set,get,update,remove,onValue};
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-x:hidden}
+body{background:#050810;color:#e4e6f0;font-family:'Cairo',sans-serif}
+:root{
+  --p:#7c6dfa;--pd:#5748d4;--a:#00e5ff;
+  --bg:#050810;--bg2:#0c1020;--bg3:#131828;--bg4:#1a2035;
+  --border:#1e2740;--muted:#5a6380;
+  --ok:#22c55e;--err:#ef4444;--warn:#f59e0b;
+}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--p);border-radius:4px}
+#loader{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px}
+.loader-logo{font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:700;background:linear-gradient(135deg,var(--p),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.97)}}
+.spin{width:36px;height:36px;border:2px solid var(--border);border-top-color:var(--p);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-txt{font-size:12px;color:var(--muted);letter-spacing:1px}
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:13px 24px;font-size:14px;font-weight:700;z-index:9998;transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 12px 40px #0009;max-width:90vw;text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.ok{border-color:var(--ok);color:var(--ok);box-shadow:0 0 20px rgba(34,197,94,.2)}
+#toast.err{border-color:var(--err);color:var(--err);box-shadow:0 0 20px rgba(239,68,68,.2)}
+#auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(ellipse 80% 50% at 50% -10%,#1a1060 0%,var(--bg) 60%)}
+.auth-box{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:24px;padding:40px 32px;width:100%;max-width:420px;box-shadow:0 0 80px rgba(124,109,250,.12),0 32px 64px #0008;position:relative;overflow:hidden}
+.auth-box::before{content:"";position:absolute;top:-80px;right:-80px;width:200px;height:200px;background:radial-gradient(circle,rgba(124,109,250,.08),transparent 70%);border-radius:50%;pointer-events:none}
+.brand{text-align:center;margin-bottom:32px}
+.brand-icon{font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:700;background:linear-gradient(135deg,var(--p),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;margin-bottom:12px}
+.brand-name{font-size:22px;font-weight:900;background:linear-gradient(135deg,#fff,#a0a8c0);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.brand-sub{color:var(--muted);font-size:12px;margin-top:4px;letter-spacing:.5px}
+.tabs{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px;padding:3px;gap:3px}
+.tab{flex:1;background:transparent;border:none;color:var(--muted);padding:10px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:14px;transition:all .2s;border-radius:9px}
+.tab.on{background:linear-gradient(135deg,var(--p),var(--pd));color:#fff;font-weight:700;box-shadow:0 4px 12px rgba(124,109,250,.3)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.inp{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;color:#e4e6f0;padding:12px 16px;font-family:'Cairo',sans-serif;font-size:14px;outline:none;transition:all .2s}
+.inp:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(124,109,250,.12);background:var(--bg2)}
+.inp::placeholder{color:var(--muted)}
+.err-line{color:var(--err);font-size:12px;margin-bottom:10px;text-align:center;min-height:18px}
+.btn{width:100%;background:linear-gradient(135deg,var(--p),var(--pd));border:none;border-radius:14px;color:#fff;padding:14px;font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:4px;box-shadow:0 4px 20px rgba(124,109,250,.3)}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(124,109,250,.4)}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn.sm{padding:8px 18px;font-size:13px;width:auto;border-radius:10px}
+.btn.outline{background:transparent;border:1px solid var(--border);color:var(--muted);box-shadow:none}
+.btn.outline:hover{border-color:var(--p);color:var(--p);box-shadow:none;transform:none}
+.btn.danger{background:linear-gradient(135deg,var(--err),#b91c1c);box-shadow:0 4px 16px rgba(239,68,68,.3)}
+.btn.ok{background:linear-gradient(135deg,var(--ok),#16a34a);box-shadow:0 4px 16px rgba(34,197,94,.3)}
+.otp-note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.7;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px}
+.closed-box{background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.25);border-radius:14px;padding:20px;text-align:center;margin-bottom:20px}
+.closed-box h3{color:var(--warn);font-size:15px;margin-bottom:8px}
+.closed-box p{color:var(--muted);font-size:12px;line-height:1.7}
+.wa-btn{display:inline-flex;align-items:center;gap:8px;background:#25d366;color:#fff;border:none;border-radius:10px;padding:10px 20px;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;margin-top:12px;transition:opacity .2s}
+.wa-btn:hover{opacity:.88}
+#app{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:270px;min-width:270px;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.sb-logo{padding:20px 18px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center}
+.sb-logo-icon{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--p);background:rgba(124,109,250,.1);padding:7px 10px;border-radius:8px;border:1px solid rgba(124,109,250,.2)}
+.sb-logo-name{color:#e4e6f0;font-size:13px;font-weight:700}
+.sb-logo-sub{color:var(--muted);font-size:10px;margin-top:1px}
+.sb-user{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--border);background:var(--bg3)}
+.ava{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--a));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0;box-shadow:0 4px 12px rgba(124,109,250,.3)}
+.ava.sm{width:32px;height:32px;font-size:13px;box-shadow:none}
+.u-name{font-size:13px;font-weight:700}
+.u-role{font-size:11px;color:var(--muted);margin-top:1px}
+.u-role.admin{color:var(--p);font-weight:700}
+.u-role.ok{color:var(--ok);font-weight:700}
+.sb-nav{display:flex;flex-direction:column;padding:12px 10px;gap:3px;flex:1}
+.sb-nav button{background:transparent;border:none;color:var(--muted);padding:11px 14px;border-radius:10px;cursor:pointer;text-align:right;font-family:'Cairo',sans-serif;font-size:13px;transition:all .15s;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sb-nav button:hover{background:var(--bg3);color:#e4e6f0}
+.sb-nav button.on{background:rgba(124,109,250,.15);color:var(--p);font-weight:700;border-right:3px solid var(--p)}
+.sb-nav button.locked{opacity:.45;cursor:not-allowed}
+.sb-nav button.done{color:var(--ok)}
+.sb-nav.videos{overflow-y:auto;max-height:calc(100vh - 320px);flex:1}
+.badge{background:var(--err);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;animation:badgePulse 2s ease-in-out infinite}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 5px rgba(239,68,68,0)}}
+.sb-bottom{padding:10px}
+.logout{width:100%;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:10px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:13px;transition:all .2s}
+.logout:hover{border-color:var(--err);color:var(--err);background:rgba(239,68,68,.05)}
+.main{flex:1;overflow-y:auto;background:var(--bg)}
+.section{padding:28px}
+.sec-title{font-size:20px;font-weight:900;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.ham-btn{display:none;position:fixed;top:14px;right:14px;z-index:200;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:9px 12px;cursor:pointer;font-size:18px;box-shadow:0 4px 16px #0006}
+.overlay{display:none;position:fixed;inset:0;background:#0009;z-index:150;backdrop-filter:blur(2px)}
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.vcard{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .25s}
+.vcard:hover{border-color:var(--p);transform:translateY(-3px);box-shadow:0 12px 32px rgba(124,109,250,.15)}
+.vthumb{height:155px;background:var(--bg3)}
+.vthumb iframe{width:100%;height:100%;border:none}
+.vthumb .no-thumb{display:flex;align-items:center;justify-content:center;height:100%;font-size:40px}
+.vinfo{padding:14px 16px}
+.vinfo h3{font-size:13px;font-weight:700;margin-bottom:6px;line-height:1.5}
+.cat-tag{display:inline-block;font-size:11px;background:rgba(124,109,250,.15);color:var(--p);padding:3px 10px;border-radius:6px;margin-bottom:6px;border:1px solid rgba(124,109,250,.2)}
+.vdate{font-size:11px;color:var(--muted)}
+.vdel{width:100%;background:transparent;border:none;border-top:1px solid var(--border);color:var(--err);padding:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:12px;transition:background .15s}
+.vdel:hover{background:rgba(239,68,68,.08)}
+.s-list{display:flex;flex-direction:column;gap:8px;max-width:720px;margin-bottom:24px}
+.s-row{display:flex;align-items:flex-start;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px 16px;gap:10px;flex-wrap:wrap}
+.s-row.pending{border-color:rgba(245,158,11,.3)}
+.s-row.approved{border-color:rgba(34,197,94,.2)}
+.s-row.rejected{border-color:rgba(239,68,68,.2)}
+.s-info{display:flex;align-items:center;gap:10px}
+.s-phone{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.s-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.app-btn{background:rgba(34,197,94,.12);color:var(--ok);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:6px 14px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;transition:all .15s}
+.app-btn:hover{background:rgba(34,197,94,.25)}
+.rej-btn{background:rgba(239,68,68,.1);color:var(--err);border:1px solid rgba(239,68,68,.15);border-radius:8px;padding:6px 14px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;transition:all .15s}
+.rej-btn:hover{background:rgba(239,68,68,.22)}
+.rev-btn{background:rgba(245,158,11,.1);color:var(--warn);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:6px 12px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700}
+.rej-reason{font-size:11px;color:var(--err);margin-top:6px;background:rgba(239,68,68,.06);padding:6px 10px;border-radius:8px;width:100%}
+.modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:30px 26px;width:100%;max-width:440px;box-shadow:0 24px 64px #0008}
+.modal h3{font-size:17px;font-weight:900;margin-bottom:18px}
+.modal textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;color:#e4e6f0;padding:12px 16px;font-family:'Cairo',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:90px;transition:border .2s}
+.modal textarea:focus{border-color:var(--p)}
+.modal-btns{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
+.up-form{display:flex;flex-direction:column;gap:14px;max-width:600px}
+.up-form textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;color:#e4e6f0;padding:12px 16px;font-family:'Cairo',sans-serif;font-size:14px;outline:none;resize:vertical;transition:all .2s}
+.up-form textarea:focus{border-color:var(--p)}
+.msg-ok{color:var(--ok);font-size:13px}
+.msg-err{color:var(--err);font-size:13px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:18px 20px;max-width:520px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.toggle-info h4{font-size:14px;font-weight:700}
+.toggle-info p{font-size:12px;color:var(--muted);margin-top:3px}
+.toggle{width:54px;height:28px;background:var(--border);border-radius:99px;border:none;cursor:pointer;position:relative;transition:background .3s;flex-shrink:0}
+.toggle::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:transform .3s;box-shadow:0 2px 4px #0004}
+.toggle.on{background:var(--ok)}
+.toggle.on::after{transform:translateX(-26px)}
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:85vh;text-align:center;padding:32px;position:relative}
+.welcome::before{content:"";position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(124,109,250,.05),transparent 70%);border-radius:50%;pointer-events:none}
+.welcome-icon{font-family:'JetBrains Mono',monospace;font-size:60px;background:linear-gradient(135deg,var(--p),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px}
+.welcome h2{font-size:28px;font-weight:900;margin-bottom:10px;background:linear-gradient(135deg,#fff,#a0a8c0);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.welcome p{color:var(--muted);font-size:15px;margin-bottom:32px;line-height:1.8}
+.stats{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.stat{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:20px 32px;text-align:center;transition:all .2s;position:relative;overflow:hidden}
+.stat::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--p),var(--a))}
+.stat:hover{border-color:var(--p);transform:translateY(-2px)}
+.stat span{display:block;font-size:36px;font-weight:900;background:linear-gradient(135deg,var(--p),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-family:'JetBrains Mono',monospace}
+.stat label{font-size:12px;color:var(--muted);margin-top:4px;display:block}
+.viewer{padding:24px;max-width:900px}
+.viewer-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.back{background:var(--bg2);border:1px solid var(--border);color:#e4e6f0;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:13px;transition:all .2s}
+.back:hover{border-color:var(--p);color:var(--p)}
+.viewer-title{font-size:22px;font-weight:900;margin-bottom:16px;line-height:1.4}
+.player{width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;margin-bottom:16px;box-shadow:0 16px 48px #0008;-webkit-user-select:none;user-select:none;position:relative}
+.player iframe,.player video{width:100%;height:100%;border:none;pointer-events:auto}
+.viewer-desc{color:var(--muted);font-size:13px;line-height:1.8;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.vdate-lg{font-size:12px;color:var(--muted);margin-bottom:16px}
+.status-card{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:44px 36px;text-align:center;max-width:440px}
+.status-icon{font-size:56px;margin-bottom:16px;display:block}
+.status-card h2{font-size:22px;font-weight:900;margin-bottom:10px}
+.status-card p{color:var(--muted);font-size:13px;line-height:1.8;margin-bottom:6px}
+.status-phone{color:var(--a);font-size:12px;margin-top:10px;font-family:'JetBrains Mono',monospace}
+.rej-box{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:12px;padding:14px 18px;margin-top:14px;color:var(--err);font-size:13px;line-height:1.7}
+.search-wrap{padding:10px 8px}
+.search-inp{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;color:#e4e6f0;padding:9px 14px;font-family:'Cairo',sans-serif;font-size:13px;outline:none;transition:all .2s}
+.search-inp:focus{border-color:var(--p)}
+.search-inp::placeholder{color:var(--muted)}
+.empty{color:var(--muted);font-size:13px;padding:16px 4px;text-align:center}
+.info-ok{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:12px;padding:14px 18px;color:var(--ok);font-size:13px;margin-bottom:18px}
+.sec-divider{height:1px;background:var(--border);margin:20px 0;max-width:720px}
+.progress-wrap{padding:10px 14px;border-bottom:1px solid var(--border)}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
+.progress-bar{height:5px;background:var(--border);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--a));border-radius:99px;transition:width .5s ease}
+.fahimt-zone{margin-top:16px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:20px}
+.fahimt-zone h4{font-size:15px;font-weight:700;margin-bottom:12px}
+.fahimt-pending{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:16px;text-align:center;color:var(--warn);font-size:13px}
+.quiz-box{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
+.quiz-question{font-size:14px;font-weight:700;margin-bottom:10px;line-height:1.6}
+.quiz-answer-inp{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;color:#e4e6f0;padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:70px;transition:border .2s;margin-bottom:10px}
+.quiz-answer-inp:focus{border-color:var(--a)}
+.quiz-wrong{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;color:var(--err);font-size:13px;margin-bottom:10px}
+.quiz-correct{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:10px 14px;color:var(--ok);font-size:13px;margin-bottom:10px}
+.locked-next{background:rgba(124,109,250,.06);border:1px solid rgba(124,109,250,.2);border-radius:12px;padding:16px;text-align:center;color:var(--muted);font-size:13px}
+.progress-table{width:100%;max-width:800px;border-collapse:collapse}
+.progress-table th{text-align:right;padding:10px 14px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--border)}
+.progress-table td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:top}
+.progress-table tr:hover td{background:var(--bg3)}
+.prog-bar-sm{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-top:4px;width:100px}
+.prog-fill-sm{height:100%;background:linear-gradient(90deg,var(--p),var(--a));border-radius:99px}
+.answer-row{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;max-width:700px}
+.answer-row .a-meta{font-size:11px;color:var(--muted);margin-bottom:6px;display:flex;gap:12px;flex-wrap:wrap}
+.answer-row .a-q{font-size:13px;color:var(--a);margin-bottom:6px}
+.answer-row .a-ans{font-size:14px;font-weight:700;background:var(--bg3);padding:8px 12px;border-radius:8px}
+.sq-form{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:20px;max-width:600px;margin-top:16px}
+.sq-form h4{font-size:14px;font-weight:700;margin-bottom:14px}
+.sq-select{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;color:#e4e6f0;padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;outline:none;margin-bottom:10px}
+.points-badge{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(245,158,11,.05));border:1px solid rgba(245,158,11,.3);border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--warn)}
+.points-big{font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:700;background:linear-gradient(135deg,#f59e0b,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.points-anim{animation:pointsPop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pointsPop{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+.leaderboard{max-width:600px}
+.lb-row{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:8px;transition:all .2s}
+.lb-row:hover{border-color:var(--warn);transform:translateX(-2px)}
+.lb-rank{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;width:32px;text-align:center;color:var(--muted)}
+.lb-rank.gold{color:#f59e0b}
+.lb-rank.silver{color:#94a3b8}
+.lb-rank.bronze{color:#cd7c43}
+.lb-pts{margin-right:auto;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--warn)}
+.pts-change{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:48px;font-weight:700;pointer-events:none;z-index:9999;animation:floatUp 1.2s ease forwards}
+.pts-change.plus{color:#22c55e;text-shadow:0 0 20px rgba(34,197,94,.5)}
+.pts-change.minus{color:#ef4444;text-shadow:0 0 20px rgba(239,68,68,.5)}
+@keyframes floatUp{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-120%) scale(1.3)}}
+.comment-item{display:flex;gap:10px;margin-bottom:14px}
+.comment-ava{width:34px;height:34px;border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.comment-ava.admin-ava{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.comment-body{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:10px 14px}
+.comment-meta{font-size:11px;color:var(--muted);margin-bottom:4px;display:flex;gap:8px}
+.comment-text{font-size:13px;line-height:1.7}
+.notif-btn{position:relative;background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:10px;color:#e4e6f0;font-size:20px;line-height:1;transition:background .2s}
+.notif-btn:hover{background:var(--bg4)}
+.notif-dot{position:absolute;top:0;right:0;background:var(--err);color:#fff;font-size:10px;font-weight:700;border-radius:99px;min-width:17px;height:17px;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.notif-panel{position:fixed;bottom:60px;left:10px;width:300px;max-height:400px;overflow-y:auto;background:var(--bg2);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.6);z-index:600;display:none}
+.notif-panel.show{display:block;animation:fadeInUp .2s ease}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.notif-header{padding:12px 16px 10px;font-size:13px;font-weight:700;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.notif-item{padding:11px 14px;border-bottom:1px solid rgba(30,39,64,.5);cursor:pointer;transition:background .15s;display:flex;gap:10px;align-items:flex-start}
+.notif-item:hover{background:var(--bg3)}
+.notif-item.unread{background:rgba(124,109,250,.07)}
+.n-icon{font-size:18px;flex-shrink:0;margin-top:2px}
+.n-text{font-size:12px;line-height:1.6;flex:1}
+.n-time{font-size:11px;color:var(--muted);margin-top:2px}
+.notif-empty{padding:20px;text-align:center;color:var(--muted);font-size:13px}
+.mark-read-btn{font-size:11px;color:var(--p);background:none;border:none;cursor:pointer;padding:0}
+.comments-section{margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+@media(max-width:680px){
+  .ham-btn{display:block}
+  .sidebar{position:fixed;top:0;right:0;height:100%;z-index:160;transform:translateX(100%)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  #app{flex-direction:column}
+  .main{width:100%}
+  .section{padding:16px}
+  .video-grid{grid-template-columns:1fr}
+  .s-row{flex-direction:column}
+  .s-actions{width:100%;justify-content:flex-start}
+  .stats{flex-direction:column;align-items:stretch}
+  .toggle-row{flex-direction:column;align-items:flex-start}
+  .modal{padding:22px 18px}
+  .auth-box{padding:30px 20px}
+  .viewer{padding:16px}
+}
+
+/* ── Themes ── */
+[data-theme="light"]{
+  --p:#6c5ce7;--pd:#5a4bd1;--a:#0099cc;
+  --bg:#f0f2f8;--bg2:#ffffff;--bg3:#e8eaf2;--bg4:#dde0ee;
+  --border:#d0d4e8;--muted:#7a80a0;
+  --ok:#16a34a;--err:#dc2626;--warn:#d97706;
+  color-scheme:light;
+}
+[data-theme="light"] body{color:#1a1d2e}
+[data-theme="light"] .inp{color:#1a1d2e}
+[data-theme="light"] .code-editor{background:#f8f9ff;color:#1a1d2e}
+[data-theme="light"] .code-toolbar,[data-theme="light"] .code-output{background:#eef0f8}
+
+/* Theme picker UI */
+.theme-section{margin-bottom:24px}
+.theme-section h4{font-size:14px;font-weight:700;margin-bottom:14px;color:var(--a)}
+.theme-cards{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+.theme-card{background:var(--bg3);border:2px solid var(--border);border-radius:14px;padding:14px 18px;cursor:pointer;transition:all .2s;min-width:130px;text-align:center}
+.theme-card:hover{border-color:var(--p);transform:translateY(-2px)}
+.theme-card.active{border-color:var(--p);background:rgba(124,109,250,.1);box-shadow:0 0 0 3px rgba(124,109,250,.15)}
+.theme-card .tc-preview{display:flex;gap:5px;justify-content:center;margin-bottom:8px}
+.theme-card .tc-dot{width:16px;height:16px;border-radius:50%}
+.theme-card .tc-label{font-size:13px;font-weight:700;color:#e4e6f0}
+[data-theme="light"] .theme-card .tc-label{color:#1a1d2e}
+.theme-card .tc-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.custom-colors{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:18px;display:none}
+.custom-colors.visible{display:block}
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:16px}
+.color-field{display:flex;flex-direction:column;gap:6px}
+.color-field label{font-size:12px;color:var(--muted);font-weight:600}
+.color-row{display:flex;align-items:center;gap:10px}
+.color-inp{width:44px;height:36px;border:1.5px solid var(--border);border-radius:8px;background:none;cursor:pointer;padding:2px}
+.color-hex{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;color:inherit;padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;transition:border .2s}
+.color-hex:focus{border-color:var(--p)}
+
+
+/* ── Code Editor ── */
+.code-challenge{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:20px;margin-top:20px}
+.code-challenge h4{font-size:14px;font-weight:700;margin-bottom:6px;color:var(--a)}
+.code-challenge .challenge-desc{font-size:13px;color:#c4c9de;margin-bottom:14px;line-height:1.7;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.12);border-radius:10px;padding:10px 14px}
+.code-editor-wrap{position:relative;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;transition:border .2s}
+.code-editor-wrap:focus-within{border-color:var(--p)}
+.code-editor{width:100%;min-height:130px;background:#0a0e1a;color:#e4e6f0;font-family:'JetBrains Mono',monospace;font-size:13px;padding:14px;border:none;outline:none;resize:vertical;line-height:1.7;direction:ltr;text-align:left;tab-size:2}
+.code-toolbar{display:flex;align-items:center;justify-content:space-between;background:#07090f;padding:8px 14px;border-top:1px solid var(--border)}
+.code-toolbar span{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.run-btn{background:linear-gradient(135deg,#22c55e,#16a34a);border:none;border-radius:8px;color:#fff;padding:6px 18px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.run-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(34,197,94,.35)}
+.code-output{margin-top:12px;background:#07090f;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;min-height:48px;max-height:200px;overflow-y:auto;white-space:pre-wrap;direction:ltr;color:#a0ffb0;display:none}
+.code-output.visible{display:block}
+.code-output.err{color:#ff7070}
+
+
+/* ════ EXAM SYSTEM CSS ════ */
+.exam-form{max-width:680px}
+.exam-form .field{margin-bottom:14px}
+.exam-form label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.q-block{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px;position:relative}
+.q-block .q-num{font-size:11px;color:var(--p);font-weight:700;margin-bottom:8px}
+.q-type-tabs{display:flex;gap:6px;margin-bottom:12px}
+.q-type-btn{background:var(--bg4);border:1px solid var(--border);border-radius:8px;color:var(--muted);padding:5px 12px;font-family:'Cairo',sans-serif;font-size:12px;cursor:pointer;transition:all .2s}
+.q-type-btn.on{background:rgba(124,109,250,.2);border-color:var(--p);color:var(--p);font-weight:700}
+.choices-wrap{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.choice-row{display:flex;align-items:center;gap:8px}
+.choice-row input[type=text]{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;color:inherit;padding:8px 12px;font-family:'Cairo',sans-serif;font-size:13px;outline:none;transition:border .2s}
+.choice-row input[type=text]:focus{border-color:var(--p)}
+.choice-correct{width:22px;height:22px;accent-color:var(--ok);cursor:pointer;flex-shrink:0}
+.choice-correct-label{font-size:11px;color:var(--ok);white-space:nowrap}
+.del-q-btn{position:absolute;top:12px;left:12px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;color:var(--err);padding:4px 10px;font-size:12px;cursor:pointer}
+.exam-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px}
+.exam-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.exam-card-title{font-size:14px;font-weight:700}
+.exam-card-meta{font-size:12px;color:var(--muted);margin-top:4px}
+.exam-tag{background:rgba(124,109,250,.12);border:1px solid rgba(124,109,250,.2);border-radius:6px;color:var(--p);font-size:11px;padding:3px 8px;font-weight:600}
+.exam-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+/* Student exam UI */
+.exam-screen{max-width:620px;margin:0 auto;padding:20px 16px}
+.exam-header{text-align:center;margin-bottom:28px}
+.exam-header h2{font-size:20px;font-weight:900;margin-bottom:6px}
+.exam-header p{font-size:13px;color:var(--muted)}
+.exam-q-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.exam-q-num{font-size:11px;color:var(--p);font-weight:700;margin-bottom:8px}
+.exam-q-text{font-size:14px;font-weight:700;margin-bottom:14px;line-height:1.7}
+.exam-choices{display:flex;flex-direction:column;gap:8px}
+.exam-choice{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;font-size:13px;transition:all .2s;text-align:right}
+.exam-choice:hover{border-color:var(--p);background:rgba(124,109,250,.08)}
+.exam-choice.selected{border-color:var(--p);background:rgba(124,109,250,.15);color:var(--p);font-weight:700}
+.exam-choice.correct{border-color:var(--ok);background:rgba(34,197,94,.12);color:var(--ok);font-weight:700}
+.exam-choice.wrong{border-color:var(--err);background:rgba(239,68,68,.1);color:var(--err)}
+.exam-tf{display:flex;gap:10px}
+.exam-tf .exam-choice{flex:1;text-align:center;font-size:15px;font-weight:700}
+.exam-code-inp{width:100%;background:#0a0e1a;border:1.5px solid var(--border);border-radius:10px;color:#e4e6f0;font-family:'JetBrains Mono',monospace;font-size:13px;padding:12px;outline:none;resize:vertical;min-height:100px;direction:ltr;transition:border .2s}
+.exam-code-inp:focus{border-color:var(--p)}
+.exam-result{text-align:center;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:32px 24px;margin-top:20px}
+.exam-score{font-size:48px;font-weight:900;background:linear-gradient(135deg,var(--p),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.exam-result h3{font-size:18px;font-weight:700;margin-bottom:6px}
+.exam-result p{font-size:13px;color:var(--muted)}
+.pending-code-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+
+
+/* ════ ANNOUNCEMENTS ════ */
+.ann-banner{position:fixed;top:0;left:0;right:0;z-index:9995;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;font-weight:600;animation:slideDown .4s ease}
+@keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+.ann-banner.info{background:linear-gradient(135deg,#1e3a5f,#1a4080);border-bottom:1px solid #2a5298;color:#90c8ff}
+.ann-banner.warn{background:linear-gradient(135deg,#3d2600,#4d3000);border-bottom:1px solid #d97706;color:#fcd34d}
+.ann-banner.success{background:linear-gradient(135deg,#0d2e1a,#0f3d20);border-bottom:1px solid #16a34a;color:#86efac}
+.ann-banner-text{flex:1;line-height:1.5}
+.ann-banner-close{background:rgba(255,255,255,.1);border:none;border-radius:6px;color:inherit;padding:4px 10px;cursor:pointer;font-size:13px;flex-shrink:0}
+.ann-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px}
+.ann-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ann-type-badge{font-size:11px;padding:3px 8px;border-radius:6px;font-weight:700}
+.ann-type-badge.info{background:rgba(59,130,246,.15);color:#60a5fa}
+.ann-type-badge.warn{background:rgba(245,158,11,.15);color:#fbbf24}
+.ann-type-badge.success{background:rgba(34,197,94,.15);color:#4ade80}
+/* ════ VIDEO EDIT MODAL ════ */
+.modal-overlay{position:fixed;inset:0;background:#0009;z-index:9990;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:24px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}
+.modal-close{background:var(--bg3);border:none;border-radius:8px;color:var(--muted);padding:6px 12px;cursor:pointer;font-size:13px}
+
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-logo">{"</>"}</div>
+  <div class="spin"></div>
+  <div class="loader-txt">جاري الاتصال بالخادم...</div>
+</div>
+
+<div id="toast"></div>
+
+<!-- Modal رفض -->
+<div class="modal-wrap" id="rej-modal" style="display:none">
+  <div class="modal">
+    <h3>❌ سبب الرفض</h3>
+    <textarea id="rej-reason-inp" placeholder="اكتب سبب رفض الطالب..."></textarea>
+    <div class="modal-btns">
+      <button class="btn sm outline" onclick="closeRejModal()">إلغاء</button>
+      <button class="btn sm danger" onclick="confirmReject()">تأكيد الرفض</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<button class="ham-btn" id="ham" onclick="toggleSidebar()">☰</button>
+
+<div id="auth-screen" style="display:none">
+  <div class="auth-box">
+    <div class="brand">
+      <span class="brand-icon">{"</>"}</span>
+      <div class="brand-name">المبرمج الصغير</div>
+      <div class="brand-sub">منصة تعلّم البرمجة للناشئين</div>
+    </div>
+    <div class="closed-box" id="closed-notice" style="display:none">
+      <h3>🔒 التسجيل مغلق حالياً</h3>
+      <p id="closed-msg-txt">التسجيل متاح للمشتركين الحاليين فقط.<br/>للاشتراك تواصل مع المدير عبر واتساب.</p>
+      <a id="closed-wa-btn" class="wa-btn" href="#" target="_blank">💬 تواصل عبر واتساب</a>
+    </div>
+    <div id="auth-tabs-area">
+      <div class="tabs">
+        <button class="tab on" id="tab-login" onclick="switchTab('login')">تسجيل دخول</button>
+        <button class="tab" id="tab-register" onclick="switchTab('register')">حساب جديد</button>
+      </div>
+      <div id="field-name" class="field" style="display:none">
+        <label>الاسم الكامل</label>
+        <input class="inp" id="inp-name" placeholder="محمد أحمد" dir="rtl"/>
+      </div>
+      <div class="field">
+        <label>رقم الهاتف</label>
+        <input class="inp" id="inp-phone" placeholder="01XXXXXXXXX" dir="ltr" type="tel"/>
+      </div>
+      <div id="field-pass" class="field" style="display:none">
+        <label>كلمة السر (للمدير فقط)</label>
+        <input class="inp" id="inp-pass" placeholder="••••••••" type="password"/>
+      </div>
+      <div id="field-otp" class="field" style="display:none">
+        <label>كود التحقق (تم إرساله على واتساب)</label>
+        <input class="inp" id="inp-otp" placeholder="أدخل الكود المكوّن من 6 أرقام" dir="ltr" type="number"/>
+      </div>
+      <div class="err-line" id="auth-err"></div>
+      <button class="btn" id="auth-btn" onclick="handleAuth()">دخول</button>
+      <p class="otp-note" id="otp-note" style="display:none">📱 تحقق من واتساب اللي بعت منه الكود<br/>رقم المرسل: <strong>+20 155 250 3342</strong><br/>قد يستغرق الكود دقيقة للوصول</p>
+    </div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-icon">{"</>"}</div>
+      <div>
+        <div class="sb-logo-name">المبرمج الصغير</div>
+        <div class="sb-logo-sub">منصة تعلّم البرمجة</div>
+      </div>
+    </div>
+    <div class="sb-user">
+      <div class="ava" id="sb-ava"></div>
+      <div style="flex:1">
+        <div class="u-name" id="sb-name"></div>
+        <div class="u-role" id="sb-role"></div>
+        <div id="sb-points" style="display:none;margin-top:4px"><span class="points-badge">⭐ <span id="sb-pts-val">0</span> نقطة</span></div>
+      </div>
+    </div>
+    <div id="sb-progress" style="display:none">
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span id="prog-text">0 / 0 درس</span>
+          <span id="prog-pct">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="sb-nav" id="sb-nav"></div>
+    <div class="sb-bottom">
+      <div id="notif-wrap" style="display:none;justify-content:flex-end;margin-bottom:8px">
+        <button class="notif-btn" id="notif-btn" onclick="toggleNotifPanel()">
+          🔔
+          <span class="notif-dot" id="notif-count" style="display:none">0</span>
+        </button>
+      </div>
+      <button class="logout" onclick="logout()">🚪 تسجيل الخروج</button>
+      <button class="logout" style="background:rgba(124,109,250,.1);color:var(--p);border:1px solid rgba(124,109,250,.2);margin-top:6px" onclick="openThemeModal()">🎨 المظهر</button>
+    </div>
+    <div class="notif-panel" id="notif-panel">
+      <div class="notif-header">
+        <span>🔔 الإشعارات</span>
+        <button class="mark-read-btn" onclick="markAllRead()">قراءة الكل ✓</button>
+      </div>
+      <div id="notif-list"><div class="notif-empty">لا توجد إشعارات</div></div>
+    </div>
+  </aside>
+  <main class="main" id="main-content"></main>
+</div>
+
+<script>
+const ADMIN_PHONE="01201135473";
+const ADMIN_PASS="1882020";
+const FONNTE_TOKEN="LMZftxxCNL7bgZe1MoJ8";
+const PAYMENT_AMT=100;
+const SESSION_KEY="lp_session";
+
+let _otpCode=null,_otpTarget=null,_regPending=null,_authMode="login",_currentUser=null,_rejectTarget=null;
+let _allVideos=[],_myProgress={},_submittedAnswerVideoIds=new Set();
+
+/* ── Session ── */
+function saveSession(phone){localStorage.setItem(SESSION_KEY,phone)}
+function clearSession(){localStorage.removeItem(SESSION_KEY)}
+function getSavedPhone(){return localStorage.getItem(SESSION_KEY)}
+
+/* ── منع تصوير الشاشة ── */
+document.addEventListener("contextmenu",e=>{if(e.target.closest(".player"))e.preventDefault()});
+document.addEventListener("keydown",e=>{
+  if(e.key==="PrintScreen"){e.preventDefault();navigator.clipboard?.writeText("").catch(()=>{})}
+});
+document.addEventListener("visibilitychange",()=>{
+  document.querySelectorAll(".player iframe").forEach(f=>{
+    if(document.hidden){f._src=f.src;f.src="about:blank"}
+    else if(f._src){f.src=f._src}
+  });
+});
+
+
+/* ════════════════════════════════
+   ██████ THEME SYSTEM ██████
+════════════════════════════════ */
+const THEMES = {
+  dark: {
+    label:"🌙 Dark", sub:"الوضع الافتراضي",
+    vars:{"--p":"#7c6dfa","--pd":"#5748d4","--a":"#00e5ff","--bg":"#050810","--bg2":"#0c1020","--bg3":"#131828","--bg4":"#1a2035","--border":"#1e2740","--muted":"#5a6380"}
+  },
+  light: {
+    label:"☀️ Light", sub:"وضع النهار",
+    vars:{"--p":"#6c5ce7","--pd":"#5a4bd1","--a":"#0099cc","--bg":"#f0f2f8","--bg2":"#ffffff","--bg3":"#e8eaf2","--bg4":"#dde0ee","--border":"#d0d4e8","--muted":"#7a80a0"}
+  },
+  ocean: {
+    label:"🌊 Ocean", sub:"أزرق هادئ",
+    vars:{"--p":"#0ea5e9","--pd":"#0284c7","--a":"#34d399","--bg":"#020f1a","--bg2":"#041628","--bg3":"#062035","--bg4":"#0a2d47","--border":"#0c3a5a","--muted":"#4a7a9b"}
+  },
+  purple: {
+    label:"💜 Purple", sub:"بنفسجي غامق",
+    vars:{"--p":"#a855f7","--pd":"#9333ea","--a":"#f472b6","--bg":"#0a0514","--bg2":"#110820","--bg3":"#180d2e","--bg4":"#21103d","--border":"#2d1654","--muted":"#6b4fa0"}
+  },
+  custom: {
+    label:"🎨 Custom", sub:"اختر ألوانك",
+    vars:null
+  }
+};
+
+const CUSTOM_VARS = ["--p","--pd","--a","--bg","--bg2","--bg3","--bg4","--border","--muted"];
+const CUSTOM_LABELS = {"--p":"اللون الرئيسي","--pd":"اللون الرئيسي (داكن)","--a":"لون التمييز","--bg":"خلفية رئيسية","--bg2":"خلفية ثانوية","--bg3":"خلفية ثالثة","--bg4":"خلفية رابعة","--border":"لون الحدود","--muted":"النص الخافت"};
+
+function applyTheme(name, customVars){
+  const root = document.documentElement;
+  const theme = THEMES[name];
+  
+  // Remove theme attrs
+  root.removeAttribute("data-theme");
+  
+  const vars = name==="custom" ? customVars : theme.vars;
+  if(vars){
+    Object.entries(vars).forEach(([k,v])=>root.style.setProperty(k,v));
+  }
+  if(name==="light") root.setAttribute("data-theme","light");
+  
+  // Persist
+  localStorage.setItem("theme_name", name);
+  if(name==="custom" && customVars) localStorage.setItem("theme_custom", JSON.stringify(customVars));
+  
+  // Update active card (safe - cards may not exist yet)
+  try{
+    document.querySelectorAll(".theme-card").forEach(c=>c.classList.toggle("active", c.dataset.theme===name));
+    const cc = document.getElementById("custom-colors-panel");
+    if(cc) cc.classList.toggle("visible", name==="custom");
+  }catch(e){}
+}
+
+
+function openThemeModal(){
+  const modal=document.getElementById("theme-modal");
+  const container=document.getElementById("theme-modal-content");
+  renderThemePicker(container);
+  modal.style.display="flex";
+}
+function closeThemeModal(){
+  document.getElementById("theme-modal").style.display="none";
+}
+
+function loadSavedTheme(){
+  try{
+    const name = localStorage.getItem("theme_name")||"dark";
+    let customVars = null;
+    if(name==="custom"){
+      try{customVars=JSON.parse(localStorage.getItem("theme_custom")||"{}")}catch(e){}
+    }
+    applyTheme(name, customVars);
+  }catch(e){console.warn("Theme load error:",e)}
+}
+
+function renderThemePicker(container){
+  const savedName = localStorage.getItem("theme_name")||"dark";
+  let savedCustom = {};
+  try{savedCustom=JSON.parse(localStorage.getItem("theme_custom")||"{}")}catch(e){}
+  
+  const cards = Object.entries(THEMES).map(([key,t])=>{
+    const dots = key==="custom"
+      ? `<div class="tc-dot" style="background:#a855f7"></div><div class="tc-dot" style="background:#f472b6"></div><div class="tc-dot" style="background:#34d399"></div>`
+      : Object.values(t.vars).slice(0,3).map(c=>`<div class="tc-dot" style="background:${c}"></div>`).join("");
+    return `<div class="theme-card${key===savedName?" active":""}" data-theme="${key}" onclick="applyTheme('${key}',getCustomVars())">
+      <div class="tc-preview">${dots}</div>
+      <div class="tc-label">${t.label}</div>
+      <div class="tc-sub">${t.sub}</div>
+    </div>`;
+  }).join("");
+
+  const colorFields = CUSTOM_VARS.map(v=>{
+    const val = savedCustom[v]||"#7c6dfa";
+    return `<div class="color-field">
+      <label>${CUSTOM_LABELS[v]}</label>
+      <div class="color-row">
+        <input type="color" class="color-inp" id="ci${v.replace(/-/g,'_')}" value="${val}" oninput="syncHex(this,'hi${v.replace(/-/g,'_')}')"/>
+        <input type="text" class="color-hex" id="hi${v.replace(/-/g,'_')}" value="${val}" maxlength="7" placeholder="#ffffff" oninput="syncColor(this,'ci${v.replace(/-/g,'_')}')"/>
+      </div>
+    </div>`;
+  }).join("");
+
+  container.innerHTML = `<div class="theme-section">
+    <h4>🎨 مظهر المنصة</h4>
+    <div class="theme-cards">${cards}</div>
+    <div class="custom-colors${savedName==="custom"?" visible":""}" id="custom-colors-panel">
+      <div class="color-grid">${colorFields}</div>
+      <button class="btn" style="max-width:220px" onclick="applyTheme('custom',getCustomVars())">✅ تطبيق الألوان</button>
+    </div>
+  </div>`;
+}
+
+function getCustomVars(){
+  const out={};
+  CUSTOM_VARS.forEach(v=>{
+    const el=document.getElementById("ci"+v.replace(/-/g,'_'));
+    if(el) out[v]=el.value;
+  });
+  return Object.keys(out).length?out:null;
+}
+
+function syncHex(colorInput, hexId){
+  const el=document.getElementById(hexId);
+  if(el) el.value=colorInput.value;
+  if(document.getElementById("theme-card-custom")?.classList.contains("active")||
+     localStorage.getItem("theme_name")==="custom") applyTheme("custom",getCustomVars());
+}
+
+function syncColor(hexInput, colorId){
+  if(/^#[0-9a-fA-F]{6}$/.test(hexInput.value)){
+    const el=document.getElementById(colorId);
+    if(el) el.value=hexInput.value;
+  }
+}
+
+// Load theme on startup - only after DOM ready
+document.addEventListener("DOMContentLoaded", loadSavedTheme);
+
+/* ── Firebase ── */
+function waitFB(){return new Promise(r=>{const c=()=>window._fb?r(window._fb):setTimeout(c,50);c()})}
+async function fbGet(p){const{db,ref,get}=await waitFB();const s=await get(ref(db,p));return s.exists()?s.val():null}
+async function fbSet(p,v){const{db,ref,set}=await waitFB();await set(ref(db,p),v)}
+async function fbUpd(p,v){const{db,ref,update}=await waitFB();await update(ref(db,p),v)}
+async function fbDel(p){const{db,ref,remove}=await waitFB();await remove(ref(db,p))}
+async function fbListen(p,cb){const{db,ref,onValue}=await waitFB();onValue(ref(db,p),s=>cb(s.exists()?s.val():null))}
+function pkey(ph){return ph.replace(/\./g,"-")}
+
+/* ── Toast ── */
+function toast(msg,type="ok"){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.className="show "+(type==="err"?"err":"ok");
+  clearTimeout(t._tid);t._tid=setTimeout(()=>t.className="",3200);
+}
+
+/* ── Points Animation ── */
+function showPointsAnim(delta){
+  const el=document.createElement("div");
+  el.className="pts-change "+(delta>0?"plus":"minus");
+  el.textContent=(delta>0?"+":"")+delta+" ⭐";
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1300);
+}
+
+/* ── Fonnte ── */
+async function sendWA(phone,message){
+  const number="20"+phone.replace(/^0/,"");
+  try{
+    const form=new FormData();
+    form.append("target",number);form.append("message",message);form.append("countryCode","20");
+    await fetch("https://api.fonnte.com/send",{method:"POST",headers:{"Authorization":FONNTE_TOKEN},body:form});
+  }catch(e){console.log("WA:",e)}
+}
+async function sendOTP(phone){
+  const code=String(Math.floor(100000+Math.random()*900000));
+  const expires=Date.now()+(5*60*1000); // 5 دقايق صلاحية
+  // نخزن الكود في Firebase مش في المتصفح
+  await fbSet(`otps/${pkey(phone)}`,{code,expires});
+  _otpCode=null; // مش بنحفظه في المتصفح
+  await sendWA(phone,`🔐 كود التحقق الخاص بك في *المبرمج الصغير*\n\nالكود: *${code}*\n\n⏳ صالح لمدة 5 دقائق\n⚠️ لا تشارك هذا الكود مع أحد.`);
+}
+
+async function verifyOTP(phone,inputCode){
+  const data=await fbGet(`otps/${pkey(phone)}`);
+  if(!data)return{ok:false,msg:"❌ لم يتم إرسال كود، اضغط إرسال مجدداً"};
+  if(Date.now()>data.expires){
+    await fbDel(`otps/${pkey(phone)}`);
+    return{ok:false,msg:"⏰ انتهت صلاحية الكود، اطلب كوداً جديداً"};
+  }
+  if(inputCode.trim()!==data.code)return{ok:false,msg:"❌ الكود غير صحيح، حاول مجدداً"};
+  await fbDel(`otps/${pkey(phone)}`); // حذف بعد الاستخدام
+  return{ok:true};
+}
+async function sendPaymentMsg(phone,name){
+  await sendWA(phone,`أهلاً ${name} 👋\nشكراً لتسجيلك في *المبرمج الصغير* 🎓\n\nلإتمام اشتراكك يرجى تحويل مبلغ *${PAYMENT_AMT} جنيه*\nسيتم رفض طلبك في حال عدم الدفع ❌\n\nللتواصل: wa.me/20${ADMIN_PHONE.replace(/^0/,"")}`);
+}
+
+/* ── Auth ── */
+function show(id,vis=true){const el=document.getElementById(id);if(el)el.style.display=vis?"":"none"}
+function showAuth(){show("auth-screen");show("app",false);loadAuthScreen()}
+
+async function loadAuthScreen(){
+  const settings=await fbGet("settings")||{};
+  const regOpen=settings.registrationOpen!==false;
+  show("closed-notice",!regOpen);
+  const tabReg=document.getElementById("tab-register");
+  if(!regOpen){
+    tabReg.disabled=true;tabReg.style.opacity=".4";tabReg.style.cursor="not-allowed";
+    document.getElementById("closed-msg-txt").innerHTML=(settings.closedMessage||"التسجيل مغلق حالياً.").replace(/\n/g,"<br/>");
+    document.getElementById("closed-wa-btn").href=`https://wa.me/20${ADMIN_PHONE.replace(/^0/,"")}?text=${encodeURIComponent("أريد الاشتراك في منصة المبرمج الصغير")}`;
+  }else{
+    tabReg.disabled=false;tabReg.style.opacity="";tabReg.style.cursor="";show("closed-notice",false);
+  }
+}
+
+function switchTab(t){
+  _authMode=t;_otpCode=null;_regPending=null;
+  document.getElementById("tab-login").className="tab"+(t==="login"?" on":"");
+  document.getElementById("tab-register").className="tab"+(t==="register"?" on":"");
+  show("field-name",t==="register");show("field-pass",false);show("field-otp",false);show("otp-note",false);
+  document.getElementById("auth-btn").textContent=t==="login"?"دخول":"إنشاء حساب";
+  document.getElementById("auth-err").textContent="";
+  ["inp-otp","inp-pass"].forEach(i=>document.getElementById(i).value="");
+}
+
+function setErr(msg){document.getElementById("auth-err").textContent=msg||""}
+
+async function handleAuth(){
+  const btn=document.getElementById("auth-btn");
+  const phone=document.getElementById("inp-phone").value.trim();
+  const name=document.getElementById("inp-name").value.trim();
+  const otp=document.getElementById("inp-otp").value.trim();
+  const pass=document.getElementById("inp-pass").value.trim();
+  setErr("");
+  if(!phone||phone.length<8){setErr("أدخل رقم هاتف صحيح");return}
+
+  if(btn.textContent.includes("تحقق")){
+    btn.disabled=true;btn.textContent="⏳ جاري التحقق...";
+    const result=await verifyOTP(phone,otp);
+    if(!result.ok){setErr(result.msg);btn.disabled=false;btn.textContent="تحقق من الكود ✓";return}
+    if(_otpTarget==="register"&&_regPending){
+      const ud={name:_regPending.name,phone:_regPending.phone,approved:false,isAdmin:false,status:"pending"};
+      await fbSet(`users/${pkey(_regPending.phone)}`,ud);
+      await sendPaymentMsg(_regPending.phone,_regPending.name);
+      await sendWA(ADMIN_PHONE,`🔔 *طالب جديد* ينتظر موافقتك!\nالاسم: ${_regPending.name}\nالرقم: ${_regPending.phone}`);
+      _currentUser=ud;saveSession(ud.phone);finishLogin();
+    }else if(_otpTarget==="login-admin"){
+      const ud=await fbGet(`users/${pkey(phone)}`);_currentUser=ud;saveSession(ud.phone);finishLogin();
+    }else if(_otpTarget==="login-otp"){
+      const ud=await fbGet(`users/${pkey(phone)}`);_currentUser=ud;saveSession(ud.phone);finishLogin();
+    }
+    return;
+  }
+
+  if(phone===ADMIN_PHONE&&_authMode==="login"){
+    if(!pass){document.getElementById("field-pass").style.display="";document.getElementById("auth-btn").textContent="متابعة ←";setErr("أدخل كلمة السر");return}
+    if(pass!==ADMIN_PASS){setErr("❌ كلمة السر غير صحيحة");return}
+    btn.disabled=true;btn.textContent="⏳ جاري الإرسال...";
+    await sendOTP(phone);
+    btn.disabled=false;show("field-otp");show("otp-note");
+    btn.textContent="تحقق من الكود ✓";_otpTarget="login-admin";setErr("");return;
+  }
+
+  btn.disabled=true;btn.textContent="⏳ ...";
+  if(_authMode==="login"){
+    const ud=await fbGet(`users/${pkey(phone)}`);
+    if(!ud){setErr("الرقم غير مسجل، أنشئ حساباً أولاً");btn.disabled=false;btn.textContent="دخول";return}
+    btn.textContent="⏳ جاري الإرسال...";
+    await sendOTP(phone);
+    show("field-otp");show("otp-note");
+    btn.disabled=false;btn.textContent="تحقق من الكود ✓";_otpTarget="login-otp";setErr("");return;
+  }else{
+    const settings=await fbGet("settings")||{};
+    if(settings.registrationOpen===false){setErr("التسجيل مغلق حالياً");btn.disabled=false;btn.textContent="إنشاء حساب";return}
+    if(!name){setErr("أدخل اسمك الكامل");btn.disabled=false;btn.textContent="إنشاء حساب";return}
+    const existing=await fbGet(`users/${pkey(phone)}`);
+    if(existing){setErr("الرقم مسجل بالفعل، سجّل دخول");btn.disabled=false;btn.textContent="إنشاء حساب";return}
+    _regPending={phone,name};btn.textContent="⏳ جاري الإرسال...";
+    await sendOTP(phone);show("field-otp");show("otp-note");
+    btn.disabled=false;btn.textContent="تحقق من الكود ✓";_otpTarget="register";setErr("");return;
+  }
+}
+
+function finishLogin(){show("auth-screen",false);renderApp(_currentUser)}
+
+function logout(){
+  clearSession();
+  _currentUser=null;_otpCode=null;_regPending=null;_allVideos=[];_myProgress={};
+  show("app",false);showAuth();switchTab("login");
+  ["inp-phone","inp-name","inp-pass","inp-otp"].forEach(i=>document.getElementById(i).value="");
+  show("field-pass",false);show("field-otp",false);show("otp-note",false);
+  document.getElementById("auth-btn").textContent="دخول";
+}
+
+/* ── Sidebar ── */
+function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open");document.getElementById("overlay").classList.toggle("show")}
+function closeSidebar(){document.getElementById("sidebar").classList.remove("open");document.getElementById("overlay").classList.remove("show")}
+
+/* ── Render App ── */
+function renderApp(u){
+  show("app");
+  document.getElementById("sb-ava").textContent=u.name[0];
+  document.getElementById("sb-name").textContent=u.name;
+  const role=document.getElementById("sb-role");
+  if(u.isAdmin){role.textContent="👑 مدير النظام";role.className="u-role admin"}
+  else if(u.approved){role.textContent="✅ طالب معتمد";role.className="u-role ok"}
+  else{role.textContent=u.phone;role.className="u-role"}
+  if(!u.isAdmin){
+    const ptsBadge=document.getElementById("sb-points");
+    const ptsVal=document.getElementById("sb-pts-val");
+    if(ptsBadge&&ptsVal){ptsBadge.style.display="block";ptsVal.textContent=u.points||0}
+    fbListen(`users/${pkey(u.phone)}`,data=>{if(data&&ptsVal){ptsVal.textContent=data.points||0;_currentUser.points=data.points||0}});
+  }
+  startNotifListener();
+  if(u.isAdmin){renderAdminSidebar();loadCodeSolsBadge();}
+  else{renderStudentSidebar(u);loadStudentExams(u.phone);loadAnnouncements();}
+}
+
+/* ════════════════════════════════
+   ██████ ADMIN ██████
+════════════════════════════════ */
+function renderAdminSidebar(){
+  show("sb-progress",false);
+  const nav=document.getElementById("sb-nav");
+  nav.className="sb-nav";
+  nav.innerHTML=`
+    <button id="anav-students" onclick="adminPage('students')" class="on">👥 إدارة الطلاب <span class="badge" id="pending-badge" style="display:none">0</span></button>
+    <button id="anav-upload" onclick="adminPage('upload')">📤 رفع درس جديد</button>
+    <button id="anav-videos" onclick="adminPage('videos')">🎬 الدروس المرفوعة</button>
+    <button id="anav-progress" onclick="adminPage('progress')">📊 تقدم الطلاب</button>
+    <button id="anav-answers" onclick="adminPage('answers')">📬 إجابات الطلاب</button>
+    <button id="anav-codesols" onclick="adminPage('codesols')">💻 حلول الكود <span class="badge" id="codesols-badge" style="display:none">0</span></button>
+    <button id="anav-comments" onclick="adminPage('comments')">💬 التعليقات <span class="badge" id="comments-badge" style="display:none">0</span></button>
+    <button id="anav-payments" onclick="adminPage('payments')">💰 متابعة الدفع <span class="badge" id="unpaid-badge" style="display:none">0</span></button>
+    <button id="anav-sendq" onclick="adminPage('sendq')">📨 إرسال سؤال</button>
+    <button id="anav-leaderboard" onclick="adminPage('leaderboard')">🏆 لوحة النقاط</button>
+    <button id="anav-exams" onclick="adminPage('exams')">📝 الامتحانات <span class="badge" id="exam-badge" style="display:none">0</span></button>
+    <button id="anav-announce" onclick="adminPage('announce')">📢 الإعلانات</button>
+    <button id="anav-settings" onclick="adminPage('settings')">⚙️ الإعدادات</button>`;
+  fbListen("users",data=>{
+    const pending=data?Object.values(data).filter(u=>!u.isAdmin&&u.status==="pending").length:0;
+    const b=document.getElementById("pending-badge");
+    if(b){b.style.display=pending>0?"flex":"none";b.textContent=pending}
+    const unpaidCount=data?Object.values(data).filter(u=>!u.isAdmin&&u.approved&&(!u.paymentStatus||u.paymentStatus==="unpaid")).length:0;
+    const ub=document.getElementById("unpaid-badge");
+    if(ub){ub.textContent=unpaidCount;ub.style.display=unpaidCount>0?"flex":"none";}
+  });
+  adminPage("students");
+}
+
+let _adminPage="students";
+function adminPage(p){
+  _adminPage=p;
+  ["students","upload","videos","progress","answers","comments","payments","sendq","leaderboard","settings"].forEach(x=>{
+    const el=document.getElementById("anav-"+x);if(el)el.className=x===p?"on":"";
+  });
+  closeSidebar();
+  const m=document.getElementById("main-content");
+  if(p==="students")renderAdminStudents(m);
+  else if(p==="upload")renderAdminUpload(m);
+  else if(p==="videos")renderAdminVideos(m);
+  else if(p==="progress")renderAdminProgress(m);
+  else if(p==="answers")renderAdminAnswers(m);
+  else if(p==="comments")renderAdminComments(m);
+  else if(p==="payments")renderAdminPayments(m);
+  else if(p==="sendq")renderAdminSendQ(m);
+  else if(p==="leaderboard")renderAdminLeaderboard(m);
+  else if(p==="settings")renderAdminSettings(m);
+  else if(p==="exams")renderAdminExams(m);
+  else if(p==="announce")renderAdminAnnounce(m);
+  else if(p==="codesols")renderAdminCodeSols(m);
+}
+
+function renderAdminStudents(m){
+  m.innerHTML=`<div class="section"><div class="sec-title">👥 إدارة الطلاب</div><div id="students-content"><div class="empty">جاري التحميل...</div></div></div>`;
+  fbListen("users",data=>{
+    const el=document.getElementById("students-content");if(!el)return;
+    const all=data?Object.values(data).filter(u=>!u.isAdmin):[];
+    const pending=all.filter(u=>u.status==="pending");
+    const approved=all.filter(u=>u.approved);
+    const rejected=all.filter(u=>u.status==="rejected");
+    let html="";
+    if(pending.length>0){
+      html+=`<div class="sec-title" style="font-size:15px;margin-bottom:12px">⏳ طلبات الانضمام (${pending.length})</div><div class="s-list">`;
+      pending.forEach(u=>{html+=`<div class="s-row pending"><div class="s-info"><div class="ava sm">${u.name[0]}</div><div><div class="u-name">${u.name}</div><div class="s-phone">${u.phone}</div></div></div><div class="s-actions"><button class="app-btn" onclick="approveUser('${u.phone}')">✅ موافقة</button><button class="rej-btn" onclick="openRejModal('${u.phone}')">❌ رفض</button></div></div>`});
+      html+="</div>";
+    }else{html+=`<div class="info-ok">✅ لا توجد طلبات انضمام جديدة</div>`}
+    if(rejected.length>0){
+      html+=`<div class="sec-divider"></div><div class="sec-title" style="font-size:15px;margin-bottom:12px">❌ المرفوضون (${rejected.length})</div><div class="s-list">`;
+      rejected.forEach(u=>{html+=`<div class="s-row rejected"><div class="s-info"><div class="ava sm">${u.name[0]}</div><div><div class="u-name">${u.name}</div><div class="s-phone">${u.phone}</div></div></div>${u.rejectReason?`<div class="rej-reason">السبب: ${u.rejectReason}</div>`:""}<div class="s-actions"><button class="rev-btn" onclick="approveUser('${u.phone}')">↩ إعادة قبول</button></div></div>`});
+      html+="</div>";
+    }
+    html+=`<div class="sec-divider"></div><div class="sec-title" style="font-size:15px;margin-bottom:12px">✅ المعتمدون (${approved.length})</div>`;
+    if(approved.length===0){html+=`<div class="empty">لا يوجد طلاب معتمدون بعد</div>`}
+    else{html+=`<div class="s-list">`;approved.forEach(u=>{
+      const ps=u.paymentStatus||"unpaid";
+      const pLabel=ps==="paid"?"✅ دفع":ps==="partial"?"⚠️ جزئي":"🔴 لم يدفع";
+      const pClass=ps==="paid"?"paid":ps==="partial"?"partial":"unpaid";
+      html+=`<div class="s-row approved"><div class="s-info"><div class="ava sm">${u.name[0]}</div><div><div class="u-name">${u.name}</div><div class="s-phone">${u.phone}</div></div></div><div class="s-actions"><span class="pay-badge ${pClass}">${pLabel}</span><button class="rej-btn" style="font-size:11px;padding:5px 10px" onclick="openRejModal('${u.phone}')">إلغاء الوصول</button></div></div>`;
+    });html+="</div>"}
+    el.innerHTML=html;
+  });
+}
+
+function renderAdminProgress(m){
+  m.innerHTML=`<div class="section"><div class="sec-title">📊 تقدم الطلاب</div><div id="prog-content"><div class="empty">جاري التحميل...</div></div></div>`;
+  fbListen("users",async usersData=>{
+    const el=document.getElementById("prog-content");if(!el)return;
+    const videosData=await fbGet("videos");
+    const totalVids=videosData?Object.keys(videosData).length:0;
+    const approved=usersData?Object.values(usersData).filter(u=>!u.isAdmin&&u.approved):[];
+    if(approved.length===0){el.innerHTML=`<div class="empty">لا يوجد طلاب معتمدون بعد</div>`;return}
+    let html=`<table class="progress-table"><thead><tr><th>الطالب</th><th>الدروس المشاهدة</th><th>الإنجاز</th><th>آخر درس</th></tr></thead><tbody>`;
+    for(const u of approved){
+      const prog=await fbGet(`progress/${pkey(u.phone)}`)||{};
+      const watched=Object.keys(prog).length;
+      const pct=totalVids>0?Math.round(watched/totalVids*100):0;
+      const lastVid=u.lastVideo&&videosData&&videosData[u.lastVideo]?videosData[u.lastVideo].title:"—";
+      html+=`<tr>
+        <td><div style="font-weight:700">${u.name}</div><div class="s-phone">${u.phone}</div></td>
+        <td>${watched} / ${totalVids}</td>
+        <td><div>${pct}%</div><div class="prog-bar-sm"><div class="prog-fill-sm" style="width:${pct}%"></div></div></td>
+        <td style="font-size:12px;color:var(--muted)">${lastVid}</td>
+      </tr>`;
+    }
+    html+=`</tbody></table>`;
+    el.innerHTML=html;
+  });
+}
+
+function renderAdminAnswers(m){
+  m.innerHTML=`<div class="section"><div class="sec-title">📬 إجابات الطلاب</div><div id="answers-content"><div class="empty">جاري التحميل...</div></div></div>`;
+  fbListen("answers",data=>{
+    const el=document.getElementById("answers-content");if(!el)return;
+    if(!data){el.innerHTML=`<div class="empty">لا توجد إجابات بعد</div>`;return}
+    const rows=Object.values(data).sort((a,b)=>(b.ts||0)-(a.ts||0));
+    el.innerHTML=rows.map(r=>`
+      <div class="answer-row">
+        <div class="a-meta">
+          <span>👤 ${r.studentName}</span>
+          <span style="font-family:'JetBrains Mono',monospace">${r.studentPhone}</span>
+          <span>📚 ${r.videoTitle||"درس"}</span>
+          <span style="color:var(--p)">${r.ts?new Date(r.ts).toLocaleString("ar-EG"):""}</span>
+        </div>
+        <div class="a-q">❓ ${r.question}</div>
+        <div class="a-ans">💬 ${r.answer}</div>
+        ${r.correct===true?`<div style="color:var(--ok);font-size:12px;margin-top:6px">✅ صحيح</div>`:r.correct===false?`<div style="color:var(--err);font-size:12px;margin-top:6px">❌ خاطئ</div>`:r.correct==="replaced"?`<div style="color:var(--muted);font-size:12px;margin-top:6px">🔄 تم استبدالها</div>`:`
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="app-btn" onclick="markAnswer('${r.id}','${r.studentPhone}','${escJ(r.videoId)}',true)">✅ صح</button>
+            <button class="rej-btn" onclick="markAnswer('${r.id}','${r.studentPhone}','${escJ(r.videoId)}',false)">❌ غلط</button>
+          </div>`}
+      </div>`).join("");
+  });
+}
+
+const POINTS_CORRECT=10;
+const POINTS_WRONG=3;
+const POINTS_FAHIMT=5;
+const POINTS_WATCH=2;
+
+async function addPoints(phone,delta,reason){
+  const ud=await fbGet(`users/${pkey(phone)}`);
+  const cur=ud?.points||0;
+  const next=Math.max(0,cur+delta);
+  await fbUpd(`users/${pkey(phone)}`,{points:next});
+  const logId=Date.now().toString();
+  await fbSet(`pointsLog/${logId}`,{phone,name:ud?.name||"",delta,reason,ts:Date.now(),total:next});
+  return next;
+}
+
+async function markAnswer(answerId,studentPhone,videoId,correct){
+  await fbUpd(`answers/${answerId}`,{correct});
+  const ud=await fbGet(`users/${pkey(studentPhone)}`);
+  if(correct){
+    const newPts=await addPoints(studentPhone,POINTS_CORRECT,"إجابة صحيحة ✅");
+    await fbUpd(`progress/${pkey(studentPhone)}/${videoId}`,{watched:true,unlocked:true,passed:true});
+    const vids=await fbGet("videos");
+    if(vids){
+      const sorted=Object.values(vids).sort((a,b)=>a.id-b.id);
+      const idx=sorted.findIndex(v=>v.id===videoId);
+      if(idx>=0&&idx+1<sorted.length){
+        const nextId=sorted[idx+1].id;
+        await fbUpd(`progress/${pkey(studentPhone)}/${nextId}`,{unlocked:true});
+      }
+    }
+    if(ud)await sendWA(studentPhone,`🎉 أحسنت ${ud.name}!\nإجابتك كانت *صحيحة* ✅\n+${POINTS_CORRECT} نقاط 🌟\nرصيدك الآن: *${newPts} نقطة*\nتم فتح الدرس التالي 🚀`);
+    await sendPushToUser(studentPhone,`✅ إجابتك صحيحة! +${POINTS_CORRECT} نقاط 🌟`,"تم فتح الدرس التالي — افتح المنصة دلوقتي 🚀");
+    toast(`✅ إجابة صحيحة! +${POINTS_CORRECT} نقاط للطالب`);
+    await pushNotif(studentPhone,`✅ اجابتك صحيحة! +${POINTS_CORRECT} نقاط - تم فتح الدرس التالي`,videoId,"correct");
+  }else{
+    const newPts=await addPoints(studentPhone,-POINTS_WRONG,"إجابة خاطئة ❌");
+    if(ud)await sendWA(studentPhone,`💪 ${ud.name}، إجابتك لم تكن صحيحة ❌\n-${POINTS_WRONG} نقاط\nرصيدك الآن: *${newPts} نقطة*\nحاول تاني وراجع الدرس كويس 📚`);
+    toast(`❌ إجابة خاطئة — خُصم ${POINTS_WRONG} نقاط`);
+    await pushNotif(studentPhone,`❌ اجابتك خاطئة - حاول تاني (-${POINTS_WRONG} نقاط)`,videoId,"wrong");
+  }
+}
+
+/* ── متابعة الدفع ── */
+let _payFilter="all";
+
+function renderAdminPayments(m){
+  m.innerHTML=`<div class="section"><div class="sec-title">💰 متابعة الدفع</div><div id="pay-content"><div class="empty">جاري التحميل...</div></div></div>`;
+  fbListen("users",data=>{
+    const el=document.getElementById("pay-content");if(!el)return;
+    const students=data?Object.values(data).filter(u=>!u.isAdmin&&u.approved):[];
+    if(students.length===0){el.innerHTML=`<div class="empty">لا يوجد طلاب معتمدون بعد</div>`;return}
+    const paid=students.filter(u=>u.paymentStatus==="paid").length;
+    const unpaid=students.filter(u=>!u.paymentStatus||u.paymentStatus==="unpaid").length;
+    const partial=students.filter(u=>u.paymentStatus==="partial").length;
+    const filtered=_payFilter==="all"?students:students.filter(u=>{
+      if(_payFilter==="paid")return u.paymentStatus==="paid";
+      if(_payFilter==="unpaid")return !u.paymentStatus||u.paymentStatus==="unpaid";
+      if(_payFilter==="partial")return u.paymentStatus==="partial";
+      return true;
+    });
+    let html=`
+    <div class="pay-stats">
+      <div class="pay-stat green"><span>${paid}</span><label>✅ دفعوا</label></div>
+      <div class="pay-stat red"><span>${unpaid}</span><label>🔴 لم يدفعوا</label></div>
+      <div class="pay-stat yellow"><span>${partial}</span><label>⚠️ جزئي</label></div>
+      <div class="pay-stat"><span>${students.length}</span><label>👥 الإجمالي</label></div>
+    </div>
+    <div class="pay-filter">
+      <button class="${_payFilter==="all"?"on":""}" onclick="setPayFilter('all')">الكل (${students.length})</button>
+      <button class="${_payFilter==="unpaid"?"on":""}" onclick="setPayFilter('unpaid')">🔴 لم يدفعوا (${unpaid})</button>
+      <button class="${_payFilter==="paid"?"on":""}" onclick="setPayFilter('paid')">✅ دفعوا (${paid})</button>
+      <button class="${_payFilter==="partial"?"on":""}" onclick="setPayFilter('partial')">⚠️ جزئي (${partial})</button>
+    </div>`;
+    if(unpaid>0&&(_payFilter==="all"||_payFilter==="unpaid")){
+      html+=`<button class="btn" style="max-width:280px;margin-bottom:16px;background:linear-gradient(135deg,#ef4444,#b91c1c)" onclick="remindAllUnpaid()">📲 تذكير كل اللي لم يدفعوا (${unpaid})</button>`;
+    }
+    html+=`<div class="s-list">`;
+    filtered.forEach(u=>{
+      const ps=u.paymentStatus||"unpaid";
+      const pLabel=ps==="paid"?"✅ دفع":ps==="partial"?"⚠️ دفع جزئي":"🔴 لم يدفع";
+      const pClass=ps==="paid"?"paid":ps==="partial"?"partial":"unpaid";
+      const note=u.paymentNote?`<div style="font-size:11px;color:var(--muted);margin-top:4px">📝 ${u.paymentNote}</div>`:"";
+      html+=`<div class="s-row" style="border-color:${ps==="paid"?"rgba(34,197,94,.2)":ps==="partial"?"rgba(245,158,11,.25)":"rgba(239,68,68,.2)"}">
+        <div class="s-info" style="flex:1">
+          <div class="ava sm">${u.name[0]}</div>
+          <div>
+            <div class="u-name">${u.name}</div>
+            <div class="s-phone">${u.phone}</div>
+            ${note}
+          </div>
+        </div>
+        <div class="s-actions" style="flex-wrap:wrap;gap:6px">
+          <span class="pay-badge ${pClass}">${pLabel}</span>
+          ${ps!=="paid"?`<button class="app-btn" onclick="markPayment('${u.phone}','paid')">✅ سجّل الدفع</button>`:""}
+          ${ps==="paid"?`<button class="rev-btn" onclick="markPayment('${u.phone}','unpaid')">↩ إلغاء</button>`:""}
+          ${ps==="unpaid"?`<button class="rev-btn" onclick="markPayment('${u.phone}','partial')">⚠️ جزئي</button>`:""}
+          <button class="btn outline sm" onclick="sendPayReminder('${u.phone}','${u.name}','${ps}')">📲 تذكير</button>
+          <button class="btn outline sm" style="font-size:11px" onclick="addPayNote('${u.phone}')">📝 ملاحظة</button>
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+    el.innerHTML=html;
+    // update unpaid badge in sidebar
+    const badge=document.getElementById("unpaid-badge");
+    if(badge){badge.textContent=unpaid;badge.style.display=unpaid>0?"flex":"none";}
+  });
+}
+
+function setPayFilter(f){_payFilter=f;renderAdminPayments(document.getElementById("main-content"))}
+
+async function markPayment(phone,status){
+  await fbUpd(`users/${pkey(phone)}`,{paymentStatus:status});
+  const ud=await fbGet(`users/${pkey(phone)}`);
+  if(status==="paid"&&ud){
+    await sendWA(phone,`✅ تم تأكيد استلام دفعتك في *المبرمج الصغير*!
+شكراً ${ud.name} 🎉
+استمر في رحلتك التعليمية 🚀`);
+    toast("✅ تم تسجيل الدفع وإبلاغ الطالب");
+  }else if(status==="unpaid"){
+    toast("↩ تم إلغاء تسجيل الدفع");
+  }else{
+    toast("⚠️ تم تسجيل الدفع الجزئي");
+  }
+}
+
+async function sendPayReminder(phone,name,currentStatus){
+  const settings=await fbGet("settings")||{};
+  const amt=settings.subscriptionAmt||PAYMENT_AMT;
+  let msg="";
+  if(currentStatus==="paid"){
+    msg=`أهلاً ${name} 👋
+اشتراكك في *المبرمج الصغير* مفعّل ✅
+استمر في التعلم 🚀`;
+  }else if(currentStatus==="partial"){
+    msg=`أهلاً ${name} 👋
+تم استلام جزء من اشتراكك في *المبرمج الصغير* ⚠️
+يرجى إتمام المبلغ المتبقي لاستكمال الوصول 💰
+للتواصل: wa.me/20${ADMIN_PHONE.replace(/^0/,"")}`;
+  }else{
+    msg=`أهلاً ${name} 👋
+تذكير بسداد اشتراكك في *المبرمج الصغير* 📚
+
+المبلغ المطلوب: *${amt} جنيه*
+
+للتواصل وإتمام الدفع:
+wa.me/20${ADMIN_PHONE.replace(/^0/,"")}`;
+  }
+  await sendWA(phone,msg);
+  toast("📲 تم إرسال التذكير على واتساب");
+}
+
+async function remindAllUnpaid(){
+  if(!confirm("هل تريد إرسال تذكير دفع لكل الطلاب اللي لم يدفعوا؟"))return;
+  const data=await fbGet("users");
+  if(!data)return;
+  const unpaid=Object.values(data).filter(u=>!u.isAdmin&&u.approved&&(!u.paymentStatus||u.paymentStatus==="unpaid"));
+  for(const u of unpaid){await sendPayReminder(u.phone,u.name,"unpaid")}
+  toast(`📲 تم إرسال تذكير لـ ${unpaid.length} طالب`);
+}
+
+async function addPayNote(phone){
+  const ud=await fbGet(`users/${pkey(phone)}`);
+  const current=ud?.paymentNote||"";
+  const note=prompt("أضف ملاحظة عن الدفع:",current);
+  if(note===null)return;
+  await fbUpd(`users/${pkey(phone)}`,{paymentNote:note.trim()});
+  toast("✅ تم حفظ الملاحظة");
+}
+
+/* ── تعليقات المدير ── */
+function renderAdminComments(m){
+  m.innerHTML=`<div class="section"><div class="sec-title">💬 كل التعليقات</div><div id="comments-admin-content"><div class="empty">جاري التحميل...</div></div></div>`;
+  fbListen("comments",async data=>{
+    const el=document.getElementById("comments-admin-content");if(!el)return;
+    if(!data){el.innerHTML=`<div class="empty">لا توجد تعليقات بعد</div>`;return}
+    const vidsData=await fbGet("videos")||{};
+    let allComments=[];
+    Object.keys(data).forEach(videoId=>{
+      const vidTitle=vidsData[videoId]?vidsData[videoId].title:"درس محذوف";
+      Object.values(data[videoId]).forEach(c=>{
+        allComments.push({...c,videoId,vidTitle});
+      });
+    });
+    if(allComments.length===0){el.innerHTML=`<div class="empty">لا توجد تعليقات بعد</div>`;return}
+    allComments.sort((a,b)=>(b.ts||0)-(a.ts||0));
+    let html=`<div style="max-width:700px">`;
+    allComments.forEach(c=>{
+      const isAdm=!!c.isAdmin;
+      const nm=isAdm?"المدير 👑":c.authorName;
+      const col=isAdm?"var(--warn)":"var(--a)";
+      const t=c.ts?new Date(c.ts).toLocaleString("ar-EG",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"";
+      const safeText=(c.text||"").replace(/`/g,"\`").replace(/\$/g,"\$");
+      const safeOrig=(c.text||"").substring(0,40).replace(/'/g,"\'");
+      const safeAuthor=(c.authorName||"").replace(/'/g,"\'");
+      html+=`<div class="answer-row" style="margin-bottom:10px">
+        <div class="a-meta">
+          <span style="font-weight:700;color:${col}">${nm}</span>
+          ${!isAdm?`<span style="font-family:'JetBrains Mono',monospace;font-size:10px">${c.authorPhone||""}</span>`:""}
+          <span style="color:var(--p)">📚 ${c.vidTitle}</span>
+          <span>${t}</span>
+        </div>
+        <div class="a-ans" style="margin-top:6px">${c.text}</div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="rej-btn" onclick="adminDeleteComment('${c.videoId}','${c.id}')">🗑 حذف</button>
+          <button class="app-btn" onclick="adminReplyComment('${c.videoId}','${safeAuthor}','${safeOrig}')">↩ رد</button>
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+    el.innerHTML=html;
+  });
+}
+
+async function adminDeleteComment(videoId,cId){
+  if(!confirm("هل تريد حذف هذا التعليق؟"))return;
+  await fbDel("comments/"+videoId+"/"+cId);
+  toast("✅ تم حذف التعليق");
+}
+
+async function adminReplyComment(videoId,authorName,origText){
+  const reply=prompt(`رد على تعليق "${origText}...":`);
+  if(!reply||!reply.trim())return;
+  const cId=Date.now().toString();
+  const vd=await fbGet("videos/"+videoId);
+  await fbSet("comments/"+videoId+"/"+cId,{
+    id:cId,videoId,authorPhone:ADMIN_PHONE,authorName:"المدير",
+    text:"↩ رداً على "+authorName+": "+reply.trim(),
+    isAdmin:true,ts:Date.now()
+  });
+  const prog=await fbGet("progress")||{};
+  for(const phoneKey of Object.keys(prog)){
+    if(prog[phoneKey][videoId]&&prog[phoneKey][videoId].watched){
+      const ph=phoneKey.replace(/-/g,".");
+      if(ph!==ADMIN_PHONE){
+        await pushNotif(ph,"رد المدير على درس: "+(vd?.title||""),videoId,"comment");
+      }
+    }
+  }
+  toast("✅ تم إرسال الرد");
+}
+
+function renderAdminLeaderboard(m){
+  m.innerHTML='<div class="section"><div class="sec-title">🏆 لوحة النقاط</div><div id="lb-content"><div class="empty">جاري التحميل...</div></div></div>';
+  fbListen("users",data=>{
+    const el=document.getElementById("lb-content");if(!el)return;
+    const students=data?Object.values(data).filter(u=>!u.isAdmin&&u.approved):[];
+    if(students.length===0){el.innerHTML='<div class="empty">لا يوجد طلاب بعد</div>';return}
+    const sorted=students.sort((a,b)=>(b.points||0)-(a.points||0));
+    const medals=["🥇","🥈","🥉"];
+    const rankClass=["gold","silver","bronze"];
+    el.innerHTML='<div class="leaderboard">'+sorted.map((u,i)=>`
+      <div class="lb-row">
+        <div class="lb-rank ${i<3?rankClass[i]:''}">${i<3?medals[i]:i+1}</div>
+        <div class="ava sm">${u.name[0]}</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:14px">${u.name}</div>
+          <div class="s-phone">${u.phone}</div>
+        </div>
+        <div class="lb-pts">${u.points||0} ⭐</div>
+      </div>`).join("")+'</div>';
+  });
+}
+
+function renderAdminSendQ(m){
+  m.innerHTML='<div class="section"><div class="sec-title">📨 إرسال سؤال لطالب</div><div id="sendq-content"><div class="empty">جاري التحميل...</div></div></div>';
+  Promise.all([fbGet("users"),fbGet("videos")]).then(([usersData,videosData])=>{
+    const el=document.getElementById("sendq-content");if(!el)return;
+    const approved=usersData?Object.values(usersData).filter(u=>!u.isAdmin&&u.approved):[];
+    const vids=videosData?Object.values(videosData):[];
+    if(approved.length===0){el.innerHTML='<div class="empty">لا يوجد طلاب معتمدون</div>';return}
+    const wrap=document.createElement("div");
+    wrap.className="sq-form";
+    wrap.innerHTML='<h4>📨 إرسال سؤال على واتساب</h4>';
+    const stuWrap=document.createElement("div");stuWrap.className="field";
+    const stuLabel=document.createElement("label");stuLabel.textContent="اختر الطالب";
+    const stuSel=document.createElement("select");stuSel.className="sq-select";stuSel.id="sq-student";
+    approved.forEach(u=>{const o=document.createElement("option");o.value=u.phone;o.textContent=u.name+" — "+u.phone;stuSel.appendChild(o);});
+    stuWrap.appendChild(stuLabel);stuWrap.appendChild(stuSel);wrap.appendChild(stuWrap);
+    const vidWrap=document.createElement("div");vidWrap.className="field";
+    const vidLabel=document.createElement("label");vidLabel.textContent="اختر الدرس";
+    const vidSel=document.createElement("select");vidSel.className="sq-select";vidSel.id="sq-video";
+    vids.forEach(v=>{const o=document.createElement("option");o.value=v.id;o.textContent=v.title;vidSel.appendChild(o);});
+    vidWrap.appendChild(vidLabel);vidWrap.appendChild(vidSel);wrap.appendChild(vidWrap);
+    const qWrap=document.createElement("div");qWrap.className="field";
+    const qLabel=document.createElement("label");qLabel.textContent="السؤال";
+    const qArea=document.createElement("textarea");qArea.className="inp";qArea.id="sq-question";qArea.rows=3;qArea.placeholder="اكتب السؤال هنا...";
+    qWrap.appendChild(qLabel);qWrap.appendChild(qArea);wrap.appendChild(qWrap);
+    const msgDiv=document.createElement("div");msgDiv.id="sq-msg";wrap.appendChild(msgDiv);
+    const btn=document.createElement("button");btn.className="btn";btn.style.cssText="max-width:280px;margin-top:4px";btn.textContent="📲 إرسال عبر واتساب";
+    btn.onclick=sendQuestionDirect;
+    wrap.appendChild(btn);
+    el.innerHTML="";
+    el.appendChild(wrap);
+  });
+}
+
+async function sendQuestionDirect(){
+  const allSelects=document.querySelectorAll(".sq-select");
+  const allTextareas=document.querySelectorAll("#sendq-content textarea");
+  const msgEl=document.querySelector("#sendq-content #sq-msg")||document.querySelector("#sq-msg");
+  function showErr(msg){toast(msg,"err");if(msgEl)msgEl.innerHTML='<div class="msg-err">'+msg+'</div>';}
+  if(allSelects.length<2||allTextareas.length<1){showErr("❌ أعد تحميل الصفحة");return}
+  const studentPhone=(allSelects[0].value||"").trim();
+  const videoId=(allSelects[1].value||"").trim();
+  const question=(allTextareas[0].value||"").trim();
+  if(!question){showErr("❌ اكتب السؤال أولاً");return}
+  if(!studentPhone){showErr("❌ اختر الطالب أولاً");return}
+  if(!videoId){showErr("❌ اختر الدرس أولاً");return}
+  const btn=document.querySelector("#sendq-content button.btn");
+  if(btn){btn.disabled=true;btn.textContent="⏳ جاري الإرسال..."}
+  const ud=await fbGet(`users/${pkey(studentPhone)}`);
+  const vd=await fbGet(`videos/${videoId}`);
+  const qId=Date.now().toString();
+  await fbSet(`questions/${qId}`,{id:qId,studentPhone,studentName:ud?.name||"",videoId,videoTitle:vd?.title||"",question,ts:Date.now(),answered:false});
+  await sendWA(studentPhone,`📚 *سؤال من المبرمج الصغير*\n\nالدرس: *${vd?.title||""}*\nالسؤال: ${question}\n\n✏️ افتح المنصة الآن وأجب على السؤال من الصفحة الرئيسية`);
+  if(msgEl)msgEl.innerHTML='<div class="msg-ok">✅ تم إرسال السؤال للطالب على واتساب!</div>';
+  if(btn){btn.disabled=false;btn.textContent="📲 إرسال عبر واتساب"}
+  allTextareas[0].value="";
+  setTimeout(()=>{if(msgEl)msgEl.innerHTML=""},3000);
+}
+
+function openRejModal(phone){_rejectTarget=phone;document.getElementById("rej-reason-inp").value="";document.getElementById("rej-modal").style.display="flex"}
+function closeRejModal(){_rejectTarget=null;document.getElementById("rej-modal").style.display="none"}
+
+async function confirmReject(){
+  if(!_rejectTarget)return;
+  const reason=document.getElementById("rej-reason-inp").value.trim()||"لم يتم تحديد سبب";
+  await fbUpd(`users/${pkey(_rejectTarget)}`,{approved:false,status:"rejected",rejectReason:reason});
+  const ud=await fbGet(`users/${pkey(_rejectTarget)}`);
+  if(ud)await sendWA(ud.phone,`عزيزي ${ud.name} 👋\nنأسف، تم رفض طلب اشتراكك في *المبرمج الصغير* ❌\n\nالسبب: ${reason}\n\nللاستفسار تواصل معنا.`);
+  closeRejModal();toast("تم الرفض وإبلاغ الطالب");
+}
+
+async function approveUser(phone){
+  await fbUpd(`users/${pkey(phone)}`,{approved:true,status:"approved",rejectReason:null});
+  const ud=await fbGet(`users/${pkey(phone)}`);
+  if(ud)await sendWA(phone,`أهلاً ${ud.name} 🎉\nتهانينا! تم قبول طلبك في *المبرمج الصغير* ✅\nيمكنك الآن الدخول ومشاهدة جميع الدروس.\nبالتوفيق! 🚀`);
+  toast("تمت الموافقة وإبلاغ الطالب ✅");
+}
+
+function renderAdminUpload(m){
+  m.innerHTML=`<div class="section"><div class="sec-title">📤 رفع درس جديد</div><div class="up-form">
+    <div class="field"><label>عنوان الدرس</label><input class="inp" id="v-title" placeholder="مثال: مقدمة في Python"/></div>
+    <div class="field"><label>التصنيف</label><input class="inp" id="v-cat" placeholder="Python, JavaScript, HTML..."/></div>
+    <div class="field"><label>رابط الفيديو (YouTube أو Google Drive)</label><input class="inp" id="v-url" placeholder="https://..." dir="ltr"/></div>
+    <div class="field"><label>وصف الدرس (اختياري)</label><textarea class="inp" id="v-desc" placeholder="ما الذي سيتعلمه الطالب؟" rows="3"></textarea></div>
+    <div class="field"><label>🧑‍💻 تحدي الكود (اختياري)</label><textarea class="inp" id="v-challenge" placeholder="مثال: اكتب كود يطبع اسمك 5 مرات باستخدام حلقة" rows="2"></textarea></div>
+    <div class="field"><label>كود البداية (اختياري) — يظهر في المحرر كنقطة انطلاق</label><textarea class="inp" id="v-starter" placeholder="# اكتب هنا" rows="3" style="font-family:monospace;direction:ltr"></textarea></div>
+    <div id="up-msg"></div>
+    <button class="btn" id="up-btn" onclick="uploadVideo()">رفع الدرس وإشعار الطلاب ⬆</button>
+  </div></div>`;
+}
+
+async function uploadVideo(){
+  const title=document.getElementById("v-title").value.trim();
+  const url=document.getElementById("v-url").value.trim();
+  const cat=document.getElementById("v-cat").value.trim();
+  const desc=document.getElementById("v-desc").value.trim();
+  const challenge=document.getElementById("v-challenge").value.trim();
+  const starter=document.getElementById("v-starter").value.trim();
+  const msg=document.getElementById("up-msg");
+  if(!title||!url){msg.innerHTML=`<div class="msg-err">❌ أدخل العنوان والرابط</div>`;return}
+  const btn=document.getElementById("up-btn");
+  btn.disabled=true;btn.textContent="⏳ جاري الرفع...";
+  const id=Date.now().toString();
+  await fbSet(`videos/${id}`,{id,title,url,category:cat,desc,challenge,starter,uploadedAt:new Date().toLocaleDateString("ar-EG"),order:id});
+  const allUsers=await fbGet("users");
+  if(allUsers){
+    const approved=Object.values(allUsers).filter(u=>!u.isAdmin&&u.approved);
+    const allVids=await fbGet("videos");
+    const sorted=allVids?Object.values(allVids).sort((a,b)=>a.id-b.id):[];
+    const firstId=sorted[0]?.id;
+    for(const u of approved){
+      await sendWA(u.phone,`🎉 *درس جديد* في المبرمج الصغير!\n\n📚 ${title}${cat?`\n🏷️ ${cat}`:""}\n\nافتح الموقع الآن وشاهد الدرس 🚀`);
+      if(firstId){
+        const prog=await fbGet(`progress/${pkey(u.phone)}/${firstId}`);
+        if(!prog)await fbSet(`progress/${pkey(u.phone)}/${firstId}`,{unlocked:true,watched:false});
+      }
+    }
+  }
+  // إشعار Push لكل الطلاب
+  await sendPushToAll(`📚 درس جديد: ${title}`, `${cat?cat+" — ":""}افتح المنصة دلوقتي! 🚀`);
+  msg.innerHTML=`<div class="msg-ok">✅ تم رفع الدرس وإرسال إشعار لجميع الطلاب!</div>`;
+  ["v-title","v-cat","v-url","v-desc","v-challenge","v-starter"].forEach(i=>{const el=document.getElementById(i);if(el)el.value=""});
+  btn.disabled=false;btn.textContent="رفع الدرس وإشعار الطلاب ⬆";
+  setTimeout(()=>{if(document.getElementById("up-msg"))document.getElementById("up-msg").innerHTML=""},3500);
+}
+
+function renderAdminVideos(m){
+  m.innerHTML=`<div class="section"><div class="sec-title">🎬 الدروس المرفوعة</div><div id="videos-grid"><div class="empty">جاري التحميل...</div></div></div>`;
+  if(_currentUser&&_currentUser.phone)requestPushPermission(_currentUser.phone);
+  setupForegroundMessages();
+  fbListen("videos",data=>{
+    const el=document.getElementById("videos-grid");if(!el)return;
+    const vids=data?Object.values(data).reverse():[];
+    if(vids.length===0){el.innerHTML=`<div class="empty">لا توجد دروس بعد</div>`;return}
+    el.innerHTML=`<div class="video-grid">${vids.map(v=>`<div class="vcard">
+      <div class="vthumb">${ytEmbed(v.url)?`<iframe src="${ytEmbed(v.url)}" allowfullscreen></iframe>`:`<div class="no-thumb">🎬</div>`}</div>
+      <div class="vinfo"><h3>${v.title}</h3>${v.category?`<span class="cat-tag">${v.category}</span>`:""}<div class="vdate">📅 ${v.uploadedAt||""}</div>${v.challenge?`<div style="font-size:11px;color:var(--a);margin-top:4px">🧑‍💻 يوجد تحدي كود</div>`:""}</div>
+      <div style="display:flex;gap:6px;padding:10px 14px 14px">
+        <button class="btn sm" style="flex:1" onclick="openEditVideo('${v.id}')">✏️ تعديل</button>
+        <button class="btn sm danger" onclick="deleteVideo('${v.id}')">🗑</button>
+      </div>
+    </div>`).join("")}</div>`;
+  });
+}
+async function deleteVideo(id){if(confirm("هل أنت متأكد من حذف هذا الدرس؟")){await fbDel(`videos/${id}`);toast("تم حذف الدرس")}}
+
+async function openEditVideo(id){
+  const v=await fbGet(`videos/${id}`);if(!v)return;
+  const existing=document.getElementById("edit-video-modal");
+  if(existing)existing.remove();
+  const modal=document.createElement("div");
+  modal.id="edit-video-modal";
+  modal.className="modal-overlay";
+  modal.innerHTML=`<div class="modal-box">
+    <div class="modal-title">✏️ تعديل الدرس <button class="modal-close" onclick="document.getElementById('edit-video-modal').remove()">✕ إغلاق</button></div>
+    <div class="field"><label>عنوان الدرس</label><input class="inp" id="ev-title" value="${escJ(v.title||'')}"/></div>
+    <div class="field"><label>التصنيف</label><input class="inp" id="ev-cat" value="${escJ(v.category||'')}"/></div>
+    <div class="field"><label>رابط الفيديو</label><input class="inp" id="ev-url" value="${escJ(v.url||'')}" dir="ltr"/></div>
+    <div class="field"><label>وصف الدرس</label><textarea class="inp" id="ev-desc" rows="2">${escJ(v.desc||'')}</textarea></div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--a)">🧑‍💻 تحدي الكود</div>
+      <div class="field"><label>نص التحدي / السؤال</label><textarea class="inp" id="ev-challenge" rows="2">${escJ(v.challenge||'')}</textarea></div>
+      <div class="field"><label>كود البداية</label><textarea class="inp" id="ev-starter" rows="3" style="font-family:monospace;direction:ltr">${escJ(v.starter||'')}</textarea></div>
+    </div>
+    <div id="ev-msg"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn" onclick="saveEditVideo('${id}')">💾 حفظ التعديلات</button>
+      <button class="btn outline" onclick="document.getElementById('edit-video-modal').remove()">إلغاء</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
+async function saveEditVideo(id){
+  const title=document.getElementById("ev-title").value.trim();
+  const url=document.getElementById("ev-url").value.trim();
+  const cat=document.getElementById("ev-cat").value.trim();
+  const desc=document.getElementById("ev-desc").value.trim();
+  const challenge=document.getElementById("ev-challenge").value.trim();
+  const starter=document.getElementById("ev-starter").value.trim();
+  const msg=document.getElementById("ev-msg");
+  if(!title||!url){msg.innerHTML=`<div class="msg-err">❌ العنوان والرابط مطلوبان</div>`;return}
+  await fbUpd(`videos/${id}`,{title,url,category:cat,desc,challenge,starter});
+  toast("✅ تم حفظ التعديلات");
+  document.getElementById("edit-video-modal")?.remove();
+}
+
+function renderAdminSettings(m){
+  m.innerHTML=`<div class="section"><div class="sec-title">⚙️ إعدادات المنصة</div><div id="settings-content"><div class="empty">جاري التحميل...</div></div></div>`;
+  fbListen("settings",data=>{
+    const el=document.getElementById("settings-content");if(!el)return;
+    const s=data||{};const regOpen=s.registrationOpen!==false;
+    const closedMsg=s.closedMessage||`التسجيل مغلق حالياً.\nللاشتراك يرجى تحويل ${PAYMENT_AMT} جنيه وإرسال إثبات الدفع.`;
+    el.innerHTML=`<div class="toggle-row">
+      <div class="toggle-info"><h4>${regOpen?"🟢":"🔴"} حالة التسجيل</h4><p>${regOpen?"التسجيل مفتوح للطلاب الجدد":"التسجيل مغلق حالياً"}</p></div>
+      <button class="toggle ${regOpen?"on":""}" onclick="toggleReg(${regOpen})"></button>
+    </div>
+    <div class="field" style="max-width:520px">
+      <label>رسالة الإغلاق</label>
+      <textarea class="inp" id="closed-msg-inp" rows="4" style="resize:vertical">${closedMsg}</textarea>
+    </div>
+    <div class="sec-divider"></div>
+    <div class="field" style="max-width:300px">
+      <label>💰 مبلغ الاشتراك (جنيه)</label>
+      <input class="inp" id="sub-amt-inp" type="number" value="${s.subscriptionAmt||PAYMENT_AMT}" min="0"/>
+    </div>
+    <button class="btn" style="max-width:220px;margin-top:4px" onclick="saveSubAmt()">💾 حفظ المبلغ</button>
+    <div class="sec-divider"></div>
+    <button class="btn" style="max-width:220px;margin-top:8px" onclick="saveClosedMsg()">💾 حفظ الرسالة</button>
+    <div class="sec-divider"></div>
+    <div id="theme-picker-container"></div>
+    <div class="sec-divider"></div>
+    <div class="toggle-info" style="margin-bottom:10px"><h4>🔔 إرسال إشعار للطلاب</h4><p style="font-size:12px;color:var(--muted);margin-top:4px">إشعار فوري على موبايل كل الطلاب حتى لو الموقع مغلق</p></div>
+    <div class="field" style="max-width:520px"><label>عنوان الإشعار</label><input class="inp" id="push-title-inp" placeholder="مثال: درس جديد! 🎉"/></div>
+    <div class="field" style="max-width:520px"><label>نص الإشعار</label><input class="inp" id="push-body-inp" placeholder="مثال: افتح المنصة وشاهد الدرس الجديد 🚀"/></div>
+    <button class="btn" style="max-width:260px" onclick="sendManualPush()">🔔 إرسال إشعار للكل</button>`;
+    // Render theme picker after innerHTML is set
+    const tp=document.getElementById("theme-picker-container");
+    if(tp)renderThemePicker(tp);
+  });
+}
+async function toggleReg(current){await fbUpd("settings",{registrationOpen:!current});toast(!current?"✅ تم فتح التسجيل":"🔒 تم إغلاق التسجيل")}
+async function saveClosedMsg(){const msg=document.getElementById("closed-msg-inp").value.trim();await fbUpd("settings",{closedMessage:msg});toast("✅ تم حفظ الرسالة")}
+async function sendManualPush(){
+  const title=document.getElementById("push-title-inp")?.value.trim();
+  const body=document.getElementById("push-body-inp")?.value.trim();
+  if(!title||!body){toast("❌ اكتب العنوان والنص أولاً","err");return}
+  const btn=document.querySelector('[onclick="sendManualPush()"]');
+  if(btn){btn.disabled=true;btn.textContent="⏳ جاري الإرسال..."}
+  await sendPushToAll(title,body);
+  if(btn){btn.disabled=false;btn.textContent="🔔 إرسال إشعار للكل"}
+  document.getElementById("push-title-inp").value="";
+  document.getElementById("push-body-inp").value="";
+}
+
+async function saveSubAmt(){
+  const amt=parseInt(document.getElementById("sub-amt-inp")?.value||PAYMENT_AMT);
+  if(isNaN(amt)||amt<0){toast("❌ أدخل مبلغ صحيح","err");return}
+  await fbUpd("settings",{subscriptionAmt:amt});
+  toast("✅ تم حفظ مبلغ الاشتراك: "+amt+" جنيه");
+}
+
+
+
+/* ════════════════════════════════
+   ██████ ANNOUNCEMENTS ██████
+════════════════════════════════ */
+function renderAdminAnnounce(m){
+  m.innerHTML=`<div class="section"><div class="sec-title">📢 الإعلانات</div><div id="announce-content"><div class="empty">جاري التحميل...</div></div></div>`;
+  fbListen("announcements",data=>{
+    const el=document.getElementById("announce-content");if(!el)return;
+    const anns=data?Object.values(data).reverse():[];
+    el.innerHTML=`
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:20px;max-width:600px">
+        <div style="font-size:14px;font-weight:700;margin-bottom:14px">➕ إعلان جديد</div>
+        <div class="field"><label>عنوان الإعلان</label><input class="inp" id="ann-title" placeholder="مثال: تنبيه مهم!"/></div>
+        <div class="field"><label>نص الإعلان</label><textarea class="inp" id="ann-body" rows="2" placeholder="اكتب نص الإعلان هنا..."></textarea></div>
+        <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+          <div class="field" style="flex:1;min-width:140px"><label>النوع</label>
+            <select class="inp" id="ann-type">
+              <option value="info">💙 معلومة</option>
+              <option value="warn">⚠️ تحذير</option>
+              <option value="success">✅ إنجاز / عرض</option>
+            </select>
+          </div>
+          <div class="field" style="flex:1;min-width:140px"><label>المدة</label>
+            <select class="inp" id="ann-duration">
+              <option value="1">يوم واحد</option>
+              <option value="3">3 أيام</option>
+              <option value="7">أسبوع</option>
+              <option value="30">شهر</option>
+              <option value="0">حتى الحذف</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn" style="max-width:200px" onclick="publishAnnouncement()">📢 نشر الإعلان</button>
+      </div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:12px">الإعلانات النشطة</div>
+      ${anns.length===0?'<div class="empty">لا توجد إعلانات</div>':anns.map(a=>`
+        <div class="ann-card">
+          <div class="ann-card-head">
+            <div style="font-size:14px;font-weight:700">${a.title||""}</div>
+            <span class="ann-type-badge ${a.type||'info'}">${a.type==='warn'?'⚠️ تحذير':a.type==='success'?'✅ عرض':'💙 معلومة'}</span>
+          </div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:10px">${a.body||""}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:11px;color:var(--muted)">📅 ${a.createdAt||""} ${a.expiresAt?'· ينتهي '+new Date(a.expiresAt).toLocaleDateString('ar-EG'):''}</span>
+            <button class="btn sm danger" onclick="deleteAnnouncement('${a.id}')">🗑 حذف</button>
+          </div>
+        </div>`).join("")}`;
+  });
+}
+
+async function publishAnnouncement(){
+  const title=document.getElementById("ann-title").value.trim();
+  const body=document.getElementById("ann-body").value.trim();
+  const type=document.getElementById("ann-type").value;
+  const days=parseInt(document.getElementById("ann-duration").value);
+  if(!title||!body){toast("❌ اكتب العنوان والنص","err");return}
+  const id="ann_"+Date.now();
+  const expiresAt=days>0?Date.now()+(days*86400000):0;
+  await fbSet(`announcements/${id}`,{id,title,body,type,expiresAt,createdAt:new Date().toLocaleDateString("ar-EG"),active:true});
+  toast("✅ تم نشر الإعلان");
+  ["ann-title","ann-body"].forEach(x=>document.getElementById(x).value="");
+}
+
+async function deleteAnnouncement(id){
+  await fbDel(`announcements/${id}`);
+  toast("تم حذف الإعلان");
+}
+
+async function loadAnnouncements(){
+  const data=await fbGet("announcements");
+  if(!data)return;
+  const now=Date.now();
+  const active=Object.values(data).filter(a=>a.active&&(a.expiresAt===0||a.expiresAt>now));
+  if(active.length===0)return;
+  // Show only ones not dismissed this session
+  const dismissed=JSON.parse(sessionStorage.getItem("dismissed_anns")||"[]");
+  const toShow=active.filter(a=>!dismissed.includes(a.id));
+  if(toShow.length===0)return;
+  // Show latest one as banner
+  const a=toShow[0];
+  const existing=document.getElementById("ann-banner");
+  if(existing)existing.remove();
+  const banner=document.createElement("div");
+  banner.id="ann-banner";
+  banner.className=`ann-banner ${a.type||'info'}`;
+  banner.innerHTML=`<div class="ann-banner-text"><strong>${a.title}</strong> — ${a.body}</div>
+    <button class="ann-banner-close" onclick="dismissAnnouncement('${a.id}')">✕</button>`;
+  document.body.prepend(banner);
+  // Adjust app top margin
+  const app=document.getElementById("app");
+  if(app)app.style.marginTop="52px";
+}
+
+function dismissAnnouncement(id){
+  const dismissed=JSON.parse(sessionStorage.getItem("dismissed_anns")||"[]");
+  dismissed.push(id);
+  sessionStorage.setItem("dismissed_anns",JSON.stringify(dismissed));
+  const banner=document.getElementById("ann-banner");
+  if(banner)banner.remove();
+  const app=document.getElementById("app");
+  if(app)app.style.marginTop="";
+}
+
+
+/* ── Admin: Code Solutions ── */
+function renderAdminCodeSols(m){
+  m.innerHTML=`<div class="section"><div class="sec-title">💻 حلول الكود</div><div id="codesols-content"><div class="empty">جاري التحميل...</div></div></div>`;
+  fbListen("code_solutions",data=>{
+    const el=document.getElementById("codesols-content");if(!el)return;
+    if(!data){el.innerHTML='<div class="empty">لا توجد حلول بعد</div>';return}
+    const all=[];
+    Object.values(data).forEach(student=>{
+      Object.values(student).forEach(sol=>all.push(sol));
+    });
+    all.sort((a,b)=>(b.solvedAt||0)-(a.solvedAt||0));
+    const unreviewed=all.filter(s=>!s.reviewed);
+    const badge=document.getElementById("codesols-badge");
+    if(badge){badge.style.display=unreviewed.length>0?"inline-flex":"none";badge.textContent=unreviewed.length}
+    if(all.length===0){el.innerHTML='<div class="empty">لا توجد حلول بعد</div>';return}
+    el.innerHTML=all.map(s=>`
+      <div class="s-row" style="flex-direction:column;align-items:stretch;gap:10px;margin-bottom:12px;${!s.reviewed?'border-color:rgba(124,109,250,.4)':''}">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <div>
+            <b>${s.studentName||s.studentPhone}</b>
+            <span style="font-size:11px;color:var(--muted);margin-right:8px">📚 ${s.videoTitle||""}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:11px;color:var(--muted)">${s.solvedAt?new Date(s.solvedAt).toLocaleString('ar-EG'):""}</span>
+            ${!s.reviewed?'<span style="background:rgba(124,109,250,.15);color:var(--p);font-size:11px;padding:2px 8px;border-radius:6px;font-weight:700">جديد</span>':'<span style="background:rgba(34,197,94,.1);color:var(--ok);font-size:11px;padding:2px 8px;border-radius:6px">✅ راجعته</span>'}
+          </div>
+        </div>
+        ${s.starterCode?`<div style="font-size:11px;color:var(--muted);margin-bottom:2px">📌 كود البداية:</div>
+        <pre style="background:var(--bg);padding:10px;border-radius:8px;font-size:12px;overflow-x:auto;direction:ltr;color:#a0c8ff;margin:0">${s.starterCode}</pre>`:""}
+        <div style="font-size:11px;color:var(--muted);margin-bottom:2px">✍️ كود الطالب:</div>
+        <pre style="background:#07090f;padding:10px;border-radius:8px;font-size:12px;overflow-x:auto;direction:ltr;color:#e4e6f0;margin:0">${s.studentCode||""}</pre>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:2px">📤 النتيجة:</div>
+        <pre style="background:#07090f;padding:10px;border-radius:8px;font-size:12px;overflow-x:auto;direction:ltr;color:#a0ffb0;margin:0">${s.output||""}</pre>
+        ${!s.reviewed?`<button class="btn sm ok" style="align-self:flex-start" onclick="markCodeSolReviewed('${pkey(s.studentPhone)}','${s.videoId}')">✅ تم المراجعة</button>`:""}
+      </div>`).join("");
+  });
+}
+
+async function markCodeSolReviewed(studentKey, videoId){
+  await fbUpd(`code_solutions/${studentKey}/${videoId}`,{reviewed:true});
+  toast("✅ تم تعليم الحل كـ مراجع");
+}
+
+// Load code solutions badge on admin login
+async function loadCodeSolsBadge(){
+  const data=await fbGet("code_solutions");
+  if(!data)return;
+  let count=0;
+  Object.values(data).forEach(s=>Object.values(s).forEach(sol=>{if(!sol.reviewed)count++}));
+  const badge=document.getElementById("codesols-badge");
+  if(badge){badge.style.display=count>0?"inline-flex":"none";badge.textContent=count}
+}
+
+/* ════════════════════════════════
+   ██████ EXAM SYSTEM ██████
+════════════════════════════════ */
+
+/* ── Admin: Create Exam ── */
+let _examQuestions = [];
+
+function renderAdminExams(m) {
+  m.innerHTML = `<div class="section"><div class="sec-title">📝 الامتحانات</div><div id="exams-content"><div class="empty">جاري التحميل...</div></div></div>`;
+  fbListen("exams", data => {
+    const el = document.getElementById("exams-content"); if (!el) return;
+    const exams = data ? Object.values(data).reverse() : [];
+    el.innerHTML = `
+      <button class="btn" style="max-width:220px;margin-bottom:20px" onclick="showCreateExam()">➕ إنشاء امتحان جديد</button>
+      <div id="exam-list">
+        ${exams.length === 0 ? '<div class="empty">لا توجد امتحانات بعد</div>' : exams.map(e => renderExamCard(e)).join("")}
+      </div>
+      <div id="create-exam-wrap" style="display:none"></div>`;
+  });
+}
+
+function renderExamCard(e) {
+  const targetLabel = e.targetType === "all" ? "كل الطلاب" :
+    e.targetType === "progress" ? `الطلاب اللي خلصوا ${e.targetValue}% أو أكتر` :
+    e.targetType === "lesson" ? `الطلاب اللي خلصوا درس: ${e.targetLabel||e.targetValue}` : "";
+  return `<div class="exam-card">
+    <div class="exam-card-head">
+      <div>
+        <div class="exam-card-title">📝 ${e.title}</div>
+        <div class="exam-card-meta">📤 ${e.createdAt||""} · ${(e.questions||[]).length} سؤال · <span class="exam-tag">${targetLabel}</span></div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn sm danger" onclick="deleteExam('${e.id}')">🗑</button>
+      </div>
+    </div>
+    <div class="exam-actions">
+      <button class="btn sm" onclick="viewExamResults('${e.id}')">📊 النتائج</button>
+      <button class="btn sm outline" onclick="sendExamToStudents('${e.id}')">📤 إرسال للطلاب</button>
+    </div>
+  </div>`;
+}
+
+function showCreateExam() {
+  _examQuestions = [];
+  const wrap = document.getElementById("create-exam-wrap");
+  wrap.style.display = "block";
+  wrap.innerHTML = `<div class="exam-form" style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+    <div class="sec-title" style="font-size:15px;margin-bottom:16px">➕ امتحان جديد</div>
+    <div class="field"><label>عنوان الامتحان</label><input class="inp" id="ex-title" placeholder="مثال: امتحان Python الأول"/></div>
+    <div class="field"><label>🎯 إرسال لمين؟</label>
+      <select class="inp" id="ex-target-type" onchange="updateTargetInput()">
+        <option value="all">كل الطلاب</option>
+        <option value="progress">اللي خلصوا نسبة معينة</option>
+        <option value="lesson">اللي خلصوا درس معين</option>
+      </select>
+    </div>
+    <div id="ex-target-extra" style="display:none"></div>
+    <div class="sec-divider"></div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px">الأسئلة:</div>
+    <div id="ex-questions-wrap"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      <button class="btn sm outline" onclick="addExamQ('mcq')">➕ اختيار متعدد</button>
+      <button class="btn sm outline" onclick="addExamQ('tf')">➕ صح وغلط</button>
+      <button class="btn sm outline" onclick="addExamQ('code')">➕ أكمل الكود</button>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn" style="max-width:200px" onclick="saveExam()">💾 حفظ الامتحان</button>
+      <button class="btn outline" style="max-width:120px" onclick="document.getElementById('create-exam-wrap').style.display='none'">إلغاء</button>
+    </div>
+  </div>`;
+  updateTargetInput();
+}
+
+async function updateTargetInput() {
+  const type = document.getElementById("ex-target-type").value;
+  const extra = document.getElementById("ex-target-extra");
+  if (type === "all") { extra.style.display = "none"; return; }
+  extra.style.display = "block";
+  if (type === "progress") {
+    extra.innerHTML = `<div class="field"><label>النسبة المئوية (مثال: 50)</label><input class="inp" id="ex-target-val" type="number" min="1" max="100" placeholder="50" style="max-width:140px"/></div>`;
+  } else if (type === "lesson") {
+    const vids = await fbGet("videos") || {};
+    const opts = Object.values(vids).sort((a,b)=>a.id-b.id).map(v => `<option value="${v.id}">${v.title}</option>`).join("");
+    extra.innerHTML = `<div class="field"><label>اختر الدرس</label><select class="inp" id="ex-target-val" style="max-width:320px">${opts}</select></div>`;
+  }
+}
+
+function addExamQ(type) {
+  const idx = _examQuestions.length;
+  _examQuestions.push({ type, text: "", choices: type === "mcq" ? ["", "", "", ""] : [], correctIndex: 0, correctTF: true, starterCode: "" });
+  renderExamQuestions();
+}
+
+function renderExamQuestions() {
+  const wrap = document.getElementById("ex-questions-wrap"); if (!wrap) return;
+  if (_examQuestions.length === 0) { wrap.innerHTML = ""; return; }
+  wrap.innerHTML = _examQuestions.map((q, i) => {
+    const typeLabel = q.type === "mcq" ? "اختيار متعدد" : q.type === "tf" ? "صح وغلط" : "أكمل الكود";
+    let inner = "";
+    if (q.type === "mcq") {
+      inner = `<div class="choices-wrap">` + q.choices.map((c, ci) => `
+        <div class="choice-row">
+          <input type="radio" class="choice-correct" name="correct-${i}" ${q.correctIndex===ci?"checked":""} onchange="_examQuestions[${i}].correctIndex=${ci}" title="الإجابة الصحيحة"/>
+          <input type="text" value="${c}" placeholder="الاختيار ${ci+1}" oninput="_examQuestions[${i}].choices[${ci}]=this.value"/>
+          <span class="choice-correct-label">${q.correctIndex===ci?"✅ صح":""}</span>
+        </div>`).join("") +
+        `</div><button class="btn sm outline" style="margin-top:8px;font-size:11px" onclick="addExamChoice(${i})">+ إضافة اختيار</button>`;
+    } else if (q.type === "tf") {
+      inner = `<div style="display:flex;gap:12px;margin-top:8px">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="radio" name="tf-${i}" ${q.correctTF===true?"checked":""} onchange="_examQuestions[${i}].correctTF=true"/> ✅ صح</label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="radio" name="tf-${i}" ${q.correctTF===false?"checked":""} onchange="_examQuestions[${i}].correctTF=false"/> ❌ غلط</label>
+      </div>`;
+    } else {
+      inner = `<textarea class="inp" rows="2" style="font-family:monospace;direction:ltr;margin-top:8px" placeholder="كود البداية (اختياري)" oninput="_examQuestions[${i}].starterCode=this.value">${q.starterCode||""}</textarea>`;
+    }
+    return `<div class="q-block">
+      <button class="del-q-btn" onclick="delExamQ(${i})">✕ حذف</button>
+      <div class="q-num">سؤال ${i+1} · ${typeLabel}</div>
+      <textarea class="inp" rows="2" placeholder="نص السؤال..." oninput="_examQuestions[${i}].text=this.value" style="margin-bottom:8px">${q.text||""}</textarea>
+      ${inner}
+    </div>`;
+  }).join("");
+}
+
+function addExamChoice(qi) {
+  _examQuestions[qi].choices.push("");
+  renderExamQuestions();
+}
+
+function delExamQ(i) {
+  _examQuestions.splice(i, 1);
+  renderExamQuestions();
+}
+
+async function saveExam() {
+  const title = document.getElementById("ex-title")?.value.trim();
+  const targetType = document.getElementById("ex-target-type")?.value;
+  if (!title) { toast("❌ اكتب عنوان الامتحان", "err"); return; }
+  if (_examQuestions.length === 0) { toast("❌ أضف سؤال واحد على الأقل", "err"); return; }
+  // Read current question texts from DOM before saving
+  document.querySelectorAll("#ex-questions-wrap textarea").forEach((ta, i) => {
+    if (_examQuestions[i] && i < _examQuestions.length) {
+      // texts already bound via oninput
+    }
+  });
+  let targetValue = "", targetLabel = "";
+  if (targetType !== "all") {
+    targetValue = document.getElementById("ex-target-val")?.value || "";
+    if (targetType === "lesson") {
+      const sel = document.getElementById("ex-target-val");
+      targetLabel = sel?.options[sel.selectedIndex]?.text || "";
+    }
+  }
+  const id = "ex_" + Date.now();
+  await fbSet(`exams/${id}`, {
+    id, title, targetType, targetValue, targetLabel,
+    questions: _examQuestions,
+    createdAt: new Date().toLocaleDateString("ar-EG"),
+    active: true
+  });
+  toast("✅ تم حفظ الامتحان");
+  document.getElementById("create-exam-wrap").style.display = "none";
+  _examQuestions = [];
+}
+
+async function deleteExam(id) {
+  if (!confirm("تأكيد حذف الامتحان؟")) return;
+  await fbDel(`exams/${id}`);
+  toast("تم الحذف");
+}
+
+async function sendExamToStudents(examId) {
+  const exam = await fbGet(`exams/${examId}`); if (!exam) return;
+  const allUsers = await fbGet("users") || {};
+  const students = Object.values(allUsers).filter(u => !u.isAdmin && u.approved);
+  let targets = [];
+  if (exam.targetType === "all") {
+    targets = students;
+  } else if (exam.targetType === "progress") {
+    const pct = parseInt(exam.targetValue) || 0;
+    const allVids = await fbGet("videos") || {};
+    const total = Object.keys(allVids).length || 1;
+    for (const u of students) {
+      const prog = await fbGet(`progress/${pkey(u.phone)}`) || {};
+      const done = Object.values(prog).filter(p => p.passed).length;
+      if ((done / total) * 100 >= pct) targets.push(u);
+    }
+  } else if (exam.targetType === "lesson") {
+    for (const u of students) {
+      const prog = await fbGet(`progress/${pkey(u.phone)}/${exam.targetValue}`);
+      if (prog?.passed) targets.push(u);
+    }
+  }
+  let sent = 0;
+  for (const u of targets) {
+    await fbSet(`student_exams/${pkey(u.phone)}/${examId}`, { examId, status: "pending", sentAt: Date.now() });
+    sent++;
+  }
+  await sendPushToAll(`📝 امتحان جديد: ${exam.title}`, `افتح المنصة وأجب على الامتحان الآن!`);
+  toast(`✅ تم إرسال الامتحان لـ ${sent} طالب`);
+}
+
+async function viewExamResults(examId) {
+  const m = document.getElementById("main-content");
+  m.innerHTML = `<div class="section"><div class="sec-title">📊 نتائج الامتحان</div><div class="empty">جاري التحميل...</div></div>`;
+  const exam = await fbGet(`exams/${examId}`);
+  const allResults = await fbGet(`exam_results/${examId}`) || {};
+  const allUsers = await fbGet("users") || {};
+  const pendingCode = await fbGet(`exam_pending_code/${examId}`) || {};
+  
+  const resultsList = Object.values(allResults).map(r => {
+    const u = Object.values(allUsers).find(x => pkey(x.phone) === r.studentKey) || {};
+    return `<div class="s-row">
+      <div><b>${u.name||r.studentKey}</b><br/><span style="font-size:12px;color:var(--muted)">${u.phone||""}</span></div>
+      <div style="text-align:center"><span style="font-size:18px;font-weight:900;color:${r.score>=70?'var(--ok)':'var(--err)'}">${r.score}%</span><br/><span style="font-size:11px;color:var(--muted)">${r.autoScore||0}/${r.totalAuto||0} تلقائي</span></div>
+    </div>`;
+  }).join("") || '<div class="empty">لا توجد نتائج بعد</div>';
+
+  const pendingList = Object.entries(pendingCode).map(([sk, answers]) => {
+    const u = Object.values(allUsers).find(x => pkey(x.phone) === sk) || {};
+    return Object.entries(answers).map(([qi, ans]) => `
+      <div class="pending-code-card">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px">👤 ${u.name||sk} · سؤال ${parseInt(qi)+1}</div>
+        <div style="font-size:13px;margin-bottom:8px">${exam?.questions?.[parseInt(qi)]?.text||""}</div>
+        <pre style="background:var(--bg);padding:10px;border-radius:8px;font-size:12px;overflow-x:auto;direction:ltr">${ans.code||""}</pre>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn sm ok" onclick="gradeCode('${examId}','${sk}','${qi}',true)">✅ صح</button>
+          <button class="btn sm danger" onclick="gradeCode('${examId}','${sk}','${qi}',false)">❌ غلط</button>
+        </div>
+      </div>`).join("");
+  }).join("") || "";
+
+  m.innerHTML = `<div class="section">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+      <button class="btn sm outline" onclick="adminPage('exams')">← رجوع</button>
+      <div class="sec-title" style="margin:0">📊 نتائج: ${exam?.title||""}</div>
+    </div>
+    ${pendingList ? `<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--warn)">⏳ أسئلة الكود بانتظار المراجعة</div>${pendingList}</div>` : ""}
+    <div style="font-size:14px;font-weight:700;margin-bottom:12px">نتائج الطلاب</div>
+    ${resultsList}
+  </div>`;
+}
+
+async function gradeCode(examId, studentKey, qIdx, correct) {
+  await fbUpd(`exam_pending_code/${examId}/${studentKey}/${qIdx}`, { graded: true, correct });
+  // Update student score
+  const result = await fbGet(`exam_results/${examId}/${studentKey}`) || {};
+  const codeScore = (result.codeScore || 0) + (correct ? 1 : 0);
+  const codeTotal = (result.codeTotal || 0) + 1;
+  const autoScore = result.autoScore || 0;
+  const totalAuto = result.totalAuto || 0;
+  const totalQ = (totalAuto + codeTotal) || 1;
+  const score = Math.round(((autoScore + codeScore) / totalQ) * 100);
+  await fbUpd(`exam_results/${examId}/${studentKey}`, { codeScore, codeTotal, score });
+  toast("✅ تم التقييم");
+  viewExamResults(examId);
+}
+
+/* ── Student: Take Exam ── */
+async function loadStudentExams(phone) {
+  const myExams = await fbGet(`student_exams/${pkey(phone)}`) || {};
+  const pending = Object.values(myExams).filter(e => e.status === "pending");
+  const badge = document.getElementById("exam-notif-badge");
+  if (badge) badge.style.display = pending.length > 0 ? "inline-flex" : "none";
+  if (badge) badge.textContent = pending.length;
+}
+
+async function openStudentExams(phone) {
+  const m = document.getElementById("main-content");
+  closeSidebar();
+  m.innerHTML = `<div class="exam-screen"><div class="empty">جاري التحميل...</div></div>`;
+  const myExams = await fbGet(`student_exams/${pkey(phone)}`) || {};
+  const examsArr = Object.values(myExams);
+  if (examsArr.length === 0) {
+    m.innerHTML = `<div class="exam-screen"><div class="empty">لا توجد امتحانات حالياً</div></div>`;
+    return;
+  }
+  const examCards = await Promise.all(examsArr.map(async se => {
+    const exam = await fbGet(`exams/${se.examId}`);
+    if (!exam) return "";
+    const done = se.status === "done";
+    const result = done ? await fbGet(`exam_results/${se.examId}/${pkey(phone)}`) : null;
+    return `<div class="exam-card">
+      <div class="exam-card-head">
+        <div>
+          <div class="exam-card-title">📝 ${exam.title}</div>
+          <div class="exam-card-meta">${exam.questions?.length||0} سؤال · ${exam.createdAt||""}</div>
+        </div>
+        ${done ? `<span class="exam-tag" style="background:rgba(34,197,94,.12);border-color:var(--ok);color:var(--ok)">✅ ${result?.score||0}%</span>` : '<span class="exam-tag">جديد</span>'}
+      </div>
+      ${!done ? `<button class="btn" style="max-width:180px;margin-top:12px" onclick="startExam('${se.examId}','${phone}')">🚀 ابدأ الامتحان</button>` : ""}
+    </div>`;
+  }));
+  m.innerHTML = `<div class="exam-screen">
+    <div class="exam-header"><h2>📝 امتحاناتي</h2><p>الامتحانات المتاحة لك</p></div>
+    ${examCards.join("")}
+  </div>`;
+}
+
+let _examAnswers = {};
+
+async function startExam(examId, phone) {
+  const m = document.getElementById("main-content");
+  const exam = await fbGet(`exams/${examId}`);
+  if (!exam) return;
+  _examAnswers = {};
+  const questions = exam.questions || [];
+
+  const qHTML = questions.map((q, i) => {
+    let answerUI = "";
+    if (q.type === "mcq") {
+      answerUI = `<div class="exam-choices">${(q.choices||[]).map((c,ci) =>
+        `<div class="exam-choice" id="ec-${i}-${ci}" onclick="selectMCQ(${i},${ci},${questions.length})">${c}</div>`).join("")}</div>`;
+    } else if (q.type === "tf") {
+      answerUI = `<div class="exam-tf">
+        <div class="exam-choice" id="ec-${i}-t" onclick="selectTF(${i},true,${questions.length})">✅ صح</div>
+        <div class="exam-choice" id="ec-${i}-f" onclick="selectTF(${i},false,${questions.length})">❌ غلط</div>
+      </div>`;
+    } else {
+      answerUI = `<textarea class="exam-code-inp" id="ec-code-${i}" placeholder="اكتب الكود هنا..." oninput="_examAnswers[${i}]=this.value">${q.starterCode||""}</textarea>`;
+    }
+    return `<div class="exam-q-wrap" id="eq-wrap-${i}">
+      <div class="exam-q-num">سؤال ${i+1} من ${questions.length}</div>
+      <div class="exam-q-text">${q.text}</div>
+      ${answerUI}
+    </div>`;
+  }).join("");
+
+  m.innerHTML = `<div class="exam-screen">
+    <div class="exam-header"><h2>📝 ${exam.title}</h2><p>${questions.length} سؤال · أجب على كل الأسئلة</p></div>
+    ${qHTML}
+    <button class="btn" onclick="submitExam('${examId}','${phone}')" style="margin-top:8px">📤 تسليم الامتحان</button>
+  </div>`;
+}
+
+function selectMCQ(qi, ci, total) {
+  _examAnswers[qi] = ci;
+  const q = document.getElementById(`eq-wrap-${qi}`);
+  q.querySelectorAll(".exam-choice").forEach((el,i) => el.classList.toggle("selected", i===ci));
+}
+
+function selectTF(qi, val, total) {
+  _examAnswers[qi] = val;
+  document.getElementById(`ec-${qi}-t`)?.classList.toggle("selected", val===true);
+  document.getElementById(`ec-${qi}-f`)?.classList.toggle("selected", val===false);
+}
+
+async function submitExam(examId, phone) {
+  const exam = await fbGet(`exams/${examId}`);
+  const questions = exam.questions || [];
+  let autoCorrect = 0, autoTotal = 0, codeAnswers = {};
+
+  questions.forEach((q, i) => {
+    if (q.type === "mcq") {
+      autoTotal++;
+      if (_examAnswers[i] === q.correctIndex) autoCorrect++;
+    } else if (q.type === "tf") {
+      autoTotal++;
+      if (_examAnswers[i] === q.correctTF) autoCorrect++;
+    } else if (q.type === "code") {
+      const code = document.getElementById(`ec-code-${i}`)?.value || _examAnswers[i] || "";
+      codeAnswers[i] = { code };
+    }
+  });
+
+  const score = autoTotal > 0 ? Math.round((autoCorrect / (autoTotal + Object.keys(codeAnswers).length)) * 100) : 0;
+  const studentKey = pkey(phone);
+
+  await fbSet(`exam_results/${examId}/${studentKey}`, {
+    studentKey, autoScore: autoCorrect, totalAuto: autoTotal,
+    codeTotal: Object.keys(codeAnswers).length, score,
+    submittedAt: Date.now()
+  });
+
+  if (Object.keys(codeAnswers).length > 0) {
+    await fbSet(`exam_pending_code/${examId}/${studentKey}`, codeAnswers);
+  }
+
+  await fbUpd(`student_exams/${studentKey}/${examId}`, { status: "done" });
+
+  // Show result
+  const m = document.getElementById("main-content");
+  const passed = score >= 60;
+  m.innerHTML = `<div class="exam-screen">
+    <div class="exam-result">
+      <div class="exam-score">${score}%</div>
+      <h3>${passed?"🎉 أحسنت!":"💪 حاول تاني!"}</h3>
+      <p>${autoCorrect} صح من ${autoTotal} سؤال تلقائي${Object.keys(codeAnswers).length>0?`<br/>+ ${Object.keys(codeAnswers).length} سؤال كود بانتظار مراجعة المدير`:""}</p>
+      <button class="btn" style="max-width:200px;margin-top:20px" onclick="openStudentExams('${phone}')">← رجوع للامتحانات</button>
+    </div>
+  </div>`;
+}
+
+
+/* ════════════════════════════════
+   ██████ STUDENT ██████
+════════════════════════════════ */
+function renderStudentSidebar(u){
+  show("sb-progress");
+  const nav=document.getElementById("sb-nav");
+  nav.className="sb-nav videos";
+  nav.innerHTML=`<div class="search-wrap"><input class="search-inp" id="search-inp" placeholder="🔍 ابحث عن درس..." oninput="filterVideos()" dir="rtl"/></div><div id="vid-list"></div><div style="padding:10px 0 4px"><button onclick="openStudentExams('${u.phone}')" style="width:100%;background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:10px;color:var(--p);padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between">📝 امتحاناتي <span id="exam-notif-badge" style="display:none;background:var(--err);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;align-items:center;justify-content:center">0</span></button></div>`;
+  if(!u.approved){renderStudentStatus(u);return}
+
+  fbListen("videos",data=>{
+    _allVideos=data?Object.values(data).sort((a,b)=>a.id-b.id):[];
+    if(_allVideos.length>0){
+      const firstId=_allVideos[0].id;
+      if(!_myProgress[firstId]){
+        _myProgress[firstId]={unlocked:true,watched:false};
+        fbUpd(`progress/${pkey(u.phone)}/${firstId}`,{unlocked:true});
+      }
+    }
+    filterVideos();
+    updateProgressBar();
+  });
+
+  fbListen(`progress/${pkey(u.phone)}`,data=>{
+    _myProgress=data||{};
+    if(_allVideos.length>0&&!_myProgress[_allVideos[0].id]){
+      _myProgress[_allVideos[0].id]={unlocked:true,watched:false};
+      fbUpd(`progress/${pkey(u.phone)}/${_allVideos[0].id}`,{unlocked:true});
+    }
+    filterVideos();
+    updateProgressBar();
+  });
+
+  fbListen(`users/${pkey(u.phone)}`,data=>{
+    if(data&&data.approved!==u.approved){_currentUser=data;renderApp(data)}
+    if(data&&data.status==="rejected"&&!u.isAdmin){_currentUser=data;renderStudentStatus(data)}
+  });
+  renderStudentWelcome();
+}
+
+function updateProgressBar(){
+  const total=_allVideos.length;
+  const watched=Object.values(_myProgress).filter(p=>p.watched).length;
+  const pct=total>0?Math.round(watched/total*100):0;
+  const fillEl=document.getElementById("prog-fill");
+  const textEl=document.getElementById("prog-text");
+  const pctEl=document.getElementById("prog-pct");
+  if(fillEl)fillEl.style.width=pct+"%";
+  if(textEl)textEl.textContent=`${watched} / ${total} درس`;
+  if(pctEl)pctEl.textContent=pct+"%";
+}
+
+function filterVideos(){
+  const q=(document.getElementById("search-inp")?.value||"").toLowerCase();
+  const list=document.getElementById("vid-list");if(!list)return;
+  const filtered=_allVideos.filter(v=>v.title.toLowerCase().includes(q)||(v.category||"").toLowerCase().includes(q));
+  if(filtered.length===0){list.innerHTML=`<div class="empty">لا توجد نتائج</div>`;return}
+  list.innerHTML=filtered.map(v=>{
+    const prog=_myProgress[v.id]||{};
+    const unlocked=prog.unlocked===true;
+    const watched=prog.watched===true;
+    const passed=prog.passed===true;
+    let icon="🔒";
+    let cls="locked";
+    if(watched&&passed){icon="✅";cls="done"}
+    else if(unlocked){icon="▶️";cls=""}
+    return `<button onclick="${unlocked?`playVideo('${v.id}')`:`toast('🔒 أنهِ الدرس السابق أولاً','err')`}"
+      id="vnav-${v.id}"
+      class="${cls}"
+      style="display:flex;align-items:center;justify-content:space-between;gap:6px;padding:10px 12px">
+      <span style="flex:1;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px">${icon} ${v.title}</span>
+      ${v.category?`<span style="font-size:10px;background:rgba(0,229,255,.1);color:var(--a);padding:2px 7px;border-radius:5px;white-space:nowrap;flex-shrink:0;border:1px solid rgba(0,229,255,.15)">${v.category}</span>`:""}
+    </button>`;
+  }).join("");
+}
+
+async function renderStudentWelcome(){
+  const m=document.getElementById("main-content");
+  const total=_allVideos.length;
+  const watched=Object.values(_myProgress).filter(p=>p.watched).length;
+  const pct=total>0?Math.round(watched/total*100):0;
+  const lastVid=_currentUser.lastVideo?_allVideos.find(v=>v.id===_currentUser.lastVideo):null;
+  const myPoints=_currentUser.points||0;
+
+  const questions=await fbGet("questions")||{};
+  const allAnswers=await fbGet("answers")||{};
+  const answersArr=Object.values(allAnswers);
+
+  const pendingQ=Object.values(questions).find(q=>{
+    if(q.studentPhone!==_currentUser.phone||q.answered)return false;
+    const hasPendingAns=answersArr.some(a=>a.studentPhone===_currentUser.phone&&a.videoId===q.videoId&&a.correct===null);
+    return !hasPendingAns;
+  });
+
+  const wrongAns=answersArr.find(a=>{
+    if(a.studentPhone!==_currentUser.phone||a.correct!==false)return false;
+    const hasNewerPending=answersArr.some(b=>b.studentPhone===_currentUser.phone&&b.videoId===a.videoId&&b.correct===null&&b.ts>a.ts);
+    return !hasNewerPending;
+  });
+
+  const activeQ=pendingQ||(wrongAns?{
+    id:wrongAns.questionId||wrongAns.id,
+    videoId:wrongAns.videoId,
+    videoTitle:wrongAns.videoTitle,
+    question:wrongAns.question,
+    isRetry:true,
+    prevAnswer:wrongAns.answer
+  }:null);
+
+  let questionBlock="";
+  if(activeQ){
+    questionBlock=`
+    <div style="background:rgba(245,158,11,.07);border:2px solid rgba(245,158,11,.35);border-radius:18px;padding:22px 20px;margin-bottom:24px;max-width:500px;width:100%;text-align:right">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="font-size:26px">💬</span>
+        <div>
+          <div style="font-weight:900;color:var(--warn);font-size:15px">سؤال من المدير!</div>
+          <div style="font-size:12px;color:var(--muted)">📚 ${activeQ.videoTitle||""}</div>
+        </div>
+      </div>
+      ${activeQ.isRetry?`<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--err)">❌ إجابتك السابقة كانت خاطئة: "<b>${activeQ.prevAnswer}</b>"<br/>حاول مرة أخرى 💪</div>`:""}
+      <div style="font-size:15px;font-weight:700;margin-bottom:14px;line-height:1.7;color:#e4e6f0">❓ ${activeQ.question}</div>
+      <textarea id="home-quiz-ans" placeholder="اكتب إجابتك هنا..." style="width:100%;background:var(--bg);border:1.5px solid rgba(245,158,11,.3);border-radius:12px;color:#e4e6f0;padding:12px 14px;font-family:'Cairo',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:90px;margin-bottom:12px;transition:border .2s" onfocus="this.style.borderColor='var(--warn)'"></textarea>
+      <button class="btn" style="background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 4px 16px rgba(245,158,11,.3);max-width:200px" onclick="submitAnswerFromHome('${activeQ.videoId}','${activeQ.id}','${(activeQ.question||"").replace(/'/g,"\\'")}')">إرسال الإجابة 📤</button>
+    </div>`;
+  }
+
+  m.innerHTML=`<div class="welcome">
+    <div class="welcome-icon">{"</>"}</div>
+    <h2>مرحباً ${_currentUser.name}! 👋</h2>
+    ${questionBlock}
+    ${!activeQ?"<p style='color:var(--muted);font-size:14px;margin-bottom:24px'>اختر درساً من القائمة الجانبية لتبدأ رحلتك 🚀</p>":""}
+    <div class="stats">
+      <div class="stat"><span class="points-big">${myPoints}</span><label>⭐ نقاطك</label></div>
+      <div class="stat"><span>${watched}</span><label>✅ درس شفته</label></div>
+      <div class="stat"><span>${pct}%</span><label>📊 إنجازك</label></div>
+      <div class="stat"><span>${total}</span><label>📚 كل الدروس</label></div>
+      ${lastVid?`<div class="stat" style="cursor:pointer" onclick="playVideo('${lastVid.id}')"><span>▶</span><label>آخر درس<br/><span style="font-size:10px;font-family:'Cairo';background:none;-webkit-text-fill-color:var(--muted)">${lastVid.title.substring(0,18)}...</span></label></div>`:""}
+    </div>
+  </div>`;
+}
+
+async function submitAnswerFromHome(videoId,questionId,question){
+  const ansEl=document.getElementById("home-quiz-ans");
+  const ans=ansEl?ansEl.value.trim():"";
+  if(!ans){toast("❌ اكتب إجابتك أولاً","err");return}
+
+  _submittedAnswerVideoIds.add(videoId);
+  const qBox=document.querySelector('.welcome div[style*="rgba(245,158,11"]');
+  if(qBox){qBox.innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:32px;margin-bottom:10px">⏳</div><div style="color:var(--warn);font-weight:700">جاري إرسال إجابتك...</div></div>'}
+
+  const v=_allVideos.find(x=>x.id===videoId);
+  const aId=Date.now().toString();
+
+  const oldAnswers=await fbGet("answers")||{};
+  const oldWrong=Object.values(oldAnswers).find(a=>
+    a.studentPhone===_currentUser.phone&&a.videoId===videoId&&a.correct===false
+  );
+  if(oldWrong){
+    await fbUpd(`answers/${oldWrong.id}`,{correct:"replaced"});
+  }
+
+  await fbSet(`answers/${aId}`,{
+    id:aId,questionId,studentPhone:_currentUser.phone,studentName:_currentUser.name,
+    videoId,videoTitle:v?.title||"",question,answer:ans,correct:null,ts:Date.now()
+  });
+  if(questionId)await fbUpd(`questions/${questionId}`,{answered:true});
+  await sendWA(ADMIN_PHONE,`📬 *إجابة جديدة* من ${_currentUser.name}!\n📚 الدرس: ${v?.title||""}\n❓ ${question}\n💬 الإجابة: ${ans}\n\nافتح المنصة لمراجعة الإجابة ✅`);
+
+  if(qBox){qBox.innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:32px;margin-bottom:10px">✅</div><div style="color:var(--ok);font-weight:700;font-size:16px">تم إرسال إجابتك!</div><div style="color:var(--muted);font-size:13px;margin-top:6px">انتظر مراجعة المدير 🕐</div></div>'}
+  toast("✅ تم إرسال إجابتك! انتظر مراجعة المدير");
+
+  setTimeout(async()=>{
+    await renderStudentWelcome();
+  },2500);
+}
+
+function renderStudentStatus(u){
+  const m=document.getElementById("main-content");
+  const isRej=u.status==="rejected";
+  const waNum="20"+ADMIN_PHONE.replace(/^0/,"");
+  m.innerHTML=`<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px"><div class="status-card">
+    <span class="status-icon">${isRej?"❌":"⏳"}</span>
+    <h2>${isRej?"تم رفض طلبك":"في انتظار الموافقة"}</h2>
+    ${isRej
+      ?`<p>نأسف، تم رفض طلب اشتراكك.</p>${u.rejectReason?`<div class="rej-box">📋 السبب: ${u.rejectReason}</div>`:""}<a class="wa-btn" href="https://wa.me/${waNum}" target="_blank" style="margin-top:18px;display:inline-flex">💬 تواصل مع المدير</a>`
+      :`<p>تم تسجيل حسابك بنجاح! ✅</p><p>سيظهر المحتوى تلقائياً فور موافقة المدير.</p>`}
+    <div class="status-phone">${u.phone}</div>
+  </div></div>`;
+  fbListen(`users/${pkey(u.phone)}`,data=>{if(data?.approved){_currentUser=data;renderApp(data)}});
+}
+
+/* ── FIX: playVideo — corrected template literal and added loadComments call outside ── */
+async function playVideo(id){
+  const v=_allVideos.find(x=>x.id===id);if(!v)return;
+  const prog=_myProgress[id]||{};
+  if(!prog.unlocked){toast("🔒 أنهِ الدرس السابق أولاً","err");return}
+  closeSidebar();
+
+  await fbUpd(`users/${pkey(_currentUser.phone)}`,{lastVideo:id});
+  _currentUser.lastVideo=id;
+
+  if(!prog.watched){
+    await fbUpd(`progress/${pkey(_currentUser.phone)}/${id}`,{watched:true,unlocked:true});
+    _myProgress[id]={...(_myProgress[id]||{}),watched:true,unlocked:true};
+    const wPts=await addPoints(_currentUser.phone,POINTS_WATCH,"مشاهدة درس جديد 👀");
+    showPointsAnim(POINTS_WATCH);
+    _currentUser.points=wPts;
+    await sendWA(ADMIN_PHONE,`👀 *${_currentUser.name}* بدأ مشاهدة درس:\n📚 ${v.title}`);
+    updateProgressBar();
+    filterVideos();
+  }
+
+  _allVideos.forEach(x=>{
+    const b=document.getElementById("vnav-"+x.id);
+    if(b)b.className=x.id===id?"on":(_myProgress[x.id]?.passed?"done":_myProgress[x.id]?.unlocked?"":"locked");
+  });
+
+  const m=document.getElementById("main-content");
+  const embed=ytEmbed(v.url);
+  const myProg=_myProgress[id]||{};
+  const passed=myProg.passed===true;
+
+  const questions=await fbGet("questions")||{};
+  const myQ=Object.values(questions).find(q=>q.studentPhone===_currentUser.phone&&q.videoId===id&&!q.answered);
+  const prevAnsAll=await fbGet("answers");
+  const myPrevAns=prevAnsAll?Object.values(prevAnsAll).find(a=>a.studentPhone===_currentUser.phone&&a.videoId===id):null;
+
+  let fahmtSection="";
+  if(passed){
+    fahmtSection=`<div class="fahimt-zone"><div style="color:var(--ok);font-size:14px;font-weight:700">✅ أحسنت! أنهيت هذا الدرس بنجاح</div></div>`;
+  }else if(myPrevAns&&myPrevAns.correct===false){
+    fahmtSection=`<div class="fahimt-zone">
+      <h4>💬 سؤال من المدير</h4>
+      <div class="quiz-box">
+        <div class="quiz-question">${myQ?myQ.question:myPrevAns.question}</div>
+        <div class="quiz-wrong">❌ إجابتك السابقة كانت خاطئة: "${myPrevAns.answer}"<br/>حاول مرة أخرى 💪</div>
+        <textarea class="quiz-answer-inp" id="quiz-ans" placeholder="إجابتك..."></textarea>
+        <button class="btn" onclick="submitAnswer('${id}','${myQ?myQ.id:myPrevAns.questionId||""}','${escJ(myQ?myQ.question:myPrevAns.question)}')">إرسال الإجابة 📤</button>
+      </div>
+    </div>`;
+  }else if(myQ){
+    fahmtSection=`<div class="fahimt-zone">
+      <h4>💬 سؤال من المدير</h4>
+      <div class="quiz-box">
+        <div class="quiz-question">${myQ.question}</div>
+        <textarea class="quiz-answer-inp" id="quiz-ans" placeholder="إجابتك..."></textarea>
+        <button class="btn" onclick="submitAnswer('${id}','${myQ.id}','${escJ(myQ.question)}')">إرسال الإجابة 📤</button>
+      </div>
+    </div>`;
+  }else if(myPrevAns&&myPrevAns.correct===null){
+    fahmtSection=`<div class="fahimt-zone"><div class="fahimt-pending">⏳ إجابتك بانتظار مراجعة المدير...</div></div>`;
+  }else{
+    fahmtSection=`<div class="fahimt-zone">
+      <h4>هل فهمت الدرس؟</h4>
+      <button class="btn ok" style="max-width:200px" onclick="markFahimt('${id}')">✅ فهمت!</button>
+    </div>`;
+  }
+
+  m.innerHTML=`<div class="viewer">
+    <div class="viewer-head">
+      <button class="back" onclick="renderStudentWelcome()">← رجوع</button>
+      ${v.category?`<span class="cat-tag">${v.category}</span>`:""}
+    </div>
+    <div class="viewer-title">${v.title}</div>
+    <div class="player" oncontextmenu="return false">
+      ${embed
+        ?`<iframe src="${embed}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" style="-webkit-user-select:none"></iframe>`
+        :`<video controls src="${v.url}" controlslist="nodownload" oncontextmenu="return false" style="width:100%;height:100%"></video>`}
+    </div>
+    ${v.desc?`<div class="viewer-desc">📝 ${v.desc}</div>`:""}
+    ${v.uploadedAt?`<div class="vdate-lg">📅 ${v.uploadedAt}</div>`:""}
+    ${v.challenge?`<div class="code-challenge" id="code-block-${id}">
+      <h4>🧑‍💻 تحدي الكود</h4>
+      <div class="challenge-desc">${v.challenge}</div>
+      ${v.starter?`<div style="background:#07090f;border:1.5px solid var(--border);border-radius:12px 12px 0 0;overflow:hidden;margin-bottom:0">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:#050710;border-bottom:1px solid var(--border)">
+          <span style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace">📌 كود البداية (للقراءة فقط)</span>
+          <span style="font-size:10px;color:rgba(239,68,68,.7)">🔒 readonly</span>
+        </div>
+        <pre style="padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a0c8ff;margin:0;overflow-x:auto;white-space:pre-wrap">${v.starter}</pre>
+      </div>`:""}
+      <div class="code-editor-wrap" style="${v.starter?'border-radius:0 0 12px 12px;border-top:none':''}">
+        <textarea class="code-editor" id="code-ed-${id}" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="// اكتب حلك هنا..." ${_myProgress[id]?.codeSolved?'readonly data-solved="true" style="opacity:.7"':''}></textarea>
+        <div class="code-toolbar">
+          <span>JavaScript Sandbox</span>
+          <button class="run-btn" id="run-btn-${id}" onclick="runCode('${id}','${escJ(v.starter||'')}')">▶ تشغيل</button>
+        </div>
+      </div>
+      <div class="code-output" id="code-out-${id}"></div>
+    </div>`:""}
+    ${fahmtSection}
+    <div class="comments-section">
+      <h4 style="font-size:14px;font-weight:700;margin-bottom:14px">💬 التعليقات <span id="comments-count" style="color:var(--muted);font-weight:400;font-size:12px"></span></h4>
+      <div id="comments-list" style="max-height:300px;overflow-y:auto"></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <textarea id="comment-inp" placeholder="اكتب تعليقك..." rows="2" style="flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;color:#e4e6f0;padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;outline:none;resize:none;min-height:60px;transition:border .2s"></textarea>
+        <button class="btn" style="max-width:80px;padding:10px;font-size:13px;align-self:flex-end" onclick="addComment('${id}')">إرسال</button>
+      </div>
+    </div>
+  </div>`;
+
+  loadComments(id);
+}
+
+
+function runCode(videoId, starter){
+  const editor=document.getElementById("code-ed-"+videoId);
+  const output=document.getElementById("code-out-"+videoId);
+  const runBtn=document.getElementById("run-btn-"+videoId);
+  if(!editor||!output)return;
+
+  // If already solved - block editing
+  if(editor.dataset.solved==="true"){
+    toast("✅ حليت التحدي ده بالفعل!","ok");
+    return;
+  }
+
+  const studentCode=editor.value.trim();
+  if(!studentCode){toast("اكتب الكود الأول!","err");return}
+
+  // Combine starter + student code
+  const fullCode=(starter?starter+"\n":"")+studentCode;
+  output.className="code-output visible";
+  output.textContent="";
+
+  const logs=[];
+  const origLog=console.log;
+  const origError=console.error;
+  console.log=(...args)=>logs.push(args.map(a=>typeof a==="object"?JSON.stringify(a,null,2):String(a)).join(" "));
+  console.error=(...args)=>logs.push("❌ "+args.join(" "));
+
+  try{
+    const fn=new Function(fullCode);
+    fn();
+    console.log=origLog;
+    console.error=origError;
+
+    if(logs.length===0){
+      output.textContent="⚠️ الكود اشتغل بدون أخطاء بس مفيش output — تأكد إنك استخدمت console.log()";
+      output.classList.remove("err");
+      return;
+    }
+
+    const result=logs.join("\n");
+    output.textContent=result;
+    output.classList.remove("err");
+
+    // ✅ Code ran successfully with output — mark solved & send to admin
+    editor.dataset.solved="true";
+    editor.readOnly=true;
+    editor.style.opacity="0.7";
+    if(runBtn){runBtn.disabled=true;runBtn.textContent="✅ تم الحل";}
+
+    // Show success message
+    const successEl=document.createElement("div");
+    successEl.style.cssText="margin-top:10px;background:rgba(34,197,94,.1);border:1px solid var(--ok);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--ok);font-weight:700";
+    successEl.textContent="🎉 أحسنت! حليت التحدي — تم إرسال الحل للمدير";
+    output.after(successEl);
+
+    // Send to admin via Firebase
+    const v=_allVideos.find(x=>x.id===videoId)||{};
+    fbSet(`code_solutions/${pkey(_currentUser.phone)}/${videoId}`,{
+      studentName:_currentUser.name,
+      studentPhone:_currentUser.phone,
+      videoId,
+      videoTitle:v.title||"",
+      starterCode:starter||"",
+      studentCode,
+      output:result,
+      solvedAt:Date.now(),
+      reviewed:false
+    });
+
+    // Save solved state in progress
+    fbUpd(`progress/${pkey(_currentUser.phone)}/${videoId}`,{codeSolved:true});
+    _myProgress[videoId]={...(_myProgress[videoId]||{}),codeSolved:true};
+
+  }catch(e){
+    console.log=origLog;
+    console.error=origError;
+    output.textContent="❌ خطأ: "+e.message+"\n\nراجع الكود وحاول تاني 💪";
+    output.classList.add("err");
+  }
+}
+
+async function markFahimt(videoId){
+  const v=_allVideos.find(x=>x.id===videoId);
+  await sendWA(ADMIN_PHONE,`🎉 *${_currentUser.name}* أنهى الدرس وضغط فهمت!\n📚 الدرس: ${v?.title||""}\n📞 ${_currentUser.phone}`);
+  const idx=_allVideos.findIndex(x=>x.id===videoId);
+  await fbUpd(`progress/${pkey(_currentUser.phone)}/${videoId}`,{watched:true,unlocked:true,passed:true});
+  _myProgress[videoId]={...(_myProgress[videoId]||{}),passed:true,watched:true,unlocked:true};
+  if(idx>=0&&idx+1<_allVideos.length){
+    const nextId=_allVideos[idx+1].id;
+    await fbUpd(`progress/${pkey(_currentUser.phone)}/${nextId}`,{unlocked:true});
+    _myProgress[nextId]={...(_myProgress[nextId]||{}),unlocked:true};
+  }
+  updateProgressBar();
+  filterVideos();
+  // نقاط فهمت
+  const fPts=await addPoints(_currentUser.phone,POINTS_FAHIMT,"ضغط فهمت ✅");
+  showPointsAnim(POINTS_FAHIMT);
+  _currentUser.points=fPts;
+  toast("✅ أحسنت! تم فتح الدرس التالي 🚀");
+  await playVideo(videoId);
+}
+
+async function submitAnswer(videoId,questionId,question){
+  const ans=document.getElementById("quiz-ans")?.value.trim();
+  if(!ans){toast("❌ اكتب إجابتك أولاً","err");return}
+  const v=_allVideos.find(x=>x.id===videoId);
+  const aId=Date.now().toString();
+  await fbSet(`answers/${aId}`,{
+    id:aId,questionId,studentPhone:_currentUser.phone,studentName:_currentUser.name,
+    videoId,videoTitle:v?.title||"",question,answer:ans,correct:null,ts:Date.now()
+  });
+  if(questionId)await fbUpd(`questions/${questionId}`,{answered:true});
+  await sendWA(ADMIN_PHONE,`📬 *إجابة جديدة* من ${_currentUser.name}!\n📚 الدرس: ${v?.title||""}\n❓ ${question}\n💬 الإجابة: ${ans}\n\nافتح المنصة لمراجعة الإجابة ✅`);
+  toast("✅ تم إرسال إجابتك! انتظر مراجعة المدير");
+  await playVideo(videoId);
+}
+
+/* ── Comments ── */
+async function loadComments(videoId){
+  fbListen("comments/"+videoId,function(data){
+    var el=document.getElementById("comments-list");
+    var cnt=document.getElementById("comments-count");
+    if(!el)return;
+    if(!data){el.innerHTML='<div style="color:var(--muted);font-size:13px">لا توجد تعليقات بعد</div>';if(cnt)cnt.textContent="";return}
+    var items=Object.values(data).sort(function(a,b){return(a.ts||0)-(b.ts||0)});
+    if(cnt)cnt.textContent="("+items.length+")";
+    el.innerHTML=items.map(function(c){
+      var isAdm=!!c.isAdmin;
+      var cls="comment-ava"+(isAdm?" admin-ava":"");
+      var icon=isAdm?"👑":(c.authorName?c.authorName[0]:"?");
+      var col=isAdm?"var(--warn)":"#e4e6f0";
+      var nm=isAdm?"المدير":c.authorName;
+      var t=c.ts?new Date(c.ts).toLocaleTimeString("ar-EG",{hour:"2-digit",minute:"2-digit"}):"";
+      var del=(_currentUser&&_currentUser.isAdmin)?'<button onclick="deleteComment(\''+videoId+'\',\''+c.id+'\')" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;margin-top:4px">حذف</button>':"";
+      return '<div class="comment-item"><div class="'+cls+'">'+icon+'</div><div class="comment-body"><div class="comment-meta"><span style="font-weight:700;color:'+col+'">'+nm+'</span><span>'+t+'</span></div><div class="comment-text">'+c.text+'</div>'+del+'</div></div>';
+    }).join("");
+    // scroll to bottom
+    el.scrollTop=el.scrollHeight;
+  });
+}
+
+async function addComment(videoId){
+  var inp=document.getElementById("comment-inp");
+  var text=inp?inp.value.trim():"";
+  if(!text){toast("اكتب تعليقك أولاً","err");return}
+  var cId=Date.now().toString();
+  var isAdmin=!!(_currentUser&&_currentUser.isAdmin);
+  await fbSet("comments/"+videoId+"/"+cId,{id:cId,videoId:videoId,authorPhone:_currentUser.phone,authorName:_currentUser.name,text:text,isAdmin:isAdmin,ts:Date.now()});
+  inp.value="";
+  var v=_allVideos.find(function(x){return x.id===videoId});
+  var vTitle=v?v.title:"";
+  if(isAdmin){
+    var prog=await fbGet("progress")||{};
+    for(var phoneKey of Object.keys(prog)){
+      if(prog[phoneKey][videoId]&&prog[phoneKey][videoId].watched){
+        var ph=phoneKey.replace(/-/g,".");
+        if(ph!==ADMIN_PHONE)await pushNotif(ph,"رد المدير على درس: "+vTitle,videoId,"comment");
+      }
+    }
+  }else{
+    await pushNotif(ADMIN_PHONE,"تعليق جديد من "+_currentUser.name+" - "+vTitle,videoId,"comment");
+  }
+}
+
+async function deleteComment(videoId,cId){await fbDel("comments/"+videoId+"/"+cId)}
+
+/* ── Notifications ── */
+async function pushNotif(phone,text,videoId,type){
+  var nId=Date.now().toString()+Math.floor(Math.random()*1000);
+  await fbSet("notifs/"+pkey(phone)+"/"+nId,{id:nId,text:text,videoId:videoId||"",type:type||"info",read:false,ts:Date.now()});
+}
+
+function startNotifListener(){
+  if(!_currentUser)return;
+  var wrap=document.getElementById("notif-wrap");
+  if(wrap)wrap.style.display="flex";
+  fbListen("notifs/"+pkey(_currentUser.phone),function(data){
+    var cEl=document.getElementById("notif-count");
+    var lEl=document.getElementById("notif-list");
+    if(!data){if(cEl)cEl.style.display="none";if(lEl)lEl.innerHTML='<div class="notif-empty">لا توجد إشعارات</div>';return}
+    var items=Object.values(data).sort(function(a,b){return(b.ts||0)-(a.ts||0)});
+    var unread=items.filter(function(x){return!x.read}).length;
+    if(cEl){cEl.textContent=unread>9?"9+":unread;cEl.style.display=unread>0?"flex":"none";}
+    if(!lEl)return;
+    if(!items.length){lEl.innerHTML='<div class="notif-empty">لا توجد إشعارات</div>';return}
+    lEl.innerHTML=items.slice(0,20).map(function(n){
+      var em=n.type==="comment"?"💬":n.type==="correct"?"✅":n.type==="wrong"?"❌":n.type==="video"?"📚":"🔔";
+      var t=n.ts?new Date(n.ts).toLocaleString("ar-EG",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"";
+      var dot=n.read?"":'<div style="width:7px;height:7px;border-radius:50%;background:var(--p);flex-shrink:0;margin-top:6px"></div>';
+      return '<div class="notif-item '+(n.read?"":"unread")+'" onclick="handleNotifClick(\''+n.id+'\',\''+n.videoId+'\')">'
+        +'<div class="n-icon">'+em+'</div>'
+        +'<div style="flex:1"><div class="n-text">'+n.text+'</div><div class="n-time">'+t+'</div></div>'+dot+'</div>';
+    }).join("");
+  });
+}
+
+async function handleNotifClick(notifId,videoId){
+  await fbUpd("notifs/"+pkey(_currentUser.phone)+"/"+notifId,{read:true});
+  var p=document.getElementById("notif-panel");
+  if(p)p.classList.remove("show");
+  if(videoId&&!(_currentUser&&_currentUser.isAdmin))playVideo(videoId);
+}
+
+async function markAllRead(){
+  var data=await fbGet("notifs/"+pkey(_currentUser.phone))||{};
+  var fb=await waitFB();
+  var u={};
+  Object.keys(data).forEach(function(k){u["notifs/"+pkey(_currentUser.phone)+"/"+k+"/read"]=true});
+  if(Object.keys(u).length)await fb.update(fb.ref(fb.db),u);
+}
+
+function toggleNotifPanel(){
+  var p=document.getElementById("notif-panel");
+  if(p)p.classList.toggle("show");
+}
+document.addEventListener("click",function(e){
+  var p=document.getElementById("notif-panel");
+  var b=document.getElementById("notif-btn");
+  if(p&&b&&!p.contains(e.target)&&!b.contains(e.target))p.classList.remove("show");
+});
+
+/* ── Helpers ── */
+function ytEmbed(url){
+  if(!url)return null;
+  const yt=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
+  if(yt)return `https://www.youtube.com/embed/${yt[1]}?rel=0&modestbranding=1`;
+  const gd=url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if(gd)return `https://drive.google.com/file/d/${gd[1]}/preview`;
+  return null;
+}
+function escJ(s){return(s||"").replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/\n/g," ")}
+
+
+/* ════════════════════════════════
+   ██████ PUSH NOTIFICATIONS ██████
+════════════════════════════════ */
+const VAPID_KEY = "BP1McLiRShFIhFdd5ABGjUHWdsOL5TxbEza4flgBVq1QQcKASdvrDL71-YdBWevQThmZ0d0Bpjvw7MdpHR5ZssU";
+
+let _fcmMessaging = null;
+
+async function initPushNotifications() {
+  if (!("Notification" in window) || !("serviceWorker" in navigator)) return;
+  try {
+    // تسجيل Service Worker
+    const reg = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+    console.log("SW registered ✅");
+
+    // تهيئة Firebase Messaging
+    const fbApp = firebase.apps.length
+      ? firebase.apps[0]
+      : firebase.initializeApp({
+          apiKey: "AIzaSyAwmXIlpdKXE_GTQMoQCFZJXIIVRTEcMhk",
+          authDomain: "codeacademy-fdea6.firebaseapp.com",
+          projectId: "codeacademy-fdea6",
+          storageBucket: "codeacademy-fdea6.firebasestorage.app",
+          messagingSenderId: "499595636893",
+          appId: "1:499595636893:web:4bb3e5da21a4c73679a474",
+        });
+
+    _fcmMessaging = firebase.messaging(fbApp);
+  } catch (e) {
+    console.log("SW init error:", e);
+  }
+}
+
+async function requestPushPermission(phone) {
+  if (!("Notification" in window)) return;
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") return;
+    if (!_fcmMessaging) await initPushNotifications();
+    if (!_fcmMessaging) return;
+
+    const token = await _fcmMessaging.getToken({ vapidKey: VAPID_KEY });
+    if (token) {
+      await fbUpd(`users/${pkey(phone)}`, { fcmToken: token });
+      console.log("FCM token saved ✅");
+    }
+  } catch (e) {
+    console.log("Push permission error:", e);
+  }
+}
+
+// استقبال الإشعارات لما التطبيق مفتوح
+async function setupForegroundMessages() {
+  if (!_fcmMessaging) return;
+  _fcmMessaging.onMessage((payload) => {
+    const { title, body } = payload.notification || {};
+    if (title) toast(`🔔 ${title}: ${body || ""}`, "ok");
+  });
+}
+
+// بعت إشعار لكل الطلاب (للمدير)
+async function sendPushToAll(title, body, url) {
+  const data = await fbGet("users");
+  if (!data) return;
+  const tokens = Object.values(data)
+    .filter(u => !u.isAdmin && u.approved && u.fcmToken)
+    .map(u => u.fcmToken);
+  if (!tokens.length) { toast("لا يوجد طلاب مشتركون في الإشعارات بعد", "err"); return; }
+  await sendPushNotification(tokens, title, body, url);
+}
+
+// بعت إشعار لطالب معين
+async function sendPushToUser(phone, title, body, url) {
+  const ud = await fbGet(`users/${pkey(phone)}`);
+  if (!ud?.fcmToken) return; // مش مشترك في الإشعارات
+  await sendPushNotification([ud.fcmToken], title, body, url);
+}
+
+async function sendPushNotification(tokens, title, body, url) {
+  try {
+    const res = await fetch("/.netlify/functions/send-notification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tokens, title, body, url: url || "https://littelprogrammer.netlify.app/" }),
+    });
+    const result = await res.json();
+    console.log("Push result:", result);
+    if (result.success > 0) toast(`🔔 تم إرسال إشعار لـ ${result.success} طالب`);
+  } catch (e) {
+    console.log("Push send error:", e);
+  }
+}
+
+/* ── Init ── */
+async function init(){
+  await waitFB();
+  const existing=await fbGet(`users/${pkey(ADMIN_PHONE)}`);
+  if(!existing)await fbSet(`users/${pkey(ADMIN_PHONE)}`,{name:"المدير",phone:ADMIN_PHONE,approved:true,isAdmin:true,status:"approved"});
+
+  const savedPhone=getSavedPhone();
+  if(savedPhone){
+    const ud=await fbGet(`users/${pkey(savedPhone)}`);
+    if(ud){
+      document.getElementById("loader").style.display="none";
+      _currentUser=ud;
+      renderApp(ud);
+      return;
+    }else{
+      clearSession();
+    }
+  }
+
+  document.getElementById("loader").style.display="none";
+  showAuth();
+}
+
+// تهيئة الإشعارات في الخلفية
+initPushNotifications();
+
+init();
+</script>
+
+<!-- Theme Modal -->
+<div id="theme-modal" style="display:none;position:fixed;inset:0;background:#0009;z-index:9990;align-items:center;justify-content:center;padding:16px">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:24px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative">
+    <button onclick="closeThemeModal()" style="position:absolute;top:14px;left:14px;background:var(--bg3);border:none;border-radius:8px;color:var(--muted);padding:6px 12px;cursor:pointer;font-size:13px">✕ إغلاق</button>
+    <div id="theme-modal-content" style="margin-top:8px"></div>
+  </div>
+</div>
+
+</body>
+</html>
