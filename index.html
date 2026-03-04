@@ -3623,18 +3623,25 @@ async function sendAIMessage() {
       body: JSON.stringify({ messages: _aiHistory })
     });
 
+    if (!response.ok) {
+      const errText = await response.text();
+      hideTyping();
+      addAIMessage("bot", `❌ خطأ ${response.status}: ${errText}`);
+      btn.disabled = false; inp.focus(); return;
+    }
+
     const data = await response.json();
-    const reply = data.reply || "عذراً، حدث خطأ. حاول مجدداً!";
+    const reply = data.reply || data.error || "عذراً، حدث خطأ. حاول مجدداً!";
     hideTyping();
     addAIMessage("bot", reply);
     _aiHistory.push({ role: "assistant", content: reply });
 
-    // Keep history max 10 messages
+    // Keep history max 20 messages
     if (_aiHistory.length > 20) _aiHistory = _aiHistory.slice(-20);
 
   } catch (e) {
     hideTyping();
-    addAIMessage("bot", "❌ حدث خطأ في الاتصال. تحقق من الإنترنت وحاول مجدداً.");
+    addAIMessage("bot", "❌ Error: " + e.message + "\n\nتأكد إن ملف api/ai-chat.js موجود في مشروعك على Vercel");
   }
 
   btn.disabled = false;
