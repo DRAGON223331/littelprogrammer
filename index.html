@@ -426,7 +426,7 @@ body{background:#050810;color:#e4e6f0;font-family:'Cairo',sans-serif}
 @keyframes aiDotPulse{0%,100%{opacity:1}50%{opacity:.4}}
 @keyframes aiFabIn{from{opacity:0;transform:scale(0) rotate(-180deg)}to{opacity:1;transform:scale(1) rotate(0)}}
 
-#ai-panel{position:fixed;bottom:100px;right:28px;z-index:8000;width:360px;max-width:calc(100vw - 40px);height:520px;max-height:calc(100vh - 140px);background:var(--bg2);border:1px solid var(--border);border-radius:24px;box-shadow:0 24px 80px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;animation:aiPanelIn .35s cubic-bezier(.34,1.56,.64,1) both;transform-origin:bottom right}
+#ai-panel{position:fixed;bottom:100px;left:28px;z-index:8000;width:360px;max-width:calc(100vw - 40px);height:520px;max-height:calc(100vh - 140px);background:var(--bg2);border:1px solid var(--border);border-radius:24px;box-shadow:0 24px 80px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;animation:aiPanelIn .35s cubic-bezier(.34,1.56,.64,1) both;transform-origin:bottom left}
 #ai-panel.hide{animation:aiPanelOut .25s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes aiPanelIn{from{opacity:0;transform:scale(.6) translateY(30px)}to{opacity:1;transform:scale(1) translateY(0)}}
 @keyframes aiPanelOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.6) translateY(30px)}}
@@ -470,6 +470,56 @@ body{background:#050810;color:#e4e6f0;font-family:'Cairo',sans-serif}
 .ai-suggestions{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;justify-content:center}
 .ai-sug-btn{background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:20px;color:var(--p);padding:6px 12px;font-size:11px;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .2s;white-space:nowrap}
 .ai-sug-btn:hover{background:rgba(124,109,250,.2);transform:translateY(-1px)}
+
+/* ════ PROFILE PAGE ════ */
+.profile-page{max-width:700px;margin:0 auto;padding:20px 16px}
+.profile-frame{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;flex-shrink:0;position:relative;margin:0 auto 12px}
+.profile-frame.bronze{background:linear-gradient(135deg,#cd7f32,#a0522d);box-shadow:0 0 20px rgba(205,127,50,.5)}
+.profile-frame.silver{background:linear-gradient(135deg,#c0c0c0,#808080);box-shadow:0 0 20px rgba(192,192,192,.5)}
+.profile-frame.gold{background:linear-gradient(135deg,#ffd700,#ff8c00);box-shadow:0 0 24px rgba(255,215,0,.7)}
+.profile-frame.diamond{background:linear-gradient(135deg,#00e5ff,#7c6dfa,#ff00ff);box-shadow:0 0 28px rgba(0,229,255,.7);animation:diamondPulse 2s infinite}
+@keyframes diamondPulse{0%,100%{box-shadow:0 0 28px rgba(0,229,255,.7)}50%{box-shadow:0 0 45px rgba(124,109,250,.9)}}
+.profile-level-badge{position:absolute;bottom:-4px;right:-4px;background:var(--bg2);border:2px solid var(--border);border-radius:20px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap}
+.profile-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+.pstat{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center}
+.pstat-val{font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--p),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.pstat-lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.badges-wrap{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.badge-item{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700}
+.badge-item.active{border-color:var(--p);background:rgba(124,109,250,.1)}
+.badge-item.expired{opacity:.4;filter:grayscale(1)}
+.badge-icon{font-size:20px}
+.activity-chart{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:16px}
+.activity-bars{display:flex;align-items:flex-end;gap:4px;height:80px;margin-top:10px}
+.act-bar{flex:1;background:rgba(124,109,250,.3);border-radius:4px 4px 0 0;transition:all .3s;cursor:pointer;min-width:8px;position:relative}
+.act-bar:hover{background:var(--p)}
+.act-bar-lbl{font-size:9px;color:var(--muted);text-align:center;margin-top:4px;white-space:nowrap;overflow:hidden}
+.lootbox-overlay{position:fixed;inset:0;background:#000c;z-index:9997;display:flex;align-items:center;justify-content:center}
+.lootbox-modal{background:var(--bg2);border:2px solid var(--p);border-radius:28px;padding:36px 28px;text-align:center;max-width:360px;width:90%;box-shadow:0 0 60px rgba(124,109,250,.4);animation:lootIn .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes lootIn{from{opacity:0;transform:scale(.5) rotate(-10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+.lootbox-box{font-size:72px;margin-bottom:16px;animation:boxShake .3s ease 0s 3;cursor:pointer;display:inline-block}
+@keyframes boxShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+.lootbox-open{font-size:72px;animation:lootPop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes lootPop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+.lootbox-reward{font-size:15px;font-weight:700;color:var(--p);margin:12px 0 6px}
+.lootbox-desc{font-size:13px;color:var(--muted);line-height:1.6}
+.friends-wrap{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.friend-row{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px}
+.friend-avatar{width:40px;height:40px;border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+.friend-info{flex:1}
+.friend-name{font-size:13px;font-weight:700}
+.friend-pts{font-size:11px;color:var(--muted);margin-top:2px}
+.online-dot{width:9px;height:9px;border-radius:50%;background:var(--ok);display:inline-block;margin-left:5px;box-shadow:0 0 6px var(--ok)}
+.offline-dot{width:9px;height:9px;border-radius:50%;background:var(--muted);display:inline-block;margin-left:5px}
+.fchat-overlay{position:fixed;inset:0;background:#0009;z-index:9000;display:flex;align-items:flex-end;justify-content:flex-end;padding:20px}
+.fchat-box{width:340px;max-width:calc(100vw - 40px);height:480px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px #0008;animation:aiPanelIn .3s both}
+.fchat-head{background:var(--bg3);padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.fchat-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.fchat-msg{max-width:80%;padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.6}
+.fchat-msg.me{align-self:flex-start;background:rgba(124,109,250,.2);border:1px solid rgba(124,109,250,.3)}
+.fchat-msg.them{align-self:flex-end;background:var(--bg3);border:1px solid var(--border)}
+.fchat-inp-wrap{border-top:1px solid var(--border);padding:10px;display:flex;gap:8px;flex-shrink:0}
+.online-row{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;font-size:12px}
 
 /* ════ ADMIN STUDENT VIEW BANNER ════ */
 #student-view-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:5000;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;padding:10px 20px;text-align:center;font-weight:700;font-size:13px;box-shadow:0 4px 16px rgba(245,158,11,.4)}
@@ -1499,6 +1549,7 @@ function renderAdminSidebar(){
     <button id="anav-sendq" onclick="adminPage('sendq')">📨 إرسال سؤال</button>
     <button id="anav-leaderboard" onclick="adminPage('leaderboard')">🏆 لوحة النقاط</button>
     <button id="anav-exams" onclick="adminPage('exams')">📝 الامتحانات <span class="badge" id="exam-badge" style="display:none">0</span></button>
+    <button id="anav-activity" onclick="adminPage('activity')">📡 النشاط المباشر</button>
     <button id="anav-announce" onclick="adminPage('announce')">📢 الإعلانات</button>
     <button id="anav-settings" onclick="adminPage('settings')">⚙️ الإعدادات</button>
     <div style="margin:10px 0;border-top:1px solid var(--border)"></div>
@@ -1520,7 +1571,7 @@ let _adminPage="students";
 function adminPage(p){
   animatePageChange();
   _adminPage=p;
-  ["students","upload","videos","progress","answers","comments","payments","sendq","leaderboard","settings"].forEach(x=>{
+  ["students","upload","videos","progress","answers","comments","payments","sendq","leaderboard","settings","exams","announce","codesols","activity"].forEach(x=>{
     const el=document.getElementById("anav-"+x);if(el)el.className=x===p?"on":"";
   });
   closeSidebar();
@@ -1538,6 +1589,7 @@ function adminPage(p){
   else if(p==="exams")renderAdminExams(m);
   else if(p==="announce")renderAdminAnnounce(m);
   else if(p==="codesols")renderAdminCodeSols(m);
+  else if(p==="activity"){m.innerHTML=`<div class="section"><div class="sec-title">📡 النشاط المباشر</div><div id="activity-content"><div class="empty">جاري التحميل...</div></div></div>`;loadAdminActivity("activity-content");}
 }
 
 function renderAdminStudents(m){
@@ -2686,7 +2738,7 @@ function renderStudentSidebar(u){
   show("sb-progress");
   const nav=document.getElementById("sb-nav");
   nav.className="sb-nav videos";
-  nav.innerHTML=`<div class="search-wrap"><input class="search-inp" id="search-inp" placeholder="🔍 ابحث عن درس..." oninput="filterVideos()" dir="rtl"/></div><div id="vid-list"></div><div style="padding:10px 0 4px"><button onclick="openStudentExams('${u.phone}')" style="width:100%;background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:10px;color:var(--p);padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between">📝 امتحاناتي <span id="exam-notif-badge" style="display:none;background:var(--err);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;align-items:center;justify-content:center">0</span></button></div>`;
+  nav.innerHTML=`<div class="search-wrap"><input class="search-inp" id="search-inp" placeholder="🔍 ابحث عن درس..." oninput="filterVideos()" dir="rtl"/></div><div id="vid-list"></div><div style="padding:10px 0 4px;display:flex;flex-direction:column;gap:6px"><button onclick="openStudentExams('${u.phone}')" style="width:100%;background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:10px;color:var(--p);padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between">📝 امتحاناتي <span id="exam-notif-badge" style="display:none;background:var(--err);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;align-items:center;justify-content:center">0</span></button><button onclick="openMyProfile()" style="width:100%;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);border-radius:10px;color:var(--a);padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px">👤 ملفي الشخصي</button><button onclick="openFriends()" style="width:100%;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;color:var(--ok);padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px">👥 الأصدقاء</button></div>`;
   if(!u.approved){renderStudentStatus(u);return}
   showMyCardBtn();
 
@@ -3084,6 +3136,9 @@ async function markFahimt(videoId){
   showPointsAnim(POINTS_FAHIMT);
   _currentUser.points=fPts;
   toast("✅ أحسنت! تم فتح الدرس التالي 🚀");
+  // Loot Box every 3 lessons
+  const watchedCount=Object.values(_myProgress).filter(p=>p.passed).length;
+  if(watchedCount>0&&watchedCount%3===0){setTimeout(()=>showLootBox(),800);}
   await playVideo(videoId);
 }
 
@@ -3647,6 +3702,349 @@ async function sendAIMessage() {
   btn.disabled = false;
   inp.focus();
 }
+
+/* ════════════════════════════════
+   ██████ PROFILE PAGE ██████
+════════════════════════════════ */
+function getLevelInfo(points){
+  if(points>=500)return{label:"💎 ديامند",cls:"diamond",icon:"💎"};
+  if(points>=200)return{label:"🥇 ذهبي",cls:"gold",icon:"🥇"};
+  if(points>=80)return{label:"🥈 فضي",cls:"silver",icon:"🥈"};
+  return{label:"🥉 برونز",cls:"bronze",icon:"🥉"};
+}
+
+async function openMyProfile(){
+  const u=_currentUser;
+  const progress=await window._fb.get(window._fb.ref(window._fb.db,`progress/${pkey(u.phone)}`));
+  const prog=progress.val()||{};
+  const watchedCount=Object.values(prog).filter(p=>p.watched).length;
+  const passedCount=Object.values(prog).filter(p=>p.passed).length;
+  const totalVideos=_allVideos.length||1;
+  const pct=Math.round(watchedCount/totalVideos*100);
+  const pts=u.points||0;
+  const lv=getLevelInfo(pts);
+
+  // Learning hours estimate
+  const hours=Math.round(watchedCount*0.5*10)/10;
+
+  // Badges from Firebase
+  const badgesSnap=await window._fb.get(window._fb.ref(window._fb.db,`badges/${pkey(u.phone)}`));
+  const myBadges=badgesSnap.val()||{};
+  const now=Date.now();
+  const badgesHTML=Object.values(myBadges).length>0
+    ?Object.values(myBadges).map(b=>{
+      const expired=b.expiresAt&&b.expiresAt<now;
+      const daysLeft=b.expiresAt?Math.max(0,Math.ceil((b.expiresAt-now)/86400000)):null;
+      return `<div class="badge-item ${expired?'expired':'active'}">
+        <span class="badge-icon">${b.icon||'🏅'}</span>
+        <div><div>${b.name}</div><div style="font-size:10px;color:var(--muted);font-weight:400">${expired?'منتهي':(daysLeft?`باقي ${daysLeft} يوم`:'دائم')}</div></div>
+      </div>`;
+    }).join("")
+    :`<div style="color:var(--muted);font-size:13px">لا توجد شارات بعد — أكمل الدروس! 🚀</div>`;
+
+  // Activity last 7 days
+  const actSnap=await window._fb.get(window._fb.ref(window._fb.db,`activity/${pkey(u.phone)}`));
+  const actData=actSnap.val()||{};
+  const days=[];
+  for(let i=6;i>=0;i--){
+    const d=new Date(Date.now()-i*86400000);
+    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    days.push({key,label:['أحد','إثن','ثلا','أرب','خمس','جمع','سبت'][d.getDay()],val:actData[key]||0});
+  }
+  const maxAct=Math.max(...days.map(d=>d.val),1);
+  const barsHTML=days.map(d=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">
+    <div class="act-bar" style="height:${Math.max(8,Math.round(d.val/maxAct*70))}px" title="${d.val} دقيقة"></div>
+    <div class="act-bar-lbl">${d.label}</div>
+  </div>`).join("");
+
+  // Public profile link
+  const slug=encodeURIComponent(u.name.replace(/\s+/g,'-'));
+  const profileURL=`${location.origin}/profile/${slug}`;
+
+  const m=document.getElementById("main-content");
+  m.innerHTML=`<div class="profile-page">
+    <div style="text-align:center;margin-bottom:20px">
+      <div class="profile-frame ${lv.cls}">${u.name.charAt(0).toUpperCase()}
+        <div class="profile-level-badge">${lv.label}</div>
+      </div>
+      <h2 style="font-size:20px;font-weight:900;margin-bottom:4px">${u.name}</h2>
+      <div style="font-size:12px;color:var(--muted)">${u.phone}</div>
+      <div style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px">
+        <input value="${profileURL}" readonly style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--muted);padding:6px 12px;font-size:11px;width:220px;outline:none"/>
+        <button onclick="navigator.clipboard.writeText('${profileURL}');toast('✅ تم نسخ الرابط')" style="background:var(--p);border:none;border-radius:8px;color:#fff;padding:6px 12px;font-size:12px;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:700">نسخ 🔗</button>
+      </div>
+    </div>
+    <div class="profile-stats-grid">
+      <div class="pstat"><div class="pstat-val">${pts}</div><div class="pstat-lbl">⭐ النقاط</div></div>
+      <div class="pstat"><div class="pstat-val">${passedCount}</div><div class="pstat-lbl">✅ دروس أنهيتها</div></div>
+      <div class="pstat"><div class="pstat-val">${pct}%</div><div class="pstat-lbl">📊 الإنجاز</div></div>
+      <div class="pstat"><div class="pstat-val">${hours}</div><div class="pstat-lbl">⏱️ ساعات التعلم</div></div>
+      <div class="pstat"><div class="pstat-val">${watchedCount}</div><div class="pstat-lbl">👁️ دروس شفتها</div></div>
+      <div class="pstat"><div class="pstat-val">${totalVideos}</div><div class="pstat-lbl">📚 كل الدروس</div></div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--a)">🏅 الشارات</div>
+      <div class="badges-wrap">${badgesHTML}</div>
+    </div>
+    <div class="activity-chart">
+      <div style="font-size:13px;font-weight:700;color:var(--a)">📈 نشاط آخر 7 أيام</div>
+      <div class="activity-bars">${barsHTML}</div>
+    </div>
+  </div>`;
+
+  // Track activity
+  trackActivity();
+}
+
+async function trackActivity(){
+  if(!_currentUser?.phone)return;
+  const now=new Date();
+  const key=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  // Increment daily activity minutes
+  const ref=window._fb.ref(window._fb.db,`activity/${pkey(_currentUser.phone)}/${key}`);
+  const snap=await window._fb.get(ref);
+  const cur=snap.val()||0;
+  await window._fb.set(ref,cur+5);
+  // Save online status + location for admin
+  try{
+    const geo=await new Promise((res)=>{
+      if(!navigator.geolocation){res(null);return;}
+      navigator.geolocation.getCurrentPosition(p=>res({lat:p.coords.latitude,lng:p.coords.longitude}),()=>res(null),{timeout:3000});
+    });
+    await window._fb.update(window._fb.ref(window._fb.db,`online/${pkey(_currentUser.phone)}`),{
+      name:_currentUser.name,phone:_currentUser.phone,lastSeen:Date.now(),
+      geo:geo||null
+    });
+  }catch(e){}
+}
+
+/* ════════════════════════════════
+   ██████ LOOT BOX ██████
+════════════════════════════════ */
+const LOOT_REWARDS=[
+  {icon:"⚡",name:"شارة البرق",desc:"لمدة 7 أيام! حصلت على شارة البرق الخاصة ⚡",type:"badge",duration:7},
+  {icon:"🔥",name:"شارة النار",desc:"لمدة 5 أيام! أنت على النار 🔥",type:"badge",duration:5},
+  {icon:"🌟",name:"نجمة ذهبية",desc:"حصلت على 10 نقاط إضافية!",type:"points",amount:10},
+  {icon:"💫",name:"شارة النجوم",desc:"لمدة 3 أيام! واصل التألق 💫",type:"badge",duration:3},
+  {icon:"🏆",name:"كأس الإنجاز",desc:"حصلت على 15 نقطة إضافية!",type:"points",amount:15},
+  {icon:"🎯",name:"شارة التركيز",desc:"لمدة 7 أيام! إنت مركّز 🎯",type:"badge",duration:7},
+];
+
+function showLootBox(){
+  const overlay=document.createElement("div");
+  overlay.className="lootbox-overlay";
+  overlay.id="lootbox-overlay";
+  overlay.innerHTML=`<div class="lootbox-modal">
+    <div style="font-size:13px;color:var(--a);font-weight:700;margin-bottom:12px">🎉 أنهيت 3 دروس!</div>
+    <div class="lootbox-box" id="loot-box-icon" onclick="openLootBox()">🎁</div>
+    <div class="lootbox-reward">صندوق مفاجأة!</div>
+    <div class="lootbox-desc">اضغط على الصندوق لتفتحه</div>
+  </div>`;
+  document.body.appendChild(overlay);
+}
+
+async function openLootBox(){
+  const boxEl=document.getElementById("loot-box-icon");
+  if(!boxEl||boxEl.dataset.opened)return;
+  boxEl.dataset.opened="1";
+  const reward=LOOT_REWARDS[Math.floor(Math.random()*LOOT_REWARDS.length)];
+  boxEl.className="lootbox-open";
+  boxEl.textContent=reward.icon;
+  boxEl.onclick=null;
+  const modal=document.querySelector(".lootbox-modal");
+  if(modal){
+    modal.querySelector(".lootbox-reward").textContent=reward.name+" — "+reward.icon;
+    modal.querySelector(".lootbox-desc").textContent=reward.desc;
+    modal.innerHTML+=`<button onclick="closeLootBox()" style="margin-top:18px;background:linear-gradient(135deg,var(--p),var(--pd));border:none;border-radius:12px;color:#fff;padding:11px 28px;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer">🎉 رائع!</button>`;
+  }
+  // Apply reward
+  if(reward.type==="points"){
+    const newPts=await addPoints(_currentUser.phone,reward.amount,"مكافأة صندوق 🎁");
+    _currentUser.points=newPts;
+  } else if(reward.type==="badge"){
+    const bId=Date.now().toString();
+    await window._fb.set(window._fb.ref(window._fb.db,`badges/${pkey(_currentUser.phone)}/${bId}`),{
+      id:bId,icon:reward.icon,name:reward.name,
+      grantedAt:Date.now(),
+      expiresAt:Date.now()+reward.duration*86400000
+    });
+  }
+}
+
+function closeLootBox(){
+  document.getElementById("lootbox-overlay")?.remove();
+}
+
+/* ════════════════════════════════
+   ██████ FRIENDS ██████
+════════════════════════════════ */
+async function openFriends(){
+  const m=document.getElementById("main-content");
+  m.innerHTML=`<div class="section"><div class="sec-title">👥 الأصدقاء</div>
+    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+      <input id="friend-phone-inp" placeholder="رقم الهاتف لإضافة صديق..." dir="ltr"
+        style="flex:1;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:inherit;padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;outline:none;min-width:200px" />
+      <button onclick="addFriend()" style="background:var(--p);border:none;border-radius:10px;color:#fff;padding:10px 20px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer">+ إضافة</button>
+    </div>
+    <div id="friends-list"><div class="empty">جاري التحميل...</div></div>
+  </div>`;
+  loadFriendsList();
+}
+
+async function loadFriendsList(){
+  const listEl=document.getElementById("friends-list");
+  if(!listEl)return;
+  const snap=await window._fb.get(window._fb.ref(window._fb.db,`friends/${pkey(_currentUser.phone)}`));
+  const friends=snap.val()||{};
+  const fArr=Object.values(friends);
+  if(!fArr.length){listEl.innerHTML=`<div class="empty">لا يوجد أصدقاء بعد — أضف أصدقاءك! 👥</div>`;return;}
+
+  const onlineSnap=await window._fb.get(window._fb.ref(window._fb.db,"online"));
+  const onlineData=onlineSnap.val()||{};
+  const now=Date.now();
+
+  listEl.innerHTML=`<div class="friends-wrap">${fArr.map(f=>{
+    const onRec=onlineData[pkey(f.phone)];
+    const isOnline=onRec&&(now-onRec.lastSeen)<300000;
+    return `<div class="friend-row">
+      <div class="friend-avatar">${f.name.charAt(0)}</div>
+      <div class="friend-info">
+        <div class="friend-name">${f.name}<span class="${isOnline?'online-dot':'offline-dot'}"></span></div>
+        <div class="friend-pts">⭐ ${f.points||0} نقطة · ${isOnline?'متصل الآن':'آخر ظهور منذ '+Math.round((now-(onRec?.lastSeen||0))/60000)+' د'}</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button onclick="openFriendChat('${f.phone}','${f.name}')" style="background:rgba(124,109,250,.15);border:1px solid rgba(124,109,250,.25);border-radius:8px;color:var(--p);padding:6px 10px;font-size:12px;cursor:pointer;font-family:'Cairo',sans-serif">💬</button>
+        <button onclick="removeFriend('${f.phone}')" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;color:var(--err);padding:6px 10px;font-size:12px;cursor:pointer">🗑️</button>
+      </div>
+    </div>`;
+  }).join("")}</div>`;
+}
+
+async function addFriend(){
+  const phone=document.getElementById("friend-phone-inp")?.value.trim();
+  if(!phone){toast("❌ أدخل رقم الهاتف","err");return;}
+  if(phone===_currentUser.phone){toast("❌ لا تقدر تضيف نفسك!","err");return;}
+  const userSnap=await window._fb.get(window._fb.ref(window._fb.db,`users/${pkey(phone)}`));
+  const u=userSnap.val();
+  if(!u){toast("❌ الطالب غير موجود","err");return;}
+  await window._fb.set(window._fb.ref(window._fb.db,`friends/${pkey(_currentUser.phone)}/${pkey(phone)}`),{phone,name:u.name,points:u.points||0});
+  await window._fb.set(window._fb.ref(window._fb.db,`friends/${pkey(phone)}/${pkey(_currentUser.phone)}`),{phone:_currentUser.phone,name:_currentUser.name,points:_currentUser.points||0});
+  toast(`✅ تمت إضافة ${u.name} كصديق!`);
+  loadFriendsList();
+}
+
+async function removeFriend(phone){
+  await window._fb.remove(window._fb.ref(window._fb.db,`friends/${pkey(_currentUser.phone)}/${pkey(phone)}`));
+  toast("تم الحذف");loadFriendsList();
+}
+
+function openFriendChat(friendPhone,friendName){
+  document.getElementById("fchat-overlay")?.remove();
+  const overlay=document.createElement("div");
+  overlay.className="fchat-overlay";overlay.id="fchat-overlay";
+  overlay.innerHTML=`<div class="fchat-box">
+    <div class="fchat-head">
+      <div style="width:34px;height:34px;border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center;font-weight:700">${friendName.charAt(0)}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:700">${friendName}</div></div>
+      <button onclick="document.getElementById('fchat-overlay').remove()" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer">✕</button>
+    </div>
+    <div class="fchat-msgs" id="fchat-msgs"><div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">ابدأ المحادثة 👋</div></div>
+    <div class="fchat-inp-wrap">
+      <input id="fchat-inp" placeholder="اكتب رسالة..." style="flex:1;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:inherit;padding:9px 12px;font-family:'Cairo',sans-serif;font-size:13px;outline:none" onkeydown="if(event.key==='Enter')sendFriendMsg('${friendPhone}','${friendName}')"/>
+      <button onclick="sendFriendMsg('${friendPhone}','${friendName}')" style="background:var(--p);border:none;border-radius:10px;color:#fff;padding:9px 14px;font-size:16px;cursor:pointer">➤</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+
+  const chatKey=[pkey(_currentUser.phone),pkey(friendPhone)].sort().join("_");
+  window._fb.onValue(window._fb.ref(window._fb.db,`chats/${chatKey}`),snap=>{
+    const msgs=snap.val()||{};
+    const el=document.getElementById("fchat-msgs");if(!el)return;
+    const arr=Object.values(msgs).sort((a,b)=>a.ts-b.ts);
+    if(!arr.length){el.innerHTML=`<div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">ابدأ المحادثة 👋</div>`;return;}
+    el.innerHTML=arr.map(msg=>`<div class="fchat-msg ${msg.from===_currentUser.phone?'me':'them'}">${msg.text}<div style="font-size:10px;color:var(--muted);margin-top:4px;text-align:${msg.from===_currentUser.phone?'left':'right'}">${new Date(msg.ts).toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'})}</div></div>`).join("");
+    el.scrollTop=el.scrollHeight;
+  });
+}
+
+async function sendFriendMsg(friendPhone,friendName){
+  const inp=document.getElementById("fchat-inp");
+  const text=inp?.value.trim();if(!text)return;
+  inp.value="";
+  const chatKey=[pkey(_currentUser.phone),pkey(friendPhone)].sort().join("_");
+  const msgId=Date.now().toString();
+  await window._fb.set(window._fb.ref(window._fb.db,`chats/${chatKey}/${msgId}`),{from:_currentUser.phone,text,ts:Date.now()});
+}
+
+/* ════════════════════════════════
+   ██████ ADMIN ACTIVITY CHART ██████
+════════════════════════════════ */
+async function loadAdminActivity(containerId){
+  const el=document.getElementById(containerId);if(!el)return;
+  const usersSnap=await window._fb.get(window._fb.ref(window._fb.db,"users"));
+  const users=Object.values(usersSnap.val()||{}).filter(u=>!u.isAdmin);
+
+  // Online now
+  const onlineSnap=await window._fb.get(window._fb.ref(window._fb.db,"online"));
+  const onlineData=onlineSnap.val()||{};
+  const now=Date.now();
+  const onlineUsers=users.filter(u=>{
+    const rec=onlineData[pkey(u.phone)];
+    return rec&&(now-rec.lastSeen)<300000;
+  });
+
+  // Daily activity last 14 days
+  const allActivitySnap=await window._fb.get(window._fb.ref(window._fb.db,"activity"));
+  const allAct=allActivitySnap.val()||{};
+  const days=[];
+  for(let i=13;i>=0;i--){
+    const d=new Date(now-i*86400000);
+    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const count=Object.values(allAct).filter(ua=>ua[key]>0).length;
+    days.push({label:String(d.getDate()),count});
+  }
+  const maxD=Math.max(...days.map(d=>d.count),1);
+
+  el.innerHTML=`
+    <div style="font-size:14px;font-weight:700;margin-bottom:16px;color:var(--a)">📊 نشاط الطلاب</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+      <div style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:10px 18px;text-align:center">
+        <div style="font-size:24px;font-weight:900;color:var(--ok)">${onlineUsers.length}</div>
+        <div style="font-size:11px;color:var(--muted)">متصل الآن</div>
+      </div>
+      <div style="background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:10px;padding:10px 18px;text-align:center">
+        <div style="font-size:24px;font-weight:900;color:var(--p)">${users.length}</div>
+        <div style="font-size:11px;color:var(--muted)">كل الطلاب</div>
+      </div>
+    </div>
+    <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px">طلاب نشطين آخر 14 يوم</div>
+    <div style="display:flex;align-items:flex-end;gap:3px;height:80px;margin-bottom:4px">
+      ${days.map(d=>`<div title="${d.count} طالب" style="flex:1;background:${d.count>0?'var(--p)':'rgba(124,109,250,.2)'};border-radius:3px 3px 0 0;height:${Math.max(4,Math.round(d.count/maxD*74))}px;transition:.3s"></div>`).join("")}
+    </div>
+    <div style="display:flex;gap:3px">
+      ${days.map(d=>`<div style="flex:1;font-size:9px;color:var(--muted);text-align:center">${d.label}</div>`).join("")}
+    </div>
+    ${onlineUsers.length>0?`<div style="margin-top:16px;font-size:12px;font-weight:700;margin-bottom:8px;color:var(--ok)">🟢 متصلون الآن</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      ${onlineUsers.map(u=>{
+        const rec=onlineData[pkey(u.phone)];
+        const geo=rec?.geo;
+        const mapsLink=geo?`<a href="https://maps.google.com?q=${geo.lat},${geo.lng}" target="_blank" style="color:var(--a);font-size:11px;text-decoration:none">📍 الموقع</a>`:'';
+        return `<div class="online-row">
+          <div class="online-dot"></div>
+          <div style="flex:1"><div style="font-weight:700">${u.name}</div><div style="color:var(--muted)">${u.phone}</div></div>
+          ${mapsLink}
+        </div>`;
+      }).join("")}
+    </div>`:''
+    }`;
+}
+
+/* ════════ Track activity on page load ════════ */
+window.addEventListener("load",()=>{
+  setTimeout(()=>{if(_currentUser&&!_currentUser.isAdmin)trackActivity();},3000);
+  setInterval(()=>{if(_currentUser&&!_currentUser.isAdmin)trackActivity();},300000);
+});
 
 /* ════════════════════════════════
    ██████ ADMIN STUDENT VIEW ██████
