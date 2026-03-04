@@ -4130,42 +4130,26 @@ async function openLearningMap(){
     <div style="font-size:11px;color:var(--muted);margin-top:6px">${passed} / ${total} درس أنهيته</div>
   </div>`;
 
-  // Group by category
-  const cats={};
-  _allVideos.forEach(v=>{const c=v.category||"عام";if(!cats[c])cats[c]=[];cats[c].push(v);});
-
-  Object.entries(cats).forEach(([cat,vids])=>{
-    html+=`<div style="margin-bottom:28px">
-      <div style="font-size:12px;font-weight:700;color:var(--a);margin-bottom:12px;display:flex;align-items:center;gap:8px">
-        <div style="height:1px;flex:1;background:var(--border)"></div>
-        ${cat}
-        <div style="height:1px;flex:1;background:var(--border)"></div>
-      </div>`;
-    vids.forEach((v,i)=>{
-      const prog=_myProgress[v.id]||{};
-      const unlocked=prog.unlocked===true;
-      const done=prog.passed===true;
-      const watched=prog.watched&&!done;
-      const num=_allVideos.indexOf(v)+1;
-      let cls=done?'done':unlocked?'active':'locked';
-      let icon=done?'✅':unlocked?'▶️':'🔒';
-      let statusTxt=done?'أنهيته':unlocked?'متاح':'مقفول';
-      let statusColor=done?'var(--ok)':unlocked?'var(--p)':'var(--muted)';
-
-      if(i>0)html+=`<div class="lmap-connector ${done?'done':''}"></div>`;
-      html+=`<div class="lmap-node">
-        <div class="lmap-circle ${cls}" onclick="${unlocked||done?`playVideo('${v.id}')`:''}">${icon}</div>
-        <div class="lmap-card ${cls}" onclick="${unlocked||done?`playVideo('${v.id}')`:``}">
-          <div class="lmap-title">${num}. ${v.title}</div>
-          <div class="lmap-meta">
-            <span style="color:${statusColor};font-weight:700">${statusTxt}</span>
-            ${v.category?`<span>· ${v.category}</span>`:''}
-            ${done?`<span style="color:var(--ok)">· ✅ خلصته</span>`:''}
-          </div>
+  _allVideos.forEach((v,i)=>{
+    const prog=_myProgress[v.id]||{};
+    const unlocked=prog.unlocked===true;
+    const done=prog.passed===true;
+    let cls=done?'done':unlocked?'active':'locked';
+    let icon=done?'✅':unlocked?'▶️':'🔒';
+    let statusTxt=done?'أنهيته ✅':unlocked?'متاح':'مقفول 🔒';
+    let statusColor=done?'var(--ok)':unlocked?'var(--p)':'var(--muted)';
+    const prevDone=i>0&&_myProgress[_allVideos[i-1].id]?.passed;
+    if(i>0)html+=`<div class="lmap-connector ${prevDone?'done':''}"></div>`;
+    html+=`<div class="lmap-node">
+      <div class="lmap-circle ${cls}" onclick="${unlocked||done?`playVideo('${v.id}')`:''}">${icon}</div>
+      <div class="lmap-card ${cls}" onclick="${unlocked||done?`playVideo('${v.id}')`:``}">
+        <div class="lmap-title">${i+1}. ${v.title}</div>
+        <div class="lmap-meta">
+          <span style="color:${statusColor};font-weight:700">${statusTxt}</span>
+          ${v.category?`<span style="background:rgba(0,229,255,.08);color:var(--a);padding:1px 7px;border-radius:5px;border:1px solid rgba(0,229,255,.12);margin-right:4px">${v.category}</span>`:''}
         </div>
-      </div>`;
-    });
-    html+=`</div>`;
+      </div>
+    </div>`;
   });
 
   el.innerHTML=html;
