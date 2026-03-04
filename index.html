@@ -142,6 +142,54 @@ body{background:#050810;color:#e4e6f0;font-family:'Cairo',sans-serif}
 @keyframes colorFlash{0%{opacity:.3}100%{opacity:0}}
 
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.97)}}
+
+/* ════ DIGITAL STUDENT CARD ════ */
+.card-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:600;display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .25s both}
+.card-modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:28px;width:100%;max-width:480px;box-shadow:0 32px 80px #0009;position:relative;animation:fadeInScale .4s cubic-bezier(.34,1.56,.64,1) both}
+.card-modal-close{position:absolute;top:14px;left:14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--muted);padding:6px 12px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:12px;transition:all .2s}
+.card-modal-close:hover{border-color:var(--err);color:var(--err)}
+.card-modal-title{font-size:17px;font-weight:900;margin-bottom:20px;text-align:center}
+
+/* The actual card */
+#student-card-preview{
+  width:100%;border-radius:20px;overflow:hidden;
+  background:linear-gradient(135deg,#0d1225 0%,#1a1040 50%,#0a1a30 100%);
+  border:1px solid rgba(124,109,250,.3);
+  box-shadow:0 8px 32px rgba(124,109,250,.15),0 0 0 1px rgba(255,255,255,.04);
+  position:relative;padding:28px 24px 24px;
+  font-family:'Cairo',sans-serif;
+}
+.sc-topbar{height:4px;background:linear-gradient(90deg,#7c6dfa,#00e5ff,#7c6dfa);background-size:200%;animation:barShine 3s linear infinite;position:absolute;top:0;left:0;right:0}
+.sc-logo{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+.sc-logo-icon{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:var(--p);background:rgba(124,109,250,.12);padding:5px 8px;border-radius:7px;border:1px solid rgba(124,109,250,.2)}
+.sc-logo-text{font-size:11px;color:rgba(200,196,255,.6);letter-spacing:.5px}
+.sc-main{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.sc-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#7c6dfa,#00e5ff);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 0 0 3px rgba(124,109,250,.25),0 8px 20px rgba(124,109,250,.3)}
+.sc-info{flex:1}
+.sc-name{font-size:19px;font-weight:900;color:#fff;margin-bottom:3px;line-height:1.2}
+.sc-level-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.sc-level-badge.beginner{background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.2)}
+.sc-level-badge.mid{background:rgba(0,229,255,.1);color:#00e5ff;border:1px solid rgba(0,229,255,.2)}
+.sc-level-badge.pro{background:rgba(124,109,250,.15);color:#7c6dfa;border:1px solid rgba(124,109,250,.25)}
+.sc-level-badge.expert{background:rgba(245,158,11,.1);color:#f59e0b;border:1px solid rgba(245,158,11,.2)}
+.sc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.sc-stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:10px;text-align:center}
+.sc-stat-val{font-size:20px;font-weight:900;background:linear-gradient(135deg,#7c6dfa,#00e5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-family:'JetBrains Mono',monospace;display:block}
+.sc-stat-lbl{font-size:10px;color:rgba(150,160,190,.7);margin-top:2px;display:block}
+.sc-footer{display:flex;align-items:center;justify-content:space-between}
+.sc-id{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(124,109,250,.5);letter-spacing:1px}
+.sc-watermark{font-size:9px;color:rgba(100,110,140,.4);letter-spacing:2px;text-transform:uppercase}
+
+/* Card action buttons */
+.card-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.card-actions .btn{flex:1;padding:11px;font-size:13px;min-width:120px}
+
+/* Admin card editor */
+.card-editor-wrap{margin-top:20px;border-top:1px solid var(--border);padding-top:18px}
+.card-editor-title{font-size:13px;font-weight:700;color:var(--a);margin-bottom:12px}
+.card-editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card-editor-field label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600}
+.card-editor-field .inp{font-size:13px;padding:8px 12px}
 .spin{width:36px;height:36px;border:2px solid var(--border);border-top-color:var(--p);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loader-txt{display:none}
@@ -784,6 +832,7 @@ body{background:#050810;color:#e4e6f0;font-family:'Cairo',sans-serif}
       </div>
       <button class="logout" onclick="logout()">🚪 تسجيل الخروج</button>
       <button class="logout" style="background:rgba(124,109,250,.1);color:var(--p);border:1px solid rgba(124,109,250,.2);margin-top:6px" onclick="openThemeModal()">🎨 المظهر</button>
+      <button class="logout" id="my-card-btn" style="background:rgba(0,229,255,.08);color:var(--a);border:1px solid rgba(0,229,255,.18);margin-top:6px;display:none" onclick="openMyCard()">🪪 بطاقتي الرقمية</button>
     </div>
     <div class="notif-panel" id="notif-panel">
       <div class="notif-header">
@@ -1455,7 +1504,7 @@ function renderAdminStudents(m){
       const ps=u.paymentStatus||"unpaid";
       const pLabel=ps==="paid"?"✅ دفع":ps==="partial"?"⚠️ جزئي":"🔴 لم يدفع";
       const pClass=ps==="paid"?"paid":ps==="partial"?"partial":"unpaid";
-      html+=`<div class="s-row approved"><div class="s-info"><div class="ava sm">${u.name[0]}</div><div><div class="u-name">${u.name}</div><div class="s-phone">${u.phone}</div></div></div><div class="s-actions"><span class="pay-badge ${pClass}">${pLabel}</span><button class="rej-btn" style="font-size:11px;padding:5px 10px" onclick="openRejModal('${u.phone}')">إلغاء الوصول</button></div></div>`;
+      html+=`<div class="s-row approved"><div class="s-info"><div class="ava sm">${u.name[0]}</div><div><div class="u-name">${u.name}</div><div class="s-phone">${u.phone}</div></div></div><div class="s-actions"><span class="pay-badge ${pClass}">${pLabel}</span><button class="app-btn" style="font-size:11px;padding:5px 10px;background:rgba(0,229,255,.1);color:var(--a);border-color:rgba(0,229,255,.2)" onclick="adminOpenStudentCard('${u.phone}')">🪪 بطاقة</button><button class="rej-btn" style="font-size:11px;padding:5px 10px" onclick="openRejModal('${u.phone}')">إلغاء الوصول</button></div></div>`;
     });html+="</div>"}
     el.innerHTML=html;
   });
@@ -2578,6 +2627,7 @@ function renderStudentSidebar(u){
   nav.className="sb-nav videos";
   nav.innerHTML=`<div class="search-wrap"><input class="search-inp" id="search-inp" placeholder="🔍 ابحث عن درس..." oninput="filterVideos()" dir="rtl"/></div><div id="vid-list"></div><div style="padding:10px 0 4px"><button onclick="openStudentExams('${u.phone}')" style="width:100%;background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:10px;color:var(--p);padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between">📝 امتحاناتي <span id="exam-notif-badge" style="display:none;background:var(--err);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;align-items:center;justify-content:center">0</span></button></div>`;
   if(!u.approved){renderStudentStatus(u);return}
+  showMyCardBtn();
 
   fbListen("videos",data=>{
     _allVideos=data?Object.values(data).sort((a,b)=>a.id-b.id):[];
@@ -3230,6 +3280,173 @@ function waitForIntro(){
     const wait = Math.max(0, window._introMinDuration - elapsed);
     setTimeout(()=>{ hideIntro(); resolve(); }, wait);
   });
+}
+
+/* ════════════════════════════════
+   ██████ DIGITAL STUDENT CARD ██████
+════════════════════════════════ */
+
+function getLevelInfo(watched, total) {
+  const pct = total > 0 ? Math.round(watched / total * 100) : 0;
+  if (pct >= 80) return { label: "خبير 🏆", cls: "expert", emoji: "🏆" };
+  if (pct >= 50) return { label: "محترف ⚡", cls: "pro", emoji: "⚡" };
+  if (pct >= 20) return { label: "متوسط 🚀", cls: "mid", emoji: "🚀" };
+  return { label: "مبتدئ 🌱", cls: "beginner", emoji: "🌱" };
+}
+
+function buildCardHTML(userData, watched, total, points, joinDate) {
+  const pct = total > 0 ? Math.round(watched / total * 100) : 0;
+  const level = getLevelInfo(watched, total);
+  const cardId = "LP-" + (userData.phone || "").slice(-4).padStart(4, "0");
+  const initials = (userData.name || "?")[0];
+  return `
+    <div id="student-card-preview">
+      <div class="sc-topbar"></div>
+      <div class="sc-logo">
+        <div class="sc-logo-icon">{"</>"}</div>
+        <div class="sc-logo-text">المبرمج الصغير · منصة البرمجة</div>
+      </div>
+      <div class="sc-main">
+        <div class="sc-avatar">${initials}</div>
+        <div class="sc-info">
+          <div class="sc-name">${userData.name || ""}</div>
+          <span class="sc-level-badge ${level.cls}">${level.emoji} ${level.label}</span>
+        </div>
+      </div>
+      <div class="sc-stats">
+        <div class="sc-stat">
+          <span class="sc-stat-val">${watched}</span>
+          <span class="sc-stat-lbl">درس أنهاه</span>
+        </div>
+        <div class="sc-stat">
+          <span class="sc-stat-val">${pct}%</span>
+          <span class="sc-stat-lbl">الإنجاز</span>
+        </div>
+        <div class="sc-stat">
+          <span class="sc-stat-val">${points}</span>
+          <span class="sc-stat-lbl">نقطة ⭐</span>
+        </div>
+      </div>
+      <div class="sc-footer">
+        <span class="sc-id">${cardId}</span>
+        <span class="sc-watermark">littleprogrammer.app</span>
+      </div>
+    </div>`;
+}
+
+async function openMyCard() {
+  const u = _currentUser;
+  if (!u) return;
+  const prog = await fbGet(`progress/${pkey(u.phone)}`) || {};
+  const allVids = await fbGet("videos") || {};
+  const watched = Object.values(prog).filter(p => p.watched).length;
+  const total = Object.keys(allVids).length;
+  const points = u.points || 0;
+  const joinDate = u.joinDate || new Date().toLocaleDateString("ar-EG");
+
+  const existing = document.getElementById("card-modal-overlay");
+  if (existing) existing.remove();
+
+  const overlay = document.createElement("div");
+  overlay.id = "card-modal-overlay";
+  overlay.className = "card-modal-overlay";
+  overlay.innerHTML = `
+    <div class="card-modal-box">
+      <button class="card-modal-close" onclick="document.getElementById('card-modal-overlay').remove()">✕ إغلاق</button>
+      <div class="card-modal-title">🪪 بطاقتي الرقمية</div>
+      ${buildCardHTML(u, watched, total, points, joinDate)}
+      <div class="card-actions">
+        <button class="btn" onclick="shareMyCard()">📤 مشاركة</button>
+        <button class="btn outline" onclick="document.getElementById('card-modal-overlay').remove()">إغلاق</button>
+      </div>
+    </div>`;
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+  document.body.appendChild(overlay);
+}
+
+async function shareMyCard() {
+  const card = document.getElementById("student-card-preview");
+  if (!card) return;
+  const name = _currentUser?.name || "الطالب";
+  const text = `🎓 بطاقتي من منصة المبرمج الصغير!\nالاسم: ${name}\nانضم معنا: https://littelprogrammer.netlify.app`;
+  if (navigator.share) {
+    try { await navigator.share({ title: "بطاقة المبرمج الصغير", text }); return; } catch (e) {}
+  }
+  await navigator.clipboard?.writeText(text).catch(() => null);
+  toast("✅ تم نسخ رابط البطاقة!");
+}
+
+/* ── Admin: open & edit student card ── */
+async function adminOpenStudentCard(phone) {
+  const u = await fbGet(`users/${pkey(phone)}`);
+  if (!u) return;
+  const prog = await fbGet(`progress/${pkey(phone)}`) || {};
+  const allVids = await fbGet("videos") || {};
+  const watched = Object.values(prog).filter(p => p.watched).length;
+  const total = Object.keys(allVids).length;
+  const points = u.points || 0;
+
+  const existing = document.getElementById("card-modal-overlay");
+  if (existing) existing.remove();
+
+  const overlay = document.createElement("div");
+  overlay.id = "card-modal-overlay";
+  overlay.className = "card-modal-overlay";
+  overlay.innerHTML = `
+    <div class="card-modal-box" style="max-width:520px;max-height:90vh;overflow-y:auto">
+      <button class="card-modal-close" onclick="document.getElementById('card-modal-overlay').remove()">✕ إغلاق</button>
+      <div class="card-modal-title">🪪 بطاقة الطالب · <span style="color:var(--a)">${u.name}</span></div>
+      ${buildCardHTML(u, watched, total, points)}
+      <div class="card-editor-wrap">
+        <div class="card-editor-title">✏️ تعديل بيانات الطالب</div>
+        <div class="card-editor-grid">
+          <div class="card-editor-field">
+            <label>الاسم</label>
+            <input class="inp" id="ce-name" value="${u.name || ""}" placeholder="اسم الطالب"/>
+          </div>
+          <div class="card-editor-field">
+            <label>النقاط ⭐</label>
+            <input class="inp" id="ce-points" type="number" value="${u.points || 0}" min="0"/>
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px">ملاحظة للطالب (اختياري)</label>
+          <input class="inp" id="ce-note" value="${u.adminNote || ""}" placeholder="مثال: طالب متميز 🌟"/>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+          <button class="btn" style="flex:1;min-width:120px" onclick="saveStudentCardEdit('${phone}')">💾 حفظ التعديلات</button>
+          <button class="btn outline" style="flex:1;min-width:120px" onclick="document.getElementById('card-modal-overlay').remove()">إلغاء</button>
+        </div>
+      </div>
+    </div>`;
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+  document.body.appendChild(overlay);
+}
+
+async function saveStudentCardEdit(phone) {
+  const name = document.getElementById("ce-name")?.value.trim();
+  const points = parseInt(document.getElementById("ce-points")?.value || 0);
+  const note = document.getElementById("ce-note")?.value.trim();
+
+  if (!name) { toast("❌ الاسم مطلوب", "err"); return; }
+
+  const btn = document.querySelector("#card-modal-overlay .btn");
+  if (btn) { btn.disabled = true; btn.textContent = "⏳ جاري الحفظ..."; }
+
+  await fbUpd(`users/${pkey(phone)}`, {
+    name,
+    points: isNaN(points) ? 0 : points,
+    adminNote: note || null
+  });
+
+  toast("✅ تم حفظ بيانات الطالب");
+  document.getElementById("card-modal-overlay")?.remove();
+}
+
+/* ── Show card button for students ── */
+function showMyCardBtn() {
+  const btn = document.getElementById("my-card-btn");
+  if (btn) btn.style.display = "";
 }
 
 // تهيئة الإشعارات في الخلفية
