@@ -495,6 +495,36 @@ body{background:#050810;color:#e4e6f0;font-family:'Cairo',sans-serif}
 .act-bar:hover{background:var(--p)}
 .act-bar-lbl{font-size:9px;color:var(--muted);text-align:center;margin-top:4px;white-space:nowrap;overflow:hidden}
 .lootbox-overlay{position:fixed;inset:0;background:#000c;z-index:9997;display:flex;align-items:center;justify-content:center}
+
+/* ════ LEARNING MAP ════ */
+.lmap-wrap{padding:20px 16px;max-width:680px;margin:0 auto}
+.lmap-node{display:flex;align-items:center;gap:14px;margin-bottom:4px;position:relative}
+.lmap-node::before{content:'';position:absolute;right:27px;top:-20px;width:2px;height:20px;background:var(--border)}
+.lmap-node:first-child::before{display:none}
+.lmap-circle{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:2px solid;transition:all .3s;position:relative;z-index:1;cursor:pointer}
+.lmap-circle.done{background:rgba(34,197,94,.15);border-color:var(--ok);box-shadow:0 0 14px rgba(34,197,94,.3)}
+.lmap-circle.active{background:rgba(124,109,250,.2);border-color:var(--p);box-shadow:0 0 18px rgba(124,109,250,.4);animation:mapPulse 2s infinite}
+.lmap-circle.locked{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.08)}
+@keyframes mapPulse{0%,100%{box-shadow:0 0 18px rgba(124,109,250,.4)}50%{box-shadow:0 0 28px rgba(124,109,250,.7)}}
+.lmap-card{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:11px 14px;transition:all .2s;cursor:pointer}
+.lmap-card:hover{transform:translateX(-3px)}
+.lmap-card.done{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.04)}
+.lmap-card.active{border-color:rgba(124,109,250,.4);background:rgba(124,109,250,.07)}
+.lmap-card.locked{opacity:.55}
+.lmap-title{font-size:13px;font-weight:700;margin-bottom:3px}
+.lmap-meta{font-size:11px;color:var(--muted);display:flex;gap:8px;align-items:center}
+.lmap-connector{width:2px;height:18px;background:var(--border);margin-right:49px;flex-shrink:0}
+.lmap-connector.done{background:var(--ok)}
+/* ════ NOTES ════ */
+.notes-panel{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:16px}
+.note-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:8px;font-size:13px;line-height:1.7;position:relative;padding-left:36px}
+.note-del{position:absolute;top:8px;left:8px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;opacity:.5;transition:.2s}
+.note-del:hover{opacity:1;color:var(--err)}
+/* ════ ADMIN RATING ════ */
+.star-rating{display:flex;gap:3px;direction:ltr}
+.star-btn{background:none;border:none;font-size:20px;cursor:pointer;transition:transform .15s;padding:1px;line-height:1}
+.star-btn:hover{transform:scale(1.25)}
+.rating-badge{display:inline-flex;gap:1px;font-size:12px}
 .lootbox-modal{background:var(--bg2);border:2px solid var(--p);border-radius:28px;padding:36px 28px;text-align:center;max-width:360px;width:90%;box-shadow:0 0 60px rgba(124,109,250,.4);animation:lootIn .5s cubic-bezier(.34,1.56,.64,1)}
 @keyframes lootIn{from{opacity:0;transform:scale(.5) rotate(-10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
 .lootbox-box{font-size:72px;margin-bottom:16px;animation:boxShake .3s ease 0s 3;cursor:pointer;display:inline-block}
@@ -1617,7 +1647,7 @@ function renderAdminStudents(m){
       const ps=u.paymentStatus||"unpaid";
       const pLabel=ps==="paid"?"✅ دفع":ps==="partial"?"⚠️ جزئي":"🔴 لم يدفع";
       const pClass=ps==="paid"?"paid":ps==="partial"?"partial":"unpaid";
-      html+=`<div class="s-row approved"><div class="s-info"><div class="ava sm">${u.name[0]}</div><div><div class="u-name">${u.name}</div><div class="s-phone">${u.phone}</div></div></div><div class="s-actions"><span class="pay-badge ${pClass}">${pLabel}</span><button class="app-btn" style="font-size:11px;padding:5px 10px;background:rgba(0,229,255,.1);color:var(--a);border-color:rgba(0,229,255,.2)" onclick="adminOpenStudentCard('${u.phone}')">🪪 بطاقة</button><button class="rej-btn" style="font-size:11px;padding:5px 10px" onclick="openRejModal('${u.phone}')">إلغاء الوصول</button></div></div>`;
+      html+=`<div class="s-row approved"><div class="s-info"><div class="ava sm">${u.name[0]}</div><div><div class="u-name">${u.name} ${u.rating?`<span class="rating-badge">${'⭐'.repeat(u.rating)}</span>`:''}</div><div class="s-phone">${u.phone}</div></div></div><div class="s-actions"><span class="pay-badge ${pClass}">${pLabel}</span><button class="app-btn" style="font-size:11px;padding:5px 10px;background:rgba(0,229,255,.1);color:var(--a);border-color:rgba(0,229,255,.2)" onclick="adminOpenStudentCard('${u.phone}')">🪪 بطاقة</button><button class="rej-btn" style="font-size:11px;padding:5px 10px" onclick="openRejModal('${u.phone}')">إلغاء الوصول</button></div></div>`;
     });html+="</div>"}
     el.innerHTML=html;
   });
@@ -2738,7 +2768,7 @@ function renderStudentSidebar(u){
   show("sb-progress");
   const nav=document.getElementById("sb-nav");
   nav.className="sb-nav videos";
-  nav.innerHTML=`<div class="search-wrap"><input class="search-inp" id="search-inp" placeholder="🔍 ابحث عن درس..." oninput="filterVideos()" dir="rtl"/></div><div id="vid-list"></div><div style="padding:10px 0 4px;display:flex;flex-direction:column;gap:6px"><button onclick="openStudentExams('${u.phone}')" style="width:100%;background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:10px;color:var(--p);padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between">📝 امتحاناتي <span id="exam-notif-badge" style="display:none;background:var(--err);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;align-items:center;justify-content:center">0</span></button><button onclick="openMyProfile()" style="width:100%;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);border-radius:10px;color:var(--a);padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px">👤 ملفي الشخصي</button><button onclick="openFriends()" style="width:100%;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;color:var(--ok);padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px">👥 الأصدقاء</button></div>`;
+  nav.innerHTML=`<div class="search-wrap"><input class="search-inp" id="search-inp" placeholder="🔍 ابحث عن درس..." oninput="filterVideos()" dir="rtl"/></div><div id="vid-list"></div><div style="padding:10px 0 4px;display:flex;flex-direction:column;gap:6px"><button onclick="openStudentExams('${u.phone}')" style="width:100%;background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);border-radius:10px;color:var(--p);padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between">📝 امتحاناتي <span id="exam-notif-badge" style="display:none;background:var(--err);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;align-items:center;justify-content:center">0</span></button><button onclick="openMyProfile()" style="width:100%;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);border-radius:10px;color:var(--a);padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px">👤 ملفي الشخصي</button><button onclick="openLearningMap()" style="width:100%;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);border-radius:10px;color:#ffd700;padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px">🗺️ خريطة التعلم</button><button onclick="openFriends()" style="width:100%;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;color:var(--ok);padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px">👥 الأصدقاء</button></div>`;
   if(!u.approved){renderStudentStatus(u);return}
   showMyCardBtn();
 
@@ -3043,6 +3073,14 @@ async function playVideo(id){
       <div class="code-output" id="code-out-${id}"></div>
     </div>`:""}
     ${fahmtSection}
+    <div class="notes-panel">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--a)">📒 ملاحظاتي على هذا الدرس</div>
+      <div id="notes-list-${id}"><div style="color:var(--muted);font-size:12px">جاري التحميل...</div></div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <textarea id="note-inp-${id}" placeholder="اكتب ملاحظة..." rows="2" style="flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;color:#e4e6f0;padding:9px 12px;font-family:'Cairo',sans-serif;font-size:13px;outline:none;resize:none;transition:border .2s" onfocus="this.style.borderColor='var(--a)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter'&&event.ctrlKey)saveNote('${id}')"></textarea>
+        <button class="btn" style="max-width:70px;padding:9px;font-size:12px;align-self:flex-end;background:rgba(0,229,255,.15);border:1px solid rgba(0,229,255,.25);color:var(--a)" onclick="saveNote('${id}')">+ حفظ</button>
+      </div>
+    </div>
     <div class="comments-section">
       <h4 style="font-size:14px;font-weight:700;margin-bottom:14px">💬 التعليقات <span id="comments-count" style="color:var(--muted);font-weight:400;font-size:12px"></span></h4>
       <div id="comments-list" style="max-height:300px;overflow-y:auto"></div>
@@ -3054,6 +3092,7 @@ async function playVideo(id){
   </div>`;
 
   loadComments(id);
+  loadNotes(id);
 }
 
 
@@ -3523,6 +3562,7 @@ async function adminOpenStudentCard(phone) {
 
   const existing = document.getElementById("card-modal-overlay");
   if (existing) existing.remove();
+  _ceRating = u.rating || 0;
 
   const overlay = document.createElement("div");
   overlay.id = "card-modal-overlay";
@@ -3543,6 +3583,10 @@ async function adminOpenStudentCard(phone) {
             <label>النقاط ⭐</label>
             <input class="inp" id="ce-points" type="number" value="${u.points || 0}" min="0"/>
           </div>
+        </div>
+        <div style="margin-top:10px">
+          <label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:6px">تقييم الطالب ⭐</label>
+          <div class="star-rating" id="ce-stars">${[1,2,3,4,5].map(n=>`<button class="star-btn" onclick="setRating(${n})" data-val="${n}">${n<=(u.rating||0)?'⭐':'☆'}</button>`).join('')}</div>
         </div>
         <div style="margin-top:10px">
           <label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px">ملاحظة للطالب (اختياري)</label>
@@ -3571,7 +3615,8 @@ async function saveStudentCardEdit(phone) {
   await fbUpd(`users/${pkey(phone)}`, {
     name,
     points: isNaN(points) ? 0 : points,
-    adminNote: note || null
+    adminNote: note || null,
+    rating: _ceRating || null
   });
 
   toast("✅ تم حفظ بيانات الطالب");
@@ -4059,7 +4104,115 @@ async function loadAdminActivity(containerId){
     }`;
 }
 
-/* ════════ Track activity on page load ════════ */
+/* ════════════════════════════════
+   ██████ LEARNING MAP ██████
+════════════════════════════════ */
+async function openLearningMap(){
+  const m=document.getElementById("main-content");
+  m.innerHTML=`<div class="lmap-wrap"><div style="display:flex;align-items:center;gap:12px;margin-bottom:20px"><div style="font-size:22px">🗺️</div><div><div style="font-size:18px;font-weight:900">خريطة التعلم</div><div style="font-size:12px;color:var(--muted)">مسارك الكامل في المنصة</div></div></div><div id="lmap-content"><div class="empty">جاري التحميل...</div></div></div>`;
+  const el=document.getElementById("lmap-content");
+
+  if(!_allVideos.length){el.innerHTML=`<div class="empty">لا توجد دروس بعد</div>`;return;}
+
+  // Stats bar
+  const total=_allVideos.length;
+  const passed=Object.values(_myProgress).filter(p=>p.passed).length;
+  const pct=Math.round(passed/total*100);
+
+  let html=`<div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:24px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-size:13px;font-weight:700">التقدم الكلي</span>
+      <span style="font-size:13px;font-weight:900;color:var(--p)">${pct}%</span>
+    </div>
+    <div style="background:var(--bg);border-radius:99px;height:8px;overflow:hidden">
+      <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,var(--p),var(--a));border-radius:99px;transition:width .5s"></div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px">${passed} / ${total} درس أنهيته</div>
+  </div>`;
+
+  // Group by category
+  const cats={};
+  _allVideos.forEach(v=>{const c=v.category||"عام";if(!cats[c])cats[c]=[];cats[c].push(v);});
+
+  Object.entries(cats).forEach(([cat,vids])=>{
+    html+=`<div style="margin-bottom:28px">
+      <div style="font-size:12px;font-weight:700;color:var(--a);margin-bottom:12px;display:flex;align-items:center;gap:8px">
+        <div style="height:1px;flex:1;background:var(--border)"></div>
+        ${cat}
+        <div style="height:1px;flex:1;background:var(--border)"></div>
+      </div>`;
+    vids.forEach((v,i)=>{
+      const prog=_myProgress[v.id]||{};
+      const unlocked=prog.unlocked===true;
+      const done=prog.passed===true;
+      const watched=prog.watched&&!done;
+      const num=_allVideos.indexOf(v)+1;
+      let cls=done?'done':unlocked?'active':'locked';
+      let icon=done?'✅':unlocked?'▶️':'🔒';
+      let statusTxt=done?'أنهيته':unlocked?'متاح':'مقفول';
+      let statusColor=done?'var(--ok)':unlocked?'var(--p)':'var(--muted)';
+
+      if(i>0)html+=`<div class="lmap-connector ${done?'done':''}"></div>`;
+      html+=`<div class="lmap-node">
+        <div class="lmap-circle ${cls}" onclick="${unlocked||done?`playVideo('${v.id}')`:''}">${icon}</div>
+        <div class="lmap-card ${cls}" onclick="${unlocked||done?`playVideo('${v.id}')`:``}">
+          <div class="lmap-title">${num}. ${v.title}</div>
+          <div class="lmap-meta">
+            <span style="color:${statusColor};font-weight:700">${statusTxt}</span>
+            ${v.category?`<span>· ${v.category}</span>`:''}
+            ${done?`<span style="color:var(--ok)">· ✅ خلصته</span>`:''}
+          </div>
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+
+  el.innerHTML=html;
+}
+
+/* ════════════════════════════════
+   ██████ NOTES SYSTEM ██████
+════════════════════════════════ */
+async function loadNotes(videoId){
+  const el=document.getElementById(`notes-list-${videoId}`);if(!el)return;
+  const snap=await window._fb.get(window._fb.ref(window._fb.db,`notes/${pkey(_currentUser.phone)}/${videoId}`));
+  const notes=snap.val()||{};
+  const arr=Object.entries(notes).sort((a,b)=>b[1].ts-a[1].ts);
+  if(!arr.length){el.innerHTML=`<div style="color:var(--muted);font-size:12px;text-align:center;padding:8px">لا توجد ملاحظات بعد — اكتب أول ملاحظة! 📝</div>`;return;}
+  el.innerHTML=arr.map(([nid,n])=>`<div class="note-item">
+    <button class="note-del" onclick="deleteNote('${videoId}','${nid}')" title="حذف">🗑️</button>
+    ${n.text}
+    <div style="font-size:10px;color:var(--muted);margin-top:6px">${new Date(n.ts).toLocaleString('ar')}</div>
+  </div>`).join('');
+}
+
+async function saveNote(videoId){
+  const inp=document.getElementById(`note-inp-${videoId}`);
+  const text=inp?.value.trim();if(!text){toast("❌ اكتب ملاحظة أولاً","err");return;}
+  const nId=Date.now().toString();
+  await window._fb.set(window._fb.ref(window._fb.db,`notes/${pkey(_currentUser.phone)}/${videoId}/${nId}`),{text,ts:Date.now()});
+  inp.value="";
+  toast("✅ تم حفظ الملاحظة");
+  loadNotes(videoId);
+}
+
+async function deleteNote(videoId,noteId){
+  await window._fb.remove(window._fb.ref(window._fb.db,`notes/${pkey(_currentUser.phone)}/${videoId}/${noteId}`));
+  loadNotes(videoId);
+}
+
+/* ════════════════════════════════
+   ██████ ADMIN RATING ██████
+════════════════════════════════ */
+let _ceRating=0;
+function setRating(val){
+  _ceRating=val;
+  const stars=document.querySelectorAll("#ce-stars .star-btn");
+  stars.forEach(s=>{s.textContent=parseInt(s.dataset.val)<=val?'⭐':'☆';});
+}
+
+/* ════ Track activity on page load ════════ */
 window.addEventListener("load",()=>{
   setTimeout(()=>{if(_currentUser&&!_currentUser.isAdmin)trackActivity();},3000);
   setInterval(()=>{if(_currentUser&&!_currentUser.isAdmin)trackActivity();},300000);
