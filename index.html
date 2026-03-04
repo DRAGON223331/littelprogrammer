@@ -814,7 +814,7 @@ function getSavedPhone(){return localStorage.getItem(SESSION_KEY)}
 /* ── منع تصوير الشاشة ── */
 document.addEventListener("contextmenu",e=>{if(e.target.closest(".player"))e.preventDefault()});
 document.addEventListener("keydown",e=>{
-  if(e.key==="PrintScreen"){e.preventDefault();navigator.clipboard?.writeText("").catch(()=>{})}
+  if(e.key==="PrintScreen"){e.preventDefault();navigator.clipboard?.writeText("").catch(()=>null)}
 });
 document.addEventListener("visibilitychange",()=>{
   document.querySelectorAll(".player iframe").forEach(f=>{
@@ -1201,11 +1201,11 @@ async function verifyOTP(phone,inputCode){
   }
   if(!data)return{ok:false,msg:"❌ لم يتم إرسال كود، اضغط إرسال مجدداً"};
   if(Date.now()>data.expires){
-    await fbDel(`otps/${pkey(phone)}`).catch(()=>{});
+    await fbDel(`otps/${pkey(phone)}`).catch(()=>null);
     return{ok:false,msg:"⏰ انتهت صلاحية الكود، اطلب كوداً جديداً"};
   }
   if(inputCode.trim()!==data.code)return{ok:false,msg:"❌ الكود غير صحيح، حاول مجدداً"};
-  await fbDel(`otps/${pkey(phone)}`).catch(()={}); // حذف بعد الاستخدام
+  await fbDel(`otps/${pkey(phone)}`).catch(()=>null); // حذف بعد الاستخدام
   return{ok:true};
 }
 async function sendPaymentMsg(phone,name){
