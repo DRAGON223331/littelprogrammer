@@ -1104,7 +1104,7 @@ document.addEventListener("DOMContentLoaded", loadSavedTheme);
     applyPalette(palettes[pIdx]);
     pIdx++;
     if(pIdx >= palettes.length) clearInterval(colorTimer); // ends on original
-  }, 620);
+  }, 750);
   window._introColorTimer = colorTimer;
 
   // Progress steps - total ~3s minimum
@@ -1126,26 +1126,22 @@ document.addEventListener("DOMContentLoaded", loadSavedTheme);
   });
 
   window._introStartTime = Date.now();
-  window._introMinDuration = 3200;
+  window._introMinDuration = 5000;
 })();
 
 function hideIntro(){
-  const elapsed = Date.now() - (window._introStartTime||0);
-  const wait = Math.max(0, window._introMinDuration - elapsed);
+  if(window._introColorTimer) clearInterval(window._introColorTimer);
+  const progress = document.getElementById('intro-progress');
+  const status   = document.getElementById('intro-status');
+  const loader   = document.getElementById('loader');
+  if(progress) progress.style.width='100%';
+  if(status)   status.textContent='READY ✓';
   setTimeout(()=>{
-    if(window._introColorTimer) clearInterval(window._introColorTimer);
-    const progress = document.getElementById('intro-progress');
-    const status   = document.getElementById('intro-status');
-    const loader   = document.getElementById('loader');
-    if(progress) progress.style.width='100%';
-    if(status)   status.textContent='READY ✓';
-    setTimeout(()=>{
-      if(loader){
-        loader.classList.add('hide');
-        setTimeout(()=>{ loader.style.display='none'; }, 800);
-      }
-    }, 500);
-  }, wait);
+    if(loader){
+      loader.classList.add('hide');
+      setTimeout(()=>{ loader.style.display='none'; }, 800);
+    }
+  }, 600);
 }
 
 /* ── Firebase ── */
@@ -3162,7 +3158,8 @@ async function init(){
   if(savedPhone){
     const ud=await fbGet(`users/${pkey(savedPhone)}`);
     if(ud){
-      hideIntro();
+      // Wait for intro to finish minimum duration first
+      await waitForIntro();
       _currentUser=ud;
       renderApp(ud);
       return;
@@ -3171,8 +3168,17 @@ async function init(){
     }
   }
 
-  hideIntro();
+  // Wait for intro to finish minimum duration first
+  await waitForIntro();
   showAuth();
+}
+
+function waitForIntro(){
+  return new Promise(resolve=>{
+    const elapsed = Date.now() - (window._introStartTime||0);
+    const wait = Math.max(0, window._introMinDuration - elapsed);
+    setTimeout(()=>{ hideIntro(); resolve(); }, wait);
+  });
 }
 
 // تهيئة الإشعارات في الخلفية
