@@ -230,7 +230,7 @@ body{background:#050810;color:#e4e6f0;font-family:'Cairo',sans-serif}
 .wa-btn{display:inline-flex;align-items:center;gap:8px;background:#25d366;color:#fff;border:none;border-radius:10px;padding:10px 20px;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;margin-top:12px;transition:opacity .2s}
 .wa-btn:hover{opacity:.88}
 #app{display:flex;height:100vh;overflow:hidden}
-.sidebar{width:270px;min-width:270px;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.sidebar{width:300px;min-width:300px;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;transition:transform .3s cubic-bezier(.4,0,.2,1)}
 .sb-logo{padding:20px 18px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center}
 .sb-logo-icon{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--p);background:rgba(124,109,250,.1);padding:7px 10px;border-radius:8px;border:1px solid rgba(124,109,250,.2)}
 .sb-logo-name{color:#e4e6f0;font-size:13px;font-weight:700}
@@ -2789,23 +2789,42 @@ function filterVideos(){
   const list=document.getElementById("vid-list");if(!list)return;
   const filtered=_allVideos.filter(v=>v.title.toLowerCase().includes(q)||(v.category||"").toLowerCase().includes(q));
   if(filtered.length===0){list.innerHTML=`<div class="empty">لا توجد نتائج</div>`;return}
-  list.innerHTML=filtered.map(v=>{
-    const prog=_myProgress[v.id]||{};
-    const unlocked=prog.unlocked===true;
-    const watched=prog.watched===true;
-    const passed=prog.passed===true;
-    let icon="🔒";
-    let cls="locked";
-    if(watched&&passed){icon="✅";cls="done"}
-    else if(unlocked){icon="▶️";cls=""}
-    return `<button onclick="${unlocked?`playVideo('${v.id}')`:`toast('🔒 أنهِ الدرس السابق أولاً','err')`}"
-      id="vnav-${v.id}"
-      class="${cls}"
-      style="display:flex;align-items:center;justify-content:space-between;gap:6px;padding:10px 12px">
-      <span style="flex:1;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px">${icon} ${v.title}</span>
-      ${v.category?`<span style="font-size:10px;background:rgba(0,229,255,.1);color:var(--a);padding:2px 7px;border-radius:5px;white-space:nowrap;flex-shrink:0;border:1px solid rgba(0,229,255,.15)">${v.category}</span>`:""}
-    </button>`;
-  }).join("");
+
+  // Group by category
+  const cats={};
+  filtered.forEach(v=>{
+    const cat=v.category||"عام";
+    if(!cats[cat])cats[cat]=[];
+    cats[cat].push(v);
+  });
+
+  list.innerHTML=Object.entries(cats).map(([cat,vids],gi)=>`
+    <div style="margin-bottom:6px">
+      <div style="font-size:10px;font-weight:700;color:var(--a);padding:8px 12px 4px;opacity:.8;letter-spacing:.5px;text-transform:uppercase">${cat}</div>
+      ${vids.map((v,i)=>{
+        const prog=_myProgress[v.id]||{};
+        const unlocked=prog.unlocked===true;
+        const watched=prog.watched===true;
+        const passed=prog.passed===true;
+        let statusIcon="🔒";
+        let statusColor="var(--muted)";
+        let bgStyle="background:rgba(255,255,255,.02)";
+        if(watched&&passed){statusIcon="✅";statusColor="var(--ok)";bgStyle="background:rgba(34,197,94,.06)"}
+        else if(unlocked&&watched){statusIcon="👁️";statusColor="var(--a)";bgStyle="background:rgba(0,229,255,.05)"}
+        else if(unlocked){statusIcon="▶️";statusColor="var(--p)";bgStyle="background:rgba(124,109,250,.07)"}
+        const num=_allVideos.indexOf(v)+1;
+        return `<button onclick="${unlocked?`playVideo('${v.id}')`:`toast('🔒 أنهِ الدرس السابق أولاً','err')`}"
+          id="vnav-${v.id}"
+          class="${passed?'done':unlocked?'':'locked'}"
+          style="width:100%;${bgStyle};border:1px solid ${passed?'rgba(34,197,94,.2)':unlocked?'rgba(124,109,250,.15)':'rgba(255,255,255,.04)'};border-radius:12px;color:inherit;cursor:pointer;text-align:right;font-family:'Cairo',sans-serif;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:5px;transition:all .2s" 
+          onmouseover="if(${unlocked})this.style.transform='translateX(-2px)'"
+          onmouseout="this.style.transform=''">
+          <span style="font-size:16px;flex-shrink:0">${statusIcon}</span>
+          <span style="flex:1;font-size:12px;font-weight:${unlocked?700:500};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:${unlocked?'#e4e6f0':'var(--muted)'}">${v.title}</span>
+          <span style="font-size:10px;background:rgba(0,229,255,.08);color:var(--a);padding:2px 6px;border-radius:5px;flex-shrink:0;border:1px solid rgba(0,229,255,.12);font-weight:700">${num}</span>
+        </button>`;
+      }).join("")}
+    </div>`).join("");
 }
 
 async function renderStudentWelcome(){
