@@ -50,12 +50,103 @@ body{background:#050810;color:#e4e6f0;font-family:'Cairo',sans-serif}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--p);border-radius:4px}
-#loader{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px}
-.loader-logo{font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:700;background:linear-gradient(135deg,var(--p),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:pulse 1.5s ease-in-out infinite}
+/* ════ CINEMATIC INTRO ════ */
+#loader{position:fixed;inset:0;background:#020408;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;overflow:hidden}
+#loader.hide{animation:introExit .7s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes introExit{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.05);pointer-events:none}}
+
+/* Stars background */
+.intro-stars{position:absolute;inset:0;overflow:hidden}
+.intro-star{position:absolute;border-radius:50%;background:#fff;animation:starTwinkle ease-in-out infinite}
+@keyframes starTwinkle{0%,100%{opacity:.1;transform:scale(1)}50%{opacity:.8;transform:scale(1.3)}}
+
+/* Nebula glow */
+.intro-nebula{position:absolute;border-radius:50%;filter:blur(80px);animation:nebulaPulse 4s ease-in-out infinite}
+@keyframes nebulaPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.6;transform:scale(1.1)}}
+.intro-nebula-1{width:500px;height:500px;background:radial-gradient(circle,rgba(124,109,250,.4),transparent 70%);top:-100px;left:-100px}
+.intro-nebula-2{width:400px;height:400px;background:radial-gradient(circle,rgba(0,229,255,.25),transparent 70%);bottom:-80px;right:-80px;animation-delay:-2s}
+
+/* Logo container */
+.intro-logo-wrap{position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0}
+
+/* Glitch ring */
+.intro-ring{
+  width:120px;height:120px;border-radius:50%;
+  border:2px solid transparent;
+  background:linear-gradient(#020408,#020408) padding-box,
+    linear-gradient(135deg,var(--p),var(--a),var(--p)) border-box;
+  display:flex;align-items:center;justify-content:center;
+  animation:ringRotate 3s linear infinite, introPopIn .8s cubic-bezier(.34,1.56,.64,1) both;
+  position:relative;margin-bottom:28px;
+}
+.intro-ring::before{
+  content:'';position:absolute;inset:-8px;border-radius:50%;
+  border:1px solid rgba(124,109,250,.2);
+  animation:ringRotate 5s linear infinite reverse;
+}
+.intro-ring::after{
+  content:'';position:absolute;inset:-16px;border-radius:50%;
+  border:1px dashed rgba(0,229,255,.1);
+  animation:ringRotate 8s linear infinite;
+}
+@keyframes ringRotate{to{transform:rotate(360deg)}}
+@keyframes introPopIn{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+
+/* Code symbol inside ring */
+.intro-code{
+  font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;
+  background:linear-gradient(135deg,var(--p),var(--a));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:introCodePop .6s .4s both;
+}
+@keyframes introCodePop{from{opacity:0;transform:scale(.5) rotate(-10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+
+/* Title */
+.intro-title{
+  font-size:28px;font-weight:900;letter-spacing:1px;
+  background:linear-gradient(135deg,#fff 30%,rgba(124,109,250,.8));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:introTextIn .6s .6s both;
+  margin-bottom:6px;
+}
+.intro-sub{
+  font-size:13px;color:rgba(124,109,250,.7);letter-spacing:3px;
+  animation:introTextIn .6s .75s both;
+  margin-bottom:32px;
+}
+@keyframes introTextIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* Progress bar */
+.intro-progress-wrap{
+  width:200px;height:2px;background:rgba(255,255,255,.06);
+  border-radius:2px;overflow:hidden;
+  animation:introTextIn .4s .9s both;
+  position:relative;
+}
+.intro-progress-fill{
+  height:100%;width:0%;border-radius:2px;
+  background:linear-gradient(90deg,var(--p),var(--a));
+  box-shadow:0 0 10px rgba(124,109,250,.5);
+  transition:width .3s ease;
+}
+.intro-status{
+  font-size:11px;color:rgba(90,99,128,.8);letter-spacing:1.5px;
+  margin-top:10px;font-family:'JetBrains Mono',monospace;
+  animation:introTextIn .4s .95s both;
+  min-height:16px;
+}
+
+/* Scan line effect */
+.intro-scanline{
+  position:absolute;inset:0;pointer-events:none;z-index:3;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);
+}
+
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.97)}}
 .spin{width:36px;height:36px;border:2px solid var(--border);border-top-color:var(--p);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loader-txt{font-size:12px;color:var(--muted);letter-spacing:1px}
+.loader-txt{display:none}
+.loader-logo{display:none}
 #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:13px 24px;font-size:14px;font-weight:700;z-index:9998;transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 12px 40px #0009;max-width:90vw;text-align:center}
 #toast.show{transform:translateX(-50%) translateY(0)}
 #toast.ok{border-color:var(--ok);color:var(--ok);box-shadow:0 0 20px rgba(34,197,94,.2)}
@@ -579,9 +670,25 @@ body{background:#050810;color:#e4e6f0;font-family:'Cairo',sans-serif}
 <body>
 
 <div id="loader">
-  <div class="loader-logo">{"</>"}</div>
-  <div class="spin"></div>
-  <div class="loader-txt">جاري الاتصال بالخادم...</div>
+  <!-- Stars -->
+  <div class="intro-stars" id="intro-stars"></div>
+  <!-- Nebulas -->
+  <div class="intro-nebula intro-nebula-1"></div>
+  <div class="intro-nebula intro-nebula-2"></div>
+  <!-- Scanline -->
+  <div class="intro-scanline"></div>
+  <!-- Main content -->
+  <div class="intro-logo-wrap">
+    <div class="intro-ring">
+      <div class="intro-code">&lt;/&gt;</div>
+    </div>
+    <div class="intro-title">المبرمج الصغير</div>
+    <div class="intro-sub">LITTLE PROGRAMMER</div>
+    <div class="intro-progress-wrap">
+      <div class="intro-progress-fill" id="intro-progress"></div>
+    </div>
+    <div class="intro-status" id="intro-status">INITIALIZING...</div>
+  </div>
 </div>
 
 <div id="toast"></div>
@@ -897,6 +1004,66 @@ const _origAdminPage = typeof adminPage !== 'undefined' ? adminPage : null;
 
 // Load theme on startup - only after DOM ready
 document.addEventListener("DOMContentLoaded", loadSavedTheme);
+
+
+/* ════ CINEMATIC INTRO JS ════ */
+(function initIntro(){
+  // Create stars
+  const starsEl = document.getElementById('intro-stars');
+  if(starsEl){
+    for(let i=0;i<80;i++){
+      const s = document.createElement('div');
+      s.className = 'intro-star';
+      const size = Math.random()*2.5+.5;
+      s.style.cssText = `
+        width:${size}px;height:${size}px;
+        left:${Math.random()*100}%;top:${Math.random()*100}%;
+        animation-duration:${Math.random()*3+1.5}s;
+        animation-delay:${Math.random()*3}s;
+      `;
+      starsEl.appendChild(s);
+    }
+  }
+
+  // Animate progress bar with status messages
+  const progress = document.getElementById('intro-progress');
+  const status = document.getElementById('intro-status');
+  const steps = [
+    {pct:15, msg:'LOADING ASSETS...'},
+    {pct:35, msg:'CONNECTING TO SERVER...'},
+    {pct:60, msg:'SYNCING DATABASE...'},
+    {pct:80, msg:'PREPARING INTERFACE...'},
+    {pct:95, msg:'ALMOST READY...'},
+  ];
+
+  let step = 0;
+  const interval = setInterval(()=>{
+    if(step < steps.length){
+      if(progress) progress.style.width = steps[step].pct + '%';
+      if(status) status.textContent = steps[step].msg;
+      step++;
+    } else {
+      clearInterval(interval);
+    }
+  }, 350);
+
+  window._introInterval = interval;
+})();
+
+function hideIntro(){
+  const loader = document.getElementById('loader');
+  const progress = document.getElementById('intro-progress');
+  const status = document.getElementById('intro-status');
+  if(window._introInterval) clearInterval(window._introInterval);
+  if(progress) progress.style.width = '100%';
+  if(status) status.textContent = 'READY ✓';
+  setTimeout(()=>{
+    if(loader){
+      loader.classList.add('hide');
+      setTimeout(()=>{ loader.style.display='none'; }, 700);
+    }
+  }, 400);
+}
 
 /* ── Firebase ── */
 function waitFB(){return new Promise(r=>{const c=()=>window._fb?r(window._fb):setTimeout(c,50);c()})}
@@ -2912,7 +3079,7 @@ async function init(){
   if(savedPhone){
     const ud=await fbGet(`users/${pkey(savedPhone)}`);
     if(ud){
-      document.getElementById("loader").style.display="none";
+      hideIntro();
       _currentUser=ud;
       renderApp(ud);
       return;
@@ -2921,7 +3088,7 @@ async function init(){
     }
   }
 
-  document.getElementById("loader").style.display="none";
+  hideIntro();
   showAuth();
 }
 
