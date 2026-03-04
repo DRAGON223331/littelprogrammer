@@ -39,7 +39,10 @@ export default async function handler(req, res) {
     );
 
     const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "عذراً، حدث خطأ. حاول مجدداً!";
+    if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
+  return res.status(200).json({ reply: "❌ Gemini Error: " + JSON.stringify(data) });
+}
+const text = data.candidates[0].content.parts[0].text;
 
     return res.status(200).json({ reply: text });
   } catch (err) {
