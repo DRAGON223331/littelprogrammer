@@ -1,24 +1,16 @@
-exports.handler = async (event) => {
-  if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: "Method Not Allowed" };
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
   }
 
   const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
   if (!GEMINI_API_KEY) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "API key not configured" }),
-    };
+    return res.status(500).json({ error: "API key not configured" });
   }
 
-  let body;
-  try {
-    body = JSON.parse(event.body);
-  } catch {
-    return { statusCode: 400, body: JSON.stringify({ error: "Invalid JSON" }) };
-  }
+  const { messages = [] } = req.body;
 
-  const messages = (body.messages || []).map((m) => ({
+  const geminiMessages = messages.map((m) => ({
     role: m.role === "assistant" ? "model" : "user",
     parts: [{ text: m.content }],
   }));
@@ -34,13 +26,13 @@ exports.handler = async (event) => {
 
   try {
     const response = await fetch(
-      \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=\${GEMINI_API_KEY}\`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           system_instruction: { parts: [{ text: systemPrompt }] },
-          contents: messages,
+          contents: geminiMessages,
           generationConfig: { maxOutputTokens: 800, temperature: 0.7 },
         }),
       }
@@ -49,15 +41,8 @@ exports.handler = async (event) => {
     const data = await response.json();
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "عذراً، حدث خطأ. حاول مجدداً!";
 
-    return {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({ reply: text }),
-    };
+    return res.status(200).json({ reply: text });
   } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: err.message }),
-    };
+    return res.status(500).json({ error: err.message });
   }
-};
+}
