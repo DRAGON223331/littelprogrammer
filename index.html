@@ -3617,26 +3617,14 @@ async function sendAIMessage() {
   showTyping();
 
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("/.netlify/functions/ai-chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        system: `أنت مساعد برمجي ذكي لمنصة "المبرمج الصغير" — منصة تعليم البرمجة للناشئين العرب.
-مهمتك الوحيدة: الإجابة على أسئلة البرمجة فقط (Python، JavaScript، HTML، CSS، البرمجة العامة).
-قواعد:
-- أجب دائماً بالعربية بأسلوب بسيط ومناسب للمبتدئين
-- إذا كان السؤال غير برمجي، قل بلطف إنك متخصص في البرمجة فقط
-- استخدم أمثلة كود واضحة عند الحاجة
-- كن مشجعاً ومحفزاً
-- لا تطول كثيراً، كن مختصراً ومفيداً`,
-        messages: _aiHistory
-      })
+      body: JSON.stringify({ messages: _aiHistory })
     });
 
     const data = await response.json();
-    const reply = data.content?.[0]?.text || "عذراً، حدث خطأ. حاول مجدداً!";
+    const reply = data.reply || "عذراً، حدث خطأ. حاول مجدداً!";
     hideTyping();
     addAIMessage("bot", reply);
     _aiHistory.push({ role: "assistant", content: reply });
