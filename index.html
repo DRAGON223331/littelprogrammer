@@ -1700,7 +1700,7 @@ async function loadProgressData(){
       const next=sorted[i+1];
       const currP=prog[curr.id]||{};
       const nextP=prog[next.id]||{};
-      if((currP.passed||currP.watched)&&!nextP.unlocked){
+      if(currP.passed && !nextP.unlocked){
         stuck.push({u,stuckAt:next,completedLesson:curr,prog});
         break; // أول مشكلة بس
       }
@@ -3361,7 +3361,7 @@ async function repairAllProgress(){
         const curr=sorted[i];
         const next=sorted[i+1];
         const currProg=prog[curr.id]||{};
-        if((currProg.passed||currProg.watched)&&!prog[next.id]?.unlocked){
+        if(currProg.passed && !prog[next.id]?.unlocked){
           multiUpd[`progress/${pk}/${next.id}/unlocked`]=true;
           fixedCount++;
         }
