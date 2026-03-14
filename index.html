@@ -1582,6 +1582,7 @@ function renderAdminSidebar(){
     <button id="anav-activity" onclick="adminPage('activity')">📡 النشاط المباشر</button>
     <button id="anav-announce" onclick="adminPage('announce')">📢 الإعلانات</button>
     <button id="anav-settings" onclick="adminPage('settings')">⚙️ الإعدادات</button>
+    <button id="repair-btn" onclick="repairAllProgress()" style="background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);color:#f59e0b;margin-top:8px">🔧 إصلاح تقدم الطلاب</button>
     <div style="margin:10px 0;border-top:1px solid var(--border)"></div>
     <button onclick="enterStudentView()" style="background:rgba(245,158,11,.1);color:#f59e0b;border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;width:100%;justify-content:center;transition:all .2s" onmouseover="this.style.background='rgba(245,158,11,.2)'" onmouseout="this.style.background='rgba(245,158,11,.1)'">
       👁️ معاينة منظور الطالب
@@ -1654,7 +1655,15 @@ function renderAdminStudents(m){
 }
 
 function renderAdminProgress(m){
-  m.innerHTML=`<div class="section"><div class="sec-title">📊 تقدم الطلاب</div><div id="prog-content"><div class="empty">جاري التحميل...</div></div></div>`;
+  m.innerHTML=`<div class="section"><div class="sec-title">📊 تقدم الطلاب</div>
+    <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px">
+        <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:4px">🔧 إصلاح تقدم الطلاب</div>
+        <div style="font-size:12px;color:var(--muted)">لو طالب ضغط فهمت بس الدرس التالي مش بيفتح — اضغط الزر ده يصلح بيانات كل الطلاب دفعة واحدة</div>
+      </div>
+      <button id="repair-btn" onclick="repairAllProgress()" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#f59e0b;border-radius:10px;padding:10px 18px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">🔧 إصلاح الكل الآن</button>
+    </div>
+    <div id="prog-content"><div class="empty">جاري التحميل...</div></div></div>`;
   fbListen("users",async usersData=>{
     const el=document.getElementById("prog-content");if(!el)return;
     const videosData=await fbGet("videos");
@@ -3181,47 +3190,44 @@ async function markFahimt(videoId){
   const idx=_allVideos.findIndex(x=>x.id===videoId);
   const nextVideo=idx>=0&&idx+1<_allVideos.length?_allVideos[idx+1]:null;
 
-  // ── 1. Update Firebase atomically (both current + next in one write to avoid race condition)
+  // ── Atomic multi-path write (prevents race condition with fbListen)
   const {db,ref,update}=await waitFB();
-  const multiUpdate={};
-  multiUpdate[`progress/${pkey(_currentUser.phone)}/${videoId}`]={watched:true,unlocked:true,passed:true};
+  const multiUpd={};
+  multiUpd[`progress/${pkey(_currentUser.phone)}/${videoId}/watched`]=true;
+  multiUpd[`progress/${pkey(_currentUser.phone)}/${videoId}/unlocked`]=true;
+  multiUpd[`progress/${pkey(_currentUser.phone)}/${videoId}/passed`]=true;
   if(nextVideo){
-    multiUpdate[`progress/${pkey(_currentUser.phone)}/${nextVideo.id}`]={
-      ...(_myProgress[nextVideo.id]||{}),
-      unlocked:true
-    };
+    multiUpd[`progress/${pkey(_currentUser.phone)}/${nextVideo.id}/unlocked`]=true;
   }
   try{
-    await update(ref(db,"/"),multiUpdate);
+    await update(ref(db,"/"),multiUpd);
   }catch(e){
-    console.error("markFahimt firebase error:",e);
+    console.error("markFahimt error:",e);
     toast("❌ حدث خطأ، حاول مجدداً","err");
     return;
   }
 
-  // ── 2. Update local state immediately (no waiting for listener)
+  // ── Update local state immediately (before listener fires)
   _myProgress[videoId]={...(_myProgress[videoId]||{}),passed:true,watched:true,unlocked:true};
   if(nextVideo){
     _myProgress[nextVideo.id]={...(_myProgress[nextVideo.id]||{}),unlocked:true};
   }
-
-  // ── 3. Update UI
   updateProgressBar();
   filterVideos();
 
-  // ── 4. Points + animations
+  // ── Points + animations
   const fPts=await addPoints(_currentUser.phone,POINTS_FAHIMT,"ضغط فهمت ✅");
   showPointsAnim(POINTS_FAHIMT);
   _currentUser.points=fPts;
 
-  // ── 5. Send WA notification (fire-and-forget, don't await)
+  // ── WA notification fire-and-forget
   sendWA(ADMIN_PHONE,`🎉 *${_currentUser.name}* أنهى الدرس وضغط فهمت!\n📚 الدرس: ${v?.title||""}\n📞 ${_currentUser.phone}`).catch(()=>{});
 
-  // ── 6. Loot Box every 3 lessons
+  // ── Loot Box every 3 lessons
   const watchedCount=Object.values(_myProgress).filter(p=>p.passed).length;
   if(watchedCount>0&&watchedCount%3===0){setTimeout(()=>showLootBox(),800);}
 
-  // ── 7. Auto-advance to next lesson OR show completion
+  // ── Auto-advance to next lesson
   if(nextVideo){
     toast("✅ أحسنت! جاري فتح الدرس التالي 🚀");
     setTimeout(()=>playVideo(nextVideo.id),700);
@@ -3231,7 +3237,62 @@ async function markFahimt(videoId){
   }
 }
 
-async function submitAnswer(videoId,questionId,question){
+// ── ADMIN: Repair all students' progress (unlock next lesson after passed ones) ──
+async function repairAllProgress(){
+  const btn=document.getElementById("repair-btn");
+  if(btn){btn.disabled=true;btn.textContent="⏳ جاري الإصلاح...";}
+  try{
+    const [allUsers,allVideos,allProgress]=await Promise.all([
+      fbGet("users"),
+      fbGet("videos"),
+      fbGet("progress")
+    ]);
+    if(!allUsers||!allVideos){
+      toast("❌ فشل تحميل البيانات","err");
+      if(btn){btn.disabled=false;btn.textContent="🔧 إصلاح تقدم الطلاب";}
+      return;
+    }
+    const sorted=Object.values(allVideos).sort((a,b)=>a.id-b.id);
+    const approved=Object.values(allUsers).filter(u=>!u.isAdmin&&u.approved);
+    const {db,ref,update}=await waitFB();
+    const multiUpd={};
+    let fixedCount=0;
+
+    for(const u of approved){
+      const pk=pkey(u.phone);
+      const prog=(allProgress&&allProgress[pk])||{};
+      // Ensure first video is always unlocked
+      if(sorted.length>0&&!prog[sorted[0].id]?.unlocked){
+        multiUpd[`progress/${pk}/${sorted[0].id}/unlocked`]=true;
+        fixedCount++;
+      }
+      // For each passed lesson, unlock the next one
+      for(let i=0;i<sorted.length-1;i++){
+        const curr=sorted[i];
+        const next=sorted[i+1];
+        const currProg=prog[curr.id]||{};
+        if((currProg.passed||currProg.watched)&&!prog[next.id]?.unlocked){
+          multiUpd[`progress/${pk}/${next.id}/unlocked`]=true;
+          fixedCount++;
+        }
+      }
+    }
+
+    if(Object.keys(multiUpd).length===0){
+      toast("✅ كل الطلاب بياناتهم سليمة — مفيش حاجة محتاجة إصلاح");
+      if(btn){btn.disabled=false;btn.textContent="🔧 إصلاح تقدم الطلاب";}
+      return;
+    }
+
+    await update(ref(db,"/"),multiUpd);
+    toast(`✅ تم إصلاح ${fixedCount} درس لـ ${approved.length} طالب 🚀`);
+    if(btn){btn.disabled=false;btn.textContent="🔧 إصلاح تقدم الطلاب";}
+  }catch(e){
+    console.error("repairAllProgress:",e);
+    toast("❌ حدث خطأ أثناء الإصلاح: "+e.message,"err");
+    if(btn){btn.disabled=false;btn.textContent="🔧 إصلاح تقدم الطلاب";}
+  }
+}
   const ans=document.getElementById("quiz-ans")?.value.trim();
   if(!ans){toast("❌ اكتب إجابتك أولاً","err");return}
   const v=_allVideos.find(x=>x.id===videoId);
