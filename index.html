@@ -3383,6 +3383,8 @@ async function repairAllProgress(){
     if(btn){btn.disabled=false;btn.textContent="🔧 إصلاح تقدم الطلاب";}
   }
 }
+
+async function submitAnswer(videoId,questionId,question){
   const ans=document.getElementById("quiz-ans")?.value.trim();
   if(!ans){toast("❌ اكتب إجابتك أولاً","err");return}
   const v=_allVideos.find(x=>x.id===videoId);
