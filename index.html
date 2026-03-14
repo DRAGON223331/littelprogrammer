@@ -1663,29 +1663,119 @@ function renderAdminProgress(m){
       </div>
       <button id="repair-btn" onclick="repairAllProgress()" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#f59e0b;border-radius:10px;padding:10px 18px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">🔧 إصلاح الكل الآن</button>
     </div>
-    <div id="prog-content"><div class="empty">جاري التحميل...</div></div></div>`;
-  fbListen("users",async usersData=>{
-    const el=document.getElementById("prog-content");if(!el)return;
-    const videosData=await fbGet("videos");
-    const totalVids=videosData?Object.keys(videosData).length:0;
-    const approved=usersData?Object.values(usersData).filter(u=>!u.isAdmin&&u.approved):[];
-    if(approved.length===0){el.innerHTML=`<div class="empty">لا يوجد طلاب معتمدون بعد</div>`;return}
-    let html=`<table class="progress-table"><thead><tr><th>الطالب</th><th>الدروس المشاهدة</th><th>الإنجاز</th><th>آخر درس</th></tr></thead><tbody>`;
-    for(const u of approved){
-      const prog=await fbGet(`progress/${pkey(u.phone)}`)||{};
-      const watched=Object.keys(prog).length;
-      const pct=totalVids>0?Math.round(watched/totalVids*100):0;
-      const lastVid=u.lastVideo&&videosData&&videosData[u.lastVideo]?videosData[u.lastVideo].title:"—";
-      html+=`<tr>
-        <td><div style="font-weight:700">${u.name}</div><div class="s-phone">${u.phone}</div></td>
-        <td>${watched} / ${totalVids}</td>
-        <td><div>${pct}%</div><div class="prog-bar-sm"><div class="prog-fill-sm" style="width:${pct}%"></div></div></td>
-        <td style="font-size:12px;color:var(--muted)">${lastVid}</td>
-      </tr>`;
+    <div id="stuck-content"><div class="empty">⏳ جاري فحص الطلاب المعلقين...</div></div>
+    <div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px">
+      <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--a)">📋 تقدم جميع الطلاب</div>
+      <div id="prog-content"><div class="empty">جاري التحميل...</div></div>
+    </div>
+  </div>`;
+  loadProgressData();
+}
+
+async function loadProgressData(){
+  const stuckEl=document.getElementById("stuck-content");
+  const progEl=document.getElementById("prog-content");
+  if(!stuckEl||!progEl)return;
+
+  const [usersData,videosData,allProgress]=await Promise.all([
+    fbGet("users"),fbGet("videos"),fbGet("progress")
+  ]);
+
+  const sorted=videosData?Object.values(videosData).sort((a,b)=>a.id-b.id):[];
+  const totalVids=sorted.length;
+  const approved=usersData?Object.values(usersData).filter(u=>!u.isAdmin&&u.approved):[];
+
+  if(approved.length===0){
+    stuckEl.innerHTML=`<div class="empty">لا يوجد طلاب معتمدون بعد</div>`;
+    progEl.innerHTML="";return;
+  }
+
+  // ── Detect stuck students
+  const stuck=[];
+  for(const u of approved){
+    const pk=pkey(u.phone);
+    const prog=(allProgress&&allProgress[pk])||{};
+    for(let i=0;i<sorted.length-1;i++){
+      const curr=sorted[i];
+      const next=sorted[i+1];
+      const currP=prog[curr.id]||{};
+      const nextP=prog[next.id]||{};
+      if((currP.passed||currP.watched)&&!nextP.unlocked){
+        stuck.push({u,stuckAt:next,completedLesson:curr,prog});
+        break; // أول مشكلة بس
+      }
     }
-    html+=`</tbody></table>`;
-    el.innerHTML=html;
-  });
+  }
+
+  // ── Render stuck students
+  if(stuck.length===0){
+    stuckEl.innerHTML=`<div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px"><span style="font-size:20px">✅</span><span style="font-size:13px;font-weight:700;color:var(--ok)">كل الطلاب تمام — مفيش حد معلق دلوقتي</span></div>`;
+  }else{
+    stuckEl.innerHTML=`
+      <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:12px;padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">⚠️</span>
+        <span style="font-size:13px;font-weight:700;color:var(--err)">${stuck.length} طالب معلق — الدرس التالي مش بيفتح معاهم</span>
+      </div>
+      ${stuck.map(s=>`
+      <div style="background:var(--bg3);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="width:38px;height:38px;border-radius:50%;background:rgba(124,109,250,0.2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0">${s.u.name[0]}</div>
+        <div style="flex:1;min-width:160px">
+          <div style="font-size:13px;font-weight:700">${s.u.name}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">${s.u.phone}</div>
+          <div style="font-size:12px;margin-top:6px;display:flex;flex-wrap:wrap;gap:6px">
+            <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:var(--ok);padding:2px 8px;border-radius:6px">✅ أنهى: ${s.completedLesson.title}</span>
+            <span style="color:var(--muted)">←</span>
+            <span style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:var(--err);padding:2px 8px;border-radius:6px">🔒 معلق عند: ${s.stuckAt.title}</span>
+          </div>
+        </div>
+        <button onclick="unlockNextForStudent('${s.u.phone}','${s.stuckAt.id}','${s.u.name}')" style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);color:var(--ok);border-radius:10px;padding:8px 14px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">🔓 فتح يدوي</button>
+      </div>`).join("")}`;
+  }
+
+  // ── Render full progress table
+  let html=`<table class="progress-table"><thead><tr>
+    <th>الطالب</th><th>الدروس</th><th>الإنجاز</th><th>الحالة</th><th>آخر درس</th>
+  </tr></thead><tbody>`;
+  for(const u of approved){
+    const pk=pkey(u.phone);
+    const prog=(allProgress&&allProgress[pk])||{};
+    const passedCount=Object.values(prog).filter(p=>p.passed).length;
+    const watchedCount=Object.values(prog).filter(p=>p.watched).length;
+    const pct=totalVids>0?Math.round(passedCount/totalVids*100):0;
+    const lastVid=u.lastVideo&&videosData&&videosData[u.lastVideo]?videosData[u.lastVideo].title:"—";
+    const isStuck=stuck.some(s=>s.u.phone===u.phone);
+    html+=`<tr style="${isStuck?'background:rgba(239,68,68,0.04)':''}">
+      <td>
+        <div style="font-weight:700">${u.name} ${isStuck?'<span style="color:var(--err);font-size:11px">⚠️ معلق</span>':''}</div>
+        <div class="s-phone">${u.phone}</div>
+      </td>
+      <td>
+        <div style="font-size:13px">✅ ${passedCount} / ${totalVids}</div>
+        <div style="font-size:11px;color:var(--muted)">👁️ شاف ${watchedCount}</div>
+      </td>
+      <td>
+        <div style="font-size:13px;font-weight:700;color:${pct>=70?'var(--ok)':pct>=30?'var(--warn)':'var(--muted)'}">${pct}%</div>
+        <div style="height:4px;background:var(--border);border-radius:99px;margin-top:4px;width:80px">
+          <div style="height:100%;width:${pct}%;background:${pct>=70?'var(--ok)':pct>=30?'var(--warn)':'var(--p)'};border-radius:99px;transition:width .5s"></div>
+        </div>
+      </td>
+      <td>${isStuck?`<button onclick="unlockNextForStudent('${u.phone}','${stuck.find(s=>s.u.phone===u.phone)?.stuckAt?.id}','${u.name}')" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);color:var(--ok);border-radius:8px;padding:5px 10px;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;cursor:pointer">🔓 فتح</button>`:'<span style="color:var(--ok);font-size:12px">✅ تمام</span>'}</td>
+      <td style="font-size:12px;color:var(--muted);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${lastVid}</td>
+    </tr>`;
+  }
+  html+=`</tbody></table>`;
+  progEl.innerHTML=html;
+}
+
+async function unlockNextForStudent(phone,nextVideoId,name){
+  if(!nextVideoId){toast("❌ مفيش درس تالي","err");return}
+  try{
+    await fbUpd(`progress/${pkey(phone)}/${nextVideoId}`,{unlocked:true});
+    toast(`✅ تم فتح الدرس التالي لـ ${name}`);
+    setTimeout(()=>loadProgressData(),800);
+  }catch(e){
+    toast("❌ حدث خطأ: "+e.message,"err");
+  }
 }
 
 function renderAdminAnswers(m){
